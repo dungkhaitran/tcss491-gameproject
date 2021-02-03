@@ -19,7 +19,6 @@ ASSET_MANAGER.downloadAll(function () {
   PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
   var canvas = document.getElementById("gameWorld");
-  canvas.style.background = "./sprites/background/ParFull.png";
   var ctx = canvas.getContext("2d");
 
   PARAMS.CANVAS_WIDTH = canvas.width;
