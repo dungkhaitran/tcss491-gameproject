@@ -1,8 +1,3 @@
-/**
- * TCSS 491 - Winter 2021 - Professor Chris Marriott
- * Group: Gold 5
- * Members: Hung Thai, Dung Tran, Quoc Phung
- */
 
 class MainCharacter {
     constructor(game, x, y) {

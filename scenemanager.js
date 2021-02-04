@@ -35,7 +35,7 @@ class SceneManager {
       new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1)
     );
     this.game.addEntity(
-      new Bat(this.game, PARAMS.BLOCKWIDTH * 16, PARAMS.BLOCKWIDTH * 5)
+      new Enemy1(this.game, PARAMS.BLOCKWIDTH * 15, PARAMS.BLOCKWIDTH * 10.5)
     );
     this.game.addEntity(
       new Bat(this.game, PARAMS.BLOCKWIDTH * 4, PARAMS.BLOCKWIDTH * 6)

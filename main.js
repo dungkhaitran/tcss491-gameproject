@@ -12,6 +12,9 @@ ASSET_MANAGER.queueDownload("./sprites/tileset/tile2.png");
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile3.png");
 ASSET_MANAGER.queueDownload("./sprites/decoration/deco1.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/bat.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/enemy1.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/enemy2.png");
+
 
 ASSET_MANAGER.downloadAll(function () {
   var gameEngine = new GameEngine();
