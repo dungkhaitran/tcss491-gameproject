@@ -94,7 +94,7 @@ class Enemy1 extends Enemies {
 
 
         // this.animation = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        this.animation = new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
+        this.animation = new Animator(this.spritesheet, 0, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
         // this.animations.push(new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);  // attack
         // this.animations.push(new Animator(this.spritesheet, 0, 85, 55, 42, 3, 0.2, 9, false, true);  // hit
         // this.animations.push(new Animator(this.spritesheet, 0, 214, 55, 42, 5, 0.15, 9, false, true); // jump
@@ -106,7 +106,7 @@ class Enemy1 extends Enemies {
 
     }
     update() {
-        this.x += -PARAMS.BITWIDTH/50
+        this.x += PARAMS.BITWIDTH/50
         if(this.dead){
             this.deadCounter += this.game.clockTick;
             if(this.deadCounter > 0.5) this.removeFromWorld = true;
@@ -161,21 +161,21 @@ class Enemy2 extends Enemies {
 
         // facing left
         // this.animations.push(new Animator(this.spritesheet, 480, 150, 55, 42, 7, 0.15, 9, false, true)); // idle
-        // this.animations.push(new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true));  // walk
+        // this.animations.push(new Animator(this.spritesheet, 2093, 1608, 60, 54, 8, 0.15, 190, false, true));  // run
         // this.animations.push(new Animator(this.spritesheet, 480, 22, 55, 42, 7, 0.15, 9, false, true));  // attack
         // this.animations.push(new Animator(this.spritesheet, 736, 85, 55, 42, 3, 0.2, 9, false, true));  // hit
         // this.animations.push(new Animator(this.spritesheet, 608, 214, 55, 42, 5, 0.15, 9, false, true)); // jump
         
         // facing right
         // this.animations.push(new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true)); // idle
-        // this.animations.push(new Animator(this.spritesheet, 0, 280, 55, 42, 6, 0.15, 9, false, true));  // walk
+        // this.animations.push(new Animator(this.spritesheet, 0, 280, 55, 42, 6, 0.15, 9, false, true));  // run
         // this.animations.push(new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true));  // attack
         // this.animations.push(new Animator(this.spritesheet, 0, 85, 55, 42, 3, 0.2, 9, false, true));  // hit
         // this.animations.push(new Animator(this.spritesheet, 0, 214, 55, 42, 5, 0.15, 9, false, true)); // jump
 
         // testing
-        // this.animation = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        //this.animation = new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
+        this.animation = new Animator(this.spritesheet, 107, 1074, 60, 94, 8, 0.15, 190, false, true); // idle
+        // this.animation = new Animator(this.spritesheet, 93, 1608, 60, 54, 8, 0.15, 190, false, true);  // run
         // this.animations.push(new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);  // attack
         // this.animations.push(new Animator(this.spritesheet, 0, 85, 55, 42, 3, 0.2, 9, false, true);  // hit
         // this.animations.push(new Animator(this.spritesheet, 0, 214, 55, 42, 5, 0.15, 9, false, true); // jump
@@ -187,8 +187,29 @@ class Enemy2 extends Enemies {
 
     }
     update() {
-        this.x += -PARAMS.BITWIDTH/100
-        this.y += PARAMS.BITWIDTH/100
+        if(this.dead){
+            this.deadCounter += this.game.clockTick;
+            if(this.deadCounter > 0.5) this.removeFromWorld = true;
+        }
+        // if(this.paused && this.game.camera.x > this.x - PARAMS.CANVAS_WIDTH){
+        //     this.paused = false;
+        // }
+        if(!this.dead && !this.paused){
+            this.velocity.y += FALL_ACC * this.game.clockTick;
+            this.x += this.game.clockTick * this.velocity.x * PARAMS.SCALE;
+            this.y += this.game.clockTick * this.velocity.y * PARAMS.SCALE;
+
+            var that = this;
+            this.game.entities.forEach(function (entity){
+                if(entity.BB && that.BB.collide(entity.BB)){
+                    if(that.collideMain(entity)){
+                        that.velocity.x = 0;
+                        that.velocity.y = 0;
+                        that.animation = new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);
+                    }
+                }
+            });
+        }
     }
     drawMinimap(ctx, mmX, mmY){
 
