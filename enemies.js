@@ -94,7 +94,7 @@ class Enemy1 extends Enemies {
 
 
         // this.animation = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        this.animation = new Animator(this.spritesheet, 0, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
+        this.animation = new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
         // this.animations.push(new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);  // attack
         // this.animations.push(new Animator(this.spritesheet, 0, 85, 55, 42, 3, 0.2, 9, false, true);  // hit
         // this.animations.push(new Animator(this.spritesheet, 0, 214, 55, 42, 5, 0.15, 9, false, true); // jump
@@ -106,7 +106,7 @@ class Enemy1 extends Enemies {
 
     }
     update() {
-        this.x += PARAMS.BITWIDTH/50
+        this.x += -PARAMS.BITWIDTH/50
         if(this.dead){
             this.deadCounter += this.game.clockTick;
             if(this.deadCounter > 0.5) this.removeFromWorld = true;
