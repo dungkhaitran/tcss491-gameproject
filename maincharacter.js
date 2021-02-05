@@ -6,7 +6,7 @@ class MainCharacter {
         this.game.main = this;
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/1.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/2.png");
 
         // this.velocity = 200;
 
@@ -45,26 +45,26 @@ class MainCharacter {
 
         // idle animation for state = 0
         // facing right = 0
-        this.animations[0][0] = new Animator(this.spritesheet, 60, 30, 330, 342, 2, 0.33, 87, false, true);
+        this.animations[0][0] = new Animator(this.spritesheet, 19, 101, 73, 117, 2, 0.33, 319, false, true);
         // this.animations[0][0] = new Animator(this.spritesheet, 60, 29, 332, 342, 2, 0.33, 87, false, true);
         // this.animations[0][0] = new Animator(this.spritesheet, 470, 28, 329, 30, 2, 0.33, 79, false, true);
         // this.animations[0][0] = new Animator(this.spritesheet, 890, 27, 323, 337, 2, 0.33, 87, false, true);
 
         // facing left = 1
-        this.animations[0][1] = new Animator(this.spritesheet, 2543, 30, 330, 340, 2, 0.33, 87, true, true);
+        this.animations[0][1] = new Animator(this.spritesheet, 11, 333, 67, 111, 2, 0.33, 321, true, true);
         // this.animations[0][1] = new Animator(this.spritesheet, 3287, 22, 335, 334, 2, 0.33, 87, false, true);
         // this.animations[0][1] = new Animator(this.spritesheet, 2859, 30, 331, 340, 2, 0.33, 87, true, true);
         // this.animations[0][1] = new Animator(this.spritesheet, 2452, 30, 16, 32, 2, 0.33, 87, false, true);
 
         // walk animation
         // facing right
-        this.animations[1][0] = new Animator(this.spritesheet, 69, 455, 280, 329, 4, 0.1, 150, false, true);
+        this.animations[1][0] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.33, 315, true, true);
         // this.animations[1][0] = new Animator(this.spritesheet, 489, 443, 308, 319, 2, 0.1, 135, false, true);
         // this.animations[1][0] = new Animator(this.spritesheet, 947, 456, 293, 308, 2, 0.1, 142, false, true);
 
          // walk animation
         // facing left
-        this.animations[1][1] = new Animator(this.spritesheet, 2750, 453, 293, 319, 2, 0.1, 142, false, true);
+        this.animations[1][1] = new Animator(this.spritesheet, 49, 781, 99, 95, 8, 0.2, 315, false, true);
         // this.animations[1][1] = new Animator(this.spritesheet, 3650, 438, 280, 324, 2, 0.1, 149, false, true);
         // this.animations[1][1] = new Animator(this.spritesheet, 3250, 447, 311, 318, 2, 0.1, 135, false, true);
         // this.animations[1][1] = new Animator(this.spritesheet, 2750, 453, 293, 319, 2, 0.1, 142, false, true);
@@ -222,7 +222,7 @@ class MainCharacter {
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 0.3);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 0.9);
             // this.animations[this.state][this.size][this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
         }
     };

@@ -5,7 +5,7 @@
  */
 
 var ASSET_MANAGER = new AssetManager();
-ASSET_MANAGER.queueDownload("./sprites/1.png");
+ASSET_MANAGER.queueDownload("./sprites/2.png");
 ASSET_MANAGER.queueDownload("./sprites/background/ParFull.png");
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile1.png");
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile2.png");
