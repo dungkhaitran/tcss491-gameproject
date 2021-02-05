@@ -38,6 +38,7 @@ class GameEngine {
         var that = this;
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
+            console.log(e);
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
@@ -50,6 +51,9 @@ class GameEngine {
                 case "ArrowUp":
                 case "Space":
                     that.up = true;
+                    break;
+                case "z":
+                    that.attacking = true;
                     break;
                 // case "ArrowDown":
                 // case "KeyS":

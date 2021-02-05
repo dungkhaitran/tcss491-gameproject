@@ -38,8 +38,9 @@ const PARAMS = {
 };
 
 const FACING_SIDE = {
+    RIGHT: 0,
     LEFT: 1,
-    RIGHT: 0
+    COUNT: 2
 };
 
 const MIN_WALK = 4.453125;
@@ -65,5 +66,7 @@ const MAX_WIDTH = 2000;
 const STATE = {
     IDLE: 0,
     WALKING: 1,
-    JUMPING: 4
+    ATTACKING: 2,
+    JUMPING: 3,
+    COUNT: 4
 }

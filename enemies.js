@@ -103,10 +103,23 @@ class Enemy1 extends Enemies {
         this.dead = false;
         this.deadCounter = 0;
         this.flickerFlag = true;
+        this.width = PARAMS.BLOCKWIDTH;
+        this.state = STATE.WALKING;
+        // if (this.size === 0 || this.size === 3) {
+            this.height = PARAMS.BLOCKWIDTH * 2;
+            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        // }
+        // else {
+        //     this.height = PARAMS.BLOCKWIDTH * 2;
+        //     this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        // }
 
+        this.updateBB();
     }
     update() {
-        this.x += -PARAMS.BITWIDTH/50
+        if (this.state == STATE.WALKING) {
+            this.velocity.x = -PARAMS.BITWIDTH/50;
+        }
         if(this.dead){
             this.deadCounter += this.game.clockTick;
             if(this.deadCounter > 0.5) this.removeFromWorld = true;
@@ -130,7 +143,20 @@ class Enemy1 extends Enemies {
                 }
             });
         }
+        this.x += this.velocity.x;
+        this.updateBB();
     }
+
+    updateBB() {
+        this.lastBB = this.BB;
+        // if (this.size === 0 || this.size === 3) {
+            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
+        // }
+        // else {
+        //     this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2);
+        // }
+    };
+
     collideMain(entity){
         return (entity instanceof MainCharacter ? true : false);
     }
@@ -145,6 +171,11 @@ class Enemy1 extends Enemies {
             this.flickerFlag = !this.flickerFlag;
         } else {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        }
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
         }
     }
 }

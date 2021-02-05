@@ -5,93 +5,62 @@ class MainCharacter {
 
         this.game.main = this;
 
-        // spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/2.png");
 
-        // this.velocity = 200;
-
-        // mario's state variables
-         // 0 = little, 1 = big, 2 = super, 3 = little invincible, 4 = big invincible, 5 = super invincible
-        this.facing = FACING_SIDE.RIGHT; // 0 = right, 1 = left
-        this.state = STATE.IDLE; // 0 = idle, 1 = walking, 2 = running, 3 = skidding, 4 = jumping/falling, 5 = ducking
+        this.facing = FACING_SIDE.RIGHT;
+        this.state = STATE.IDLE;
         this.dead = false;
 
         this.velocity = { x: 0, y: 0 };
 
-        // mario's animations
         this.animations = [];
         this.loadAnimations();
+        
+
+        this.blood = 1000;
+        this.meleeDamage = 100;
 
         this.width = PARAMS.BLOCKWIDTH;
-        if (this.size === 0 || this.size === 3) {
-            this.height = PARAMS.BLOCKWIDTH * 2;
-            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        }
-        else {
-            this.height = PARAMS.BLOCKWIDTH * 2;
-            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        }
+        this.height = PARAMS.BLOCKWIDTH * 2;
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+
+        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, 10, this.height);
+
         this.updateBB();
     };
 
     loadAnimations() {
-        for (var i = 0; i < 6; i++) { // six states
+        for (var i = 0; i < STATE.COUNT; i++) { // states
             this.animations.push([]);
-                 for (var k = 0; k < 2; k++) { // two directions
+                 for (var k = 0; k < FACING_SIDE.COUNT; k++) { // directions
                     this.animations[i].push([]);
                 }
             
         }
 
-        // idle animation for state = 0
-        // facing right = 0
-        this.animations[0][0] = new Animator(this.spritesheet, 19, 101, 73, 117, 2, 0.33, 319, false, true);
-        // this.animations[0][0] = new Animator(this.spritesheet, 60, 29, 332, 342, 2, 0.33, 87, false, true);
-        // this.animations[0][0] = new Animator(this.spritesheet, 470, 28, 329, 30, 2, 0.33, 79, false, true);
-        // this.animations[0][0] = new Animator(this.spritesheet, 890, 27, 323, 337, 2, 0.33, 87, false, true);
-
-        // facing left = 1
-        this.animations[0][1] = new Animator(this.spritesheet, 11, 333, 67, 111, 2, 0.33, 321, true, true);
-        // this.animations[0][1] = new Animator(this.spritesheet, 3287, 22, 335, 334, 2, 0.33, 87, false, true);
-        // this.animations[0][1] = new Animator(this.spritesheet, 2859, 30, 331, 340, 2, 0.33, 87, true, true);
-        // this.animations[0][1] = new Animator(this.spritesheet, 2452, 30, 16, 32, 2, 0.33, 87, false, true);
+        // idle animation
+        this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 19, 101, 73, 117, 2, 0.33, 319, false, true);
+        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 11, 333, 67, 111, 2, 0.33, 321, true, true);
 
         // walk animation
-        // facing right
-        this.animations[1][0] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.33, 315, true, true);
-        // this.animations[1][0] = new Animator(this.spritesheet, 489, 443, 308, 319, 2, 0.1, 135, false, true);
-        // this.animations[1][0] = new Animator(this.spritesheet, 947, 456, 293, 308, 2, 0.1, 142, false, true);
+        this.animations[STATE.WALKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.33, 315, true, true);
+        this.animations[STATE.WALKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 49, 781, 99, 95, 8, 0.2, 315, false, true);
 
-         // walk animation
-        // facing left
-        this.animations[1][1] = new Animator(this.spritesheet, 49, 781, 99, 95, 8, 0.2, 315, false, true);
-        // this.animations[1][1] = new Animator(this.spritesheet, 3650, 438, 280, 324, 2, 0.1, 149, false, true);
-        // this.animations[1][1] = new Animator(this.spritesheet, 3250, 447, 311, 318, 2, 0.1, 135, false, true);
-        // this.animations[1][1] = new Animator(this.spritesheet, 2750, 453, 293, 319, 2, 0.1, 142, false, true);
+        // attacking animation
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
 
-          // run animation
-        // facing right
-        // this.animations[2][0] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 336, 842, 283, 324, 3, 0.1, 72, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 690, 847, 283, 321, 3, 0.1, 94, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 1419, 854, 307, 326, 3, 0.1, 127, false, true);
-
-        // run animation
-        // facing right
-        // this.animations[2][0] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 3248, 838, 290, 325, 3, 0.1, 73, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 2882, 860, 285, 327, 3, 0.1, 95, false, true);
-        // this.animations[2][0] = new Animator(this.spritesheet, 1419, 854, 307, 326, 2, 0.1, 127, false, true);
+        // jumping animation
+        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
     };
 
     updateBB() {
         this.lastBB = this.BB;
-        if (this.size === 0 || this.size === 3) {
-            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
-        }
-        else {
-            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2);
-        }
+        this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
+
+        this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
+        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, 20, this.height);
     };
 
     update() {
@@ -121,6 +90,10 @@ class MainCharacter {
             this.x = Math.min(this.x, MAX_WIDTH - 16 * PARAMS.SCALE);
         }
 
+        if (this.attacking) {
+            this.state = STATE.ATTACKING;
+        }
+
         // if (this.game.up & this.state !== 4) {
         //     this.state = 4;
         //     this.init = true;
@@ -148,7 +121,13 @@ class MainCharacter {
         this.y += this.velocity.y;
 
         this.game.entities.forEach(function (entity) {
+            // if (entity.BB && that.BB.collide(entity.BB)) {
+            //     entity.x = 0;
+            //     entity.state = STATE.IDLE;
+            // }
             if (!(entity instanceof MainCharacter) && entity.BB && that.BB.collide(entity.BB)) {
+                entity.velocity.x = 0;
+                entity.state = STATE.IDLE;
                 if (that.velocity.y > 0) {
                     // console.log("that.BB.bottom: " + that.BB.bottom);
                     // console.log("entity.BB.top: " + entity.BB.top);
@@ -222,8 +201,15 @@ class MainCharacter {
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 0.9);
-            // this.animations[this.state][this.size][this.facing].drawFrame(this.game.clockTick, ctx, this.x, this.y, PARAMS.SCALE);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 0.9);//PARAMS.SCALE);
+        }
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+
+            ctx.strokeStyle = 'Yellow';
+            ctx.strokeRect(this.BBMeleeAttackRange.x, this.BBMeleeAttackRange.y, this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
         }
     };
 
