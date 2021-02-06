@@ -78,15 +78,23 @@ class MainCharacter {
         } else if (this.game.left) {
             this.facing = FACING_SIDE.LEFT;
             this.state = STATE.MOVING;
-            this.velocity.x = -MIN_WALK;
 
-            this.x = Math.max(0, this.x);
+            if (this.x <= 0) {
+                this.velocity.x = 0;
+                this.x = 0;
+            } else {
+                this.velocity.x = -MIN_WALK;
+            }
         } else if (this.game.right) {
             this.facing = FACING_SIDE.RIGHT;
             this.state = STATE.MOVING;
-            this.velocity.x = MIN_WALK;
 
-            this.x = Math.min(this.x, MAX_WIDTH - 16 * PARAMS.SCALE);
+            if (this.x >= (MAX_WIDTH - this.width)) {
+                this.velocity.x = 0;
+                this.x = MAX_WIDTH - this.width;
+            } else {
+                this.velocity.x = MIN_WALK;
+            }
         }
 
         if (this.attacking) {
@@ -109,10 +117,10 @@ class MainCharacter {
         this.updateBB();
 
         var cameraCharacter = this.x - this.game.camera.x;
-        if (this.velocity.x < 0 && cameraCharacter < 300) {
+        if (this.velocity.x < 0 && cameraCharacter < 350) {
             this.game.camera.x += this.velocity.x;
             this.game.camera.x = Math.max(0, this.game.camera.x);
-        } else if (this.velocity.x > 0 && cameraCharacter > 700) {
+        } else if (this.velocity.x > 0 && cameraCharacter > 650) {
             this.game.camera.x += this.velocity.x;
             this.game.camera.x = Math.min(this.game.camera.x , MAX_WIDTH - PARAMS.CANVAS_WIDTH);
         }
@@ -124,15 +132,15 @@ class MainCharacter {
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x , this.y, 0.9);//PARAMS.SCALE);
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.9);//PARAMS.SCALE);
         }
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.BB.x, this.BB.y, this.BB.width, this.BB.height);
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
 
             ctx.strokeStyle = 'Yellow';
-            ctx.strokeRect(this.BBMeleeAttackRange.x, this.BBMeleeAttackRange.y, this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y, this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
         }
     };
 
