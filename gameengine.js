@@ -49,9 +49,9 @@ class GameEngine {
                     break;
                 case "ArrowUp":
                 case "Space":
-                    that.up = true;
+                    that.jumping = true;
                     break;
-                case "z":
+                case "KeyZ":
                     that.attacking = true;
                     break;
             }
@@ -69,9 +69,9 @@ class GameEngine {
                     break;
                 case "ArrowUp":
                 case "Space":
-                    that.up = false;
+                    that.jumping = false;
                     break;
-                case "z":
+                case "KeyZ":
                     that.attacking = false;
                     break;
             }

@@ -73,8 +73,10 @@ class MainCharacter {
         //     this.x = -140;
         // }
         if (!this.game.left && !this.game.right) {
-            this.state = STATE.IDLE;
             this.velocity.x = 0;
+            if (!this.game.attacking && !this.game.jumping) {
+                this.state = STATE.IDLE;
+            }
         } else if (this.game.left) {
             this.facing = FACING_SIDE.LEFT;
             this.state = STATE.MOVING;
@@ -97,7 +99,7 @@ class MainCharacter {
             }
         }
 
-        if (this.attacking) {
+        if (this.game.attacking) {
             this.state = STATE.ATTACKING;
         }
 
