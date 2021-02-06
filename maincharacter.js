@@ -32,10 +32,9 @@ class MainCharacter {
     loadAnimations() {
         for (var i = 0; i < STATE.COUNT; i++) { // states
             this.animations.push([]);
-                 for (var k = 0; k < FACING_SIDE.COUNT; k++) { // directions
+                for (var k = 0; k < FACING_SIDE.COUNT; k++) { // directions
                     this.animations[i].push([]);
                 }
-            
         }
 
         // idle animation
@@ -43,8 +42,8 @@ class MainCharacter {
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 11, 333, 67, 111, 2, 0.33, 321, true, true);
 
         // walk animation
-        this.animations[STATE.WALKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.33, 315, true, true);
-        this.animations[STATE.WALKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 49, 781, 99, 95, 8, 0.2, 315, false, true);
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.33, 315, true, true);
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 49, 781, 99, 95, 8, 0.2, 315, false, true);
 
         // attacking animation
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
@@ -78,13 +77,13 @@ class MainCharacter {
             this.velocity.x = 0;
         } else if (this.game.left) {
             this.facing = FACING_SIDE.LEFT;
-            this.state = STATE.WALKING;
+            this.state = STATE.MOVING;
             this.velocity.x = -MIN_WALK;
 
             this.x = Math.max(0, this.x);
         } else if (this.game.right) {
             this.facing = FACING_SIDE.RIGHT;
-            this.state = STATE.WALKING;
+            this.state = STATE.MOVING;
             this.velocity.x = MIN_WALK;
 
             this.x = Math.min(this.x, MAX_WIDTH - 16 * PARAMS.SCALE);
@@ -94,26 +93,6 @@ class MainCharacter {
             this.state = STATE.ATTACKING;
         }
 
-        // if (this.game.up & this.state !== 4) {
-        //     this.state = 4;
-        //     this.init = true;
-            
-        //     if (this.initJump) {
-        //         this.initJump = false;
-        //         this.startJumpY = this.y;
-        //         this.velocity.y = -40;
-        //     } else {
-        //         this.jumped = this.startJumpY - this.y;
-        //         if (this.jumped >= MAX_FALL) {
-        //             this.velocity.y -= 10;
-        //         } else {
-        //             this.velocity.y += 3;
-        //         }
-        //     }
-
-        // }
-
-        var falling = true;
         // collision
         var that = this;
 
@@ -121,58 +100,12 @@ class MainCharacter {
         this.y += this.velocity.y;
 
         this.game.entities.forEach(function (entity) {
-            // if (entity.BB && that.BB.collide(entity.BB)) {
-            //     entity.x = 0;
-            //     entity.state = STATE.IDLE;
-            // }
             if (!(entity instanceof MainCharacter) && entity.BB && that.BB.collide(entity.BB)) {
                 entity.velocity.x = 0;
                 entity.state = STATE.IDLE;
-                if (that.velocity.y > 0) {
-                    // console.log("that.BB.bottom: " + that.BB.bottom);
-                    // console.log("entity.BB.top: " + entity.BB.top);
-                    if (that.canCollide(entity)) {
-                        if (that.velocity.y > 0 && entity.BB.top < (that.y + that.height)) { // falling
-                            that.y -= that.velocity.y;
-                            that.velocity.y = 0;
-                        } else if (that.velocity.y < 0 && entity.BB.bottom > that.y) {      // jumping
-                            that.y -= that.velocity.y;
-                            that.velocity.y = 0;
-                        }
-                        falling = false;
-
-                        // if(that.state === 4) that.state = 0; // set state to idle
-                    }
-                } else if (that.velocity.y < 0) {
-                    // console.log("that.BB.bottom: " + that.BB.bottom);
-                    // console.log("entity.BB.top: " + entity.BB.top);
-                    if (that.canCollide(entity)) {
-                        if (that.velocity.y > 0 && entity.BB.top < (that.y + that.height)) { // falling
-                            that.y -= that.velocity.y;
-                            that.velocity.y = 0;
-                        } else if (that.velocity.y < 0 && entity.BB.bottom > that.y) {      // jumping
-                            that.y -= that.velocity.y;
-                            that.velocity.y = 0;
-                        }
-                        falling = false;
-
-                        // if(that.state === 4) that.state = 0; // set state to idle
-                    }
-
-                } else if (that.velocity.x !== 0) {
-                    if (that.canCollide(entity)) {
-                        if ((that.velocity.x > 0 && entity.BB.left > that.x) || (that.velocity.x < 0 && entity.BB.left < that.x)) {
-                            that.x -= that.velocity.x;
-                            that.velocity.x = 0;
-                        }
-
-                    }
-                }
             }
         })
-        // if (falling && this.velocity.y === 0) {
-        //     this.velocity.y = 6;
-        // }
+
         this.updateBB();
 
         var cameraCharacter = this.x - this.game.camera.x;
@@ -185,16 +118,6 @@ class MainCharacter {
         }
 
     };
-
-    canCollide(entity) {
-        if (entity instanceof Brick1 || entity instanceof Brick2 || entity instanceof BigBrick
-            || entity instanceof FloatingBrick1 || entity instanceof FloatingBrick2
-            || entity instanceof Tile1 || entity instanceof Tile2
-            || entity instanceof Tile3 || entity instanceof Tile4
-            || entity instanceof Tile5 || entity instanceof Tile6)
-            return true;
-        return false;
-    }
 
     draw(ctx) {
 

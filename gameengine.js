@@ -38,7 +38,6 @@ class GameEngine {
         var that = this;
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
-            console.log(e);
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
@@ -55,18 +54,6 @@ class GameEngine {
                 case "z":
                     that.attacking = true;
                     break;
-                // case "ArrowDown":
-                // case "KeyS":
-                //     that.down = true;
-                //     break;
-                // case "KeyZ":
-                // case "Comma":
-                //     that.B = true;
-                //     break;
-                // case "KeyX":
-                // case "Period":
-                //     that.A = true;
-                //     break;
             }
         }, false);
 
@@ -84,18 +71,9 @@ class GameEngine {
                 case "Space":
                     that.up = false;
                     break;
-                // case "ArrowDown":
-                // case "KeyS":
-                //     that.down = false;
-                //     break;
-                // case "KeyZ":
-                // case "Comma":
-                //     that.B = false;
-                //     break;
-                // case "KeyX":
-                // case "Period":
-                //     that.A = false;
-                //     break;
+                case "z":
+                    that.attacking = false;
+                    break;
             }
         }, false);    
     };

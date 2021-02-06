@@ -104,7 +104,7 @@ class Enemy1 extends Enemies {
         this.deadCounter = 0;
         this.flickerFlag = true;
         this.width = PARAMS.BLOCKWIDTH;
-        this.state = STATE.WALKING;
+        this.state = STATE.MOVING;
         // if (this.size === 0 || this.size === 3) {
             this.height = PARAMS.BLOCKWIDTH * 2;
             this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
@@ -117,7 +117,7 @@ class Enemy1 extends Enemies {
         this.updateBB();
     }
     update() {
-        if (this.state == STATE.WALKING) {
+        if (this.state == STATE.MOVING) {
             this.velocity.x = -PARAMS.BITWIDTH/50;
         }
         if(this.dead){

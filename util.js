@@ -65,7 +65,7 @@ const MAX_WIDTH = 2000;
 
 const STATE = {
     IDLE: 0,
-    WALKING: 1,
+    MOVING: 1,
     ATTACKING: 2,
     JUMPING: 3,
     COUNT: 4
