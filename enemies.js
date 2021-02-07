@@ -39,7 +39,8 @@ class Bat extends Enemies {
         super();
         Object.assign(this, { game, x, y });
 
-        this.velocity = { x: -PARAMS.BITWIDTH, y: 0 }; // pixels per second
+        this.velocityX = PARAMS.BITWIDTH / 50;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/bat.png");
         //this.animation = [];
         this.animation = new Animator(this.spritesheet, 10, 36, 27, 26, 6, 0.15, 20, false, true); // flying left
@@ -49,10 +50,31 @@ class Bat extends Enemies {
         this.deadCounter = 0;
         this.flickerFlag = true;
 
+        this.meleeAttackRangeWidth = 70;
+        this.width = 48;
+        this.height = 96;
+        this.updateBB();
     }
     update() {
-        this.x += - PARAMS.BITWIDTH/50;
+        // this.x += - PARAMS.BITWIDTH/50;
+
+        this.x += this.velocity.x;
+        this.updateBB();
     }
+
+    updateBB() {
+        // this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+
+        // this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
+        if (this.facing == FACING_SIDE.RIGHT) {
+            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+        } else {
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
+                this.meleeAttackRangeWidth, this.height);
+        }
+    };
+
     drawMinimap(ctx, mmX, mmY){
 
     }
@@ -65,6 +87,15 @@ class Bat extends Enemies {
         } else {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         }
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+
+            ctx.strokeStyle = 'Yellow';
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+        }
     }
 }
 
@@ -73,7 +104,8 @@ class Enemy1 extends Enemies {
         super();
         Object.assign(this, { game, x, y });
 
-        this.velocity = { x: -PARAMS.BITWIDTH + 1, y: 0 }; // pixels per second
+        this.velocityX = PARAMS.BITWIDTH / 50;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/enemy1.png");
         
         // this.animations = [];
@@ -103,58 +135,56 @@ class Enemy1 extends Enemies {
         this.dead = false;
         this.deadCounter = 0;
         this.flickerFlag = true;
-        this.width = PARAMS.BLOCKWIDTH;
         this.state = STATE.MOVING;
-        // if (this.size === 0 || this.size === 3) {
-            this.height = PARAMS.BLOCKWIDTH * 2;
-            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        // }
-        // else {
-        //     this.height = PARAMS.BLOCKWIDTH * 2;
-        //     this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        // }
 
+        this.meleeAttackRangeWidth = 70;
+        this.width = 48;
+        this.height = 96;
         this.updateBB();
     }
     update() {
-        if (this.state == STATE.MOVING) {
-            this.velocity.x = -PARAMS.BITWIDTH/50;
-        }
-        if(this.dead){
-            this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = true;
-        }
+        // if (this.state == STATE.MOVING) {
+        //     this.velocity.x = -PARAMS.BITWIDTH/50;
+        // }
+        // if(this.dead){
+        //     this.deadCounter += this.game.clockTick;
+        //     if(this.deadCounter > 0.5) this.removeFromWorld = true;
+        // }
         // if(this.paused && this.game.camera.x > this.x - PARAMS.CANVAS_WIDTH){
         //     this.paused = false;
         // }
-        if(!this.dead && !this.paused){
-            this.velocity.y += FALL_ACC * this.game.clockTick;
-            this.x += this.game.clockTick * this.velocity.x * PARAMS.SCALE;
-            this.y += this.game.clockTick * this.velocity.y * PARAMS.SCALE;
+        // if(!this.dead && !this.paused){
+        //     this.velocity.y += FALL_ACC * this.game.clockTick;
+        //     this.x += this.game.clockTick * this.velocity.x * PARAMS.SCALE;
+        //     this.y += this.game.clockTick * this.velocity.y * PARAMS.SCALE;
 
-            var that = this;
-            this.game.entities.forEach(function (entity){
-                if(entity.BB && that.BB.collide(entity.BB)){
-                    if(that.collideMain(entity)){
-                        that.velocity.x = 0;
-                        that.velocity.y = 0;
-                        that.animation = new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);
-                    }
-                }
-            });
-        }
+        //     var that = this;
+        //     this.game.entities.forEach(function (entity){
+        //         if(entity.BB && that.BB.collide(entity.BB)){
+        //             if(that.collideMain(entity)){
+        //                 that.velocity.x = 0;
+        //                 that.velocity.y = 0;
+        //                 that.animation = new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);
+        //             }
+        //         }
+        //     });
+        // }
+
         this.x += this.velocity.x;
         this.updateBB();
     }
 
     updateBB() {
-        this.lastBB = this.BB;
-        // if (this.size === 0 || this.size === 3) {
-            this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
-        // }
-        // else {
-        //     this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH * 2);
-        // }
+        // this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+
+        // this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
+        if (this.facing == FACING_SIDE.RIGHT) {
+            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+        } else {
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
+                this.meleeAttackRangeWidth, this.height);
+        }
     };
 
     collideMain(entity){
@@ -176,6 +206,10 @@ class Enemy1 extends Enemies {
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+
+            ctx.strokeStyle = 'Yellow';
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
         }
     }
 }
@@ -185,7 +219,8 @@ class Enemy2 extends Enemies {
         super();
         Object.assign(this, { game, x, y });
 
-        this.velocity = { x: -PARAMS.BITWIDTH, y: 0 }; // pixels per second
+        this.velocityX = PARAMS.BITWIDTH / 50;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/enemy2.png");
         
         // this.animations = [];
@@ -216,32 +251,55 @@ class Enemy2 extends Enemies {
         this.deadCounter = 0;
         this.flickerFlag = true;
 
+        this.meleeAttackRangeWidth = 70;
+        this.width = 48;
+        this.height = 96;
+        this.updateBB();
     }
     update() {
-        if(this.dead){
-            this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = true;
-        }
+        // if(this.dead){
+        //     this.deadCounter += this.game.clockTick;
+        //     if(this.deadCounter > 0.5) this.removeFromWorld = true;
+        // }
         // if(this.paused && this.game.camera.x > this.x - PARAMS.CANVAS_WIDTH){
         //     this.paused = false;
         // }
-        if(!this.dead && !this.paused){
-            this.velocity.y += FALL_ACC * this.game.clockTick;
-            this.x += this.game.clockTick * this.velocity.x * PARAMS.SCALE;
-            this.y += this.game.clockTick * this.velocity.y * PARAMS.SCALE;
+        // if(!this.dead && !this.paused){
+        //     this.velocity.y += FALL_ACC * this.game.clockTick;
+        //     this.x += this.game.clockTick * this.velocity.x * PARAMS.SCALE;
+        //     this.y += this.game.clockTick * this.velocity.y * PARAMS.SCALE;
 
-            var that = this;
-            this.game.entities.forEach(function (entity){
-                if(entity.BB && that.BB.collide(entity.BB)){
-                    if(that.collideMain(entity)){
-                        that.velocity.x = 0;
-                        that.velocity.y = 0;
-                        that.animation = new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);
-                    }
-                }
-            });
-        }
+        //     this.updateBB();
+
+        //     var that = this;
+        //     this.game.entities.forEach(function (entity){
+        //         if(entity.BB && that.BB.collide(entity.BB)){
+        //             if(that.collideMain(entity)){
+        //                 that.velocity.x = 0;
+        //                 that.velocity.y = 0;
+        //                 that.animation = new Animator(this.spritesheet, 0, 22, 55, 42, 7, 0.15, 9, false, true);
+        //             }
+        //         }
+        //     });
+        // }
+
+        this.x += this.velocity.x;
+        this.updateBB();
     }
+
+    updateBB() {
+        // this.lastBB = this.BB;
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+
+        // this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
+        if (this.facing == FACING_SIDE.RIGHT) {
+            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+        } else {
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
+                this.meleeAttackRangeWidth, this.height);
+        }
+    };
+
     drawMinimap(ctx, mmX, mmY){
 
     }
@@ -253,6 +311,15 @@ class Enemy2 extends Enemies {
             this.flickerFlag = !this.flickerFlag;
         } else {
             this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        }
+
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+
+            ctx.strokeStyle = 'Yellow';
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
         }
     }
 }
