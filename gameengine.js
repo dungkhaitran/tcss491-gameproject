@@ -52,7 +52,9 @@ class GameEngine {
                     that.jumping = true;
                     break;
                 case "KeyZ":
-                    that.attacking = true;
+                    if (that.main.canAttackMelee) {
+                        that.attacking = true;
+                    }
                     break;
             }
         }, false);
@@ -70,9 +72,6 @@ class GameEngine {
                 case "ArrowUp":
                 case "Space":
                     that.jumping = false;
-                    break;
-                case "KeyZ":
-                    that.attacking = false;
                     break;
             }
         }, false);    

@@ -10,6 +10,8 @@ class SceneManager {
       11 * PARAMS.BLOCKWIDTH
     );
 
+    this.game.main = this.main;
+
     this.loadLevelOne(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
   }
 
