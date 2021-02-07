@@ -44,13 +44,13 @@ class MainCharacter {
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 24, 334, 62, 115, 2, 0.2, 315, true, true);
 
         // walk animation
-        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 23, 571, 95, 107, 8, 0.1, 315, false, true);
-        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 39, 781, 95, 107, 8, 0.1, 315, true, true);
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 23, 571, 93, 107, 8, 0.1, 315, false, true);
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 39, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 35, 1652, 140, 250, 4, 0.1, 219, false, true);
-       this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 45, 1623, 155, 250, 4, 0.1, 190, false, true);
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 0, 1860, 155, 250, 4, 0.1, 215, false, true);
+       this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 45, 1623, 155, 250, 3, 0.1, 190, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 0, 1860, 155, 250, 3, 0.1, 215, false, true);
 
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);

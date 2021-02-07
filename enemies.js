@@ -70,7 +70,7 @@ class Bat extends Enemies {
         if (this.facing == FACING_SIDE.RIGHT) {
             this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
         } else {
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y + this.meleeAttackRangeWidth,
                 this.meleeAttackRangeWidth, this.height);
         }
     };
