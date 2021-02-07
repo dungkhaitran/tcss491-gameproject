@@ -22,9 +22,12 @@ class MainCharacter {
 
         this.width = PARAMS.BLOCKWIDTH;
         this.height = PARAMS.BLOCKWIDTH * 2;
+
+        this.attackRangeWidth = 70;
+
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
 
-        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, 10, this.height);
+        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.attackRangeWidth, this.height);
 
         this.updateBB();
     };
@@ -56,10 +59,10 @@ class MainCharacter {
 
     updateBB() {
         this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH);
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
 
         this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
-        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, 20, this.height);
+        this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.attackRangeWidth, this.height);
     };
 
     update() {
@@ -133,6 +136,8 @@ class MainCharacter {
 
         if (this.dead) {
             this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+        } else if (this.state === STATE.ATTACKING) {
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 30, 0.9);//PARAMS.SCALE);
         } else {
             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.9);//PARAMS.SCALE);
         }
@@ -142,7 +147,8 @@ class MainCharacter {
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
 
             ctx.strokeStyle = 'Yellow';
-            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y, this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
         }
     };
 
