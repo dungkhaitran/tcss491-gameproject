@@ -72,5 +72,6 @@ const STATE = {
     MOVING: 1,
     ATTACKING: 2,
     JUMPING: 3,
-    COUNT: 4
+    HIT: 4,
+    COUNT: 5
 }

@@ -48,8 +48,8 @@ class MainCharacter {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 39, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
-       // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 35, 1652, 140, 250, 4, 0.1, 219, false, true);
-       this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 45, 1623, 155, 250, 3, 0.1, 190, false, true);
+        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 35, 1652, 140, 250, 4, 0.1, 219, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 45, 1623, 155, 250, 3, 0.1, 190, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 0, 1860, 155, 250, 3, 0.1, 215, false, true);
 
         // jumping animation
