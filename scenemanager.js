@@ -21,7 +21,7 @@ class SceneManager {
 
     // first background
     for (var i = 0; i <= 1; i++) {
-      let background = new forest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+      let background = new darkForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
       this.game.addEntity(background);
     }
 

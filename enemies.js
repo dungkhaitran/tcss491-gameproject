@@ -49,7 +49,6 @@ class Bat extends Enemies {
         this.dead = false;
         this.deadCounter = 0;
         this.flickerFlag = true;
-        this.state = STATE.MOVING;
 
         this.width = 48;
         this.height = 96;
@@ -124,7 +123,6 @@ class BirdMan extends Enemies {
         this.dead = false;
         this.deadCounter = 0;
         this.flickerFlag = true;
-        this.state = STATE.MOVING;
 
         this.width = 48;
         this.height = 96;
@@ -147,14 +145,14 @@ class BirdMan extends Enemies {
 
         //facing left
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 542, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 736, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 608, 214, 56, 42, 5, 0.15, 9, false, true); // jump
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 214, 56, 42, 5, 0.15, 9, false, true); // jump
@@ -167,12 +165,12 @@ class BirdMan extends Enemies {
         this.updateBB();
     }
 
-    updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        
+    updateBB() {        
         if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
             this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
         } else {
+            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
             this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
                 this.meleeAttackRangeWidth, this.height);
         }
@@ -205,21 +203,20 @@ class DarkMage extends Enemies {
         this.velocityX = PARAMS.BITWIDTH / 15;
         this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/darkmage.png");
-        this.state = STATE.MOVING;
-        this.facing = FACING_SIDE.RIGHT;
+        this.state = STATE.IDLE;
+        this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
         this.dead = false;
         this.deadCounter = 0;
         this.flickerFlag = true;
-        this.state = STATE.MOVING;
 
         this.width = 48;
         this.height = 96;
 
-        this.meleeAttackRangeWidth = 70;
+        this.meleeAttackRangeWidth = 300;
 
-        this.animations = [];        
+        this.animations = [];
         this.loadAnimations();
         this.updateBB();
     }
@@ -252,13 +249,14 @@ class DarkMage extends Enemies {
         this.updateBB();
     }
 
-    updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        
+    updateBB() {        
         if(this.facing == FACING_SIDE.RIGHT){
-            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+            this.BB = new BoundingBox(this.x + this.width / 3, this.y + this.height, this.width * 1.65, this.height); // body
+            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width * 2.5, this.y + this.height, 
+                this.meleeAttackRangeWidth, this.height); // range attack
         } else {
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
+            this.BB = new BoundingBox(this.x + this.width / 2, this.y + this.height, this.width * 1.75, this.height);
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y + this.height,
                 this.meleeAttackRangeWidth, this.height);
         }
     };
