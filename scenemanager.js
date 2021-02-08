@@ -33,9 +33,9 @@ class SceneManager {
     }
 
     // Add mobs
-    this.game.addEntity(
-      new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)
-    );
+    // this.game.addEntity(
+    //   new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)
+    // );
     this.game.addEntity(
       new DarkMage(this.game, PARAMS.BLOCKWIDTH * 15, PARAMS.BLOCKWIDTH * 9.01)
     );

@@ -127,7 +127,7 @@ class BirdMan extends Enemies {
         this.width = 48;
         this.height = 96;
 
-        this.meleeAttackRangeWidth = 70;
+        this.meleeAttackRangeWidth = 60;
 
         this.animations = [];        
         this.loadAnimations();
@@ -167,12 +167,13 @@ class BirdMan extends Enemies {
 
     updateBB() {        
         if(this.facing == FACING_SIDE.RIGHT){
-            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+            this.BB = new BoundingBox(this.x + 10, this.y, this.width * 1.5, this.height); // body
+            this.BBMeleeAttackRange = new BoundingBox(this.BB.x + this.BB.width, this.y,
+                this.meleeAttackRangeWidth - 20, this.height); // attack range
         } else {
-            this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
-                this.meleeAttackRangeWidth, this.height);
+            this.BB = new BoundingBox(this.x + 30, this.y, this.width * 1.5, this.height); // body
+            this.BBMeleeAttackRange = new BoundingBox(this.BB.x - this.BB.width + 30, this.y,
+                this.meleeAttackRangeWidth - 20, this.height); // attack range
         }
     };
 
@@ -214,7 +215,7 @@ class DarkMage extends Enemies {
         this.width = 48;
         this.height = 96;
 
-        this.meleeAttackRangeWidth = 300;
+        this.attackRangeWidth = 400;
 
         this.animations = [];
         this.loadAnimations();
@@ -253,11 +254,11 @@ class DarkMage extends Enemies {
         if(this.facing == FACING_SIDE.RIGHT){
             this.BB = new BoundingBox(this.x + this.width / 3, this.y + this.height, this.width * 1.65, this.height); // body
             this.BBMeleeAttackRange = new BoundingBox(this.x + this.width * 2.5, this.y + this.height, 
-                this.meleeAttackRangeWidth, this.height); // range attack
+                this.attackRangeWidth, this.height); // range attack
         } else {
             this.BB = new BoundingBox(this.x + this.width / 2, this.y + this.height, this.width * 1.75, this.height);
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y + this.height,
-                this.meleeAttackRangeWidth, this.height);
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.attackRangeWidth, this.y + this.height,
+                this.attackRangeWidth, this.height);
         }
     };
 
