@@ -21,7 +21,7 @@ class SceneManager {
 
     // first background
     for (var i = 0; i <= 1; i++) {
-      let background = new nightBackground(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+      let background = new forest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
       this.game.addEntity(background);
     }
 
@@ -34,7 +34,7 @@ class SceneManager {
 
     // Add mobs
     this.game.addEntity(
-      new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1)
+      new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)
     );
     this.game.addEntity(
       new DarkMage(this.game, PARAMS.BLOCKWIDTH * 15, PARAMS.BLOCKWIDTH * 9.01)
