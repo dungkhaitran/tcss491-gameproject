@@ -146,18 +146,20 @@ class MainCharacter {
         var that = this;
         var checkHpMain = false;
         this.game.entities.forEach(function (entity) {
-            if (!(entity instanceof MainCharacter)) {
+            if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText)) {
                 var checkHpMob = false;
                 if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                         && entity.gotDamaged === false) {
                     entity.gotDamaged = true;
                     entity.hp -= that.meleeDamage;
+                    that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
                     checkHpMob = true;
                 }
                 if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                         && entity.dealDamage === false) {
                     entity.dealDamage = true;
                     that.hp -= entity.meleeDamage;
+                    that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.meleeDamage, "Red"));
                     checkHpMain = true;
                 }
                 if (checkHpMob) {
