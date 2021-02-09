@@ -6,6 +6,9 @@ class MainCharacter {
         this.game.main = this;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/2.png");
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/bat.png");
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/birdman.png");
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/darkmage.png");
 
         this.facing = FACING_SIDE.RIGHT;
         this.state = STATE.IDLE;
@@ -17,8 +20,12 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.blood = 1000;
-        this.meleeDamage = 100;
+        this.hp = 10000;
+        this.maxHp = this.hp;
+        this.meleeDamage = 200;
+
+        this.MELEE_ATTACK_DURATION = 0.25;
+        this.MELEE_ATTACK_COOLDOWN = 0.3;
 
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
@@ -29,6 +36,8 @@ class MainCharacter {
         this.width = 48;
         this.height = 96;
         this.updateBB();
+
+        this.healthBar = new HealthBar(this, game);
     };
 
     loadAnimations() {
@@ -55,6 +64,37 @@ class MainCharacter {
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
+
+        // bird man
+        // //facing left
+        // this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 150, 55, 42, 7, 0.15, 9, false, true); // idle
+        // this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 542, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
+        // this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
+        // this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 736, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
+        // this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 608, 214, 56, 42, 5, 0.15, 9, false, true); // jump
+        
+        // // facing right
+        // this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
+        // this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
+        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
+        // this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
+        // this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 214, 56, 42, 5, 0.15, 9, false, true); // jump
+
+        // darkmage
+        // // facing left
+        // this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
+        // this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2095, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
+        // this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
+        // this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
+        // this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
+        
+        // // facing right
+        // this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
+        // this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
+        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 110, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
+        // this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
+        // this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
+        
     };
 
     updateBB() {
@@ -118,13 +158,18 @@ class MainCharacter {
                 if (this.meleeAttackDuration <= 0) {
                     this.state = STATE.IDLE;
                     this.game.attacking = false;
+                    this.game.entities.forEach(function (entity) {
+                        if (!(entity instanceof MainCharacter)) {
+                            entity.gotDamaged = false;
+                        }
+                    })                                
                 }
             }
             if (this.meleeAttackDuration <= 0 && this.meleeAttackCooldown <= 0) {
                 this.canAttackMelee = false;
                 this.state = STATE.ATTACKING;
-                this.meleeAttackDuration = MELEE_ATTACK_DURATION;
-                this.meleeAttackCooldown = MELEE_ATTACK_COOLDOWN;
+                this.meleeAttackDuration = this.MELEE_ATTACK_DURATION;
+                this.meleeAttackCooldown = this.MELEE_ATTACK_COOLDOWN;
             }
         }
 
@@ -133,29 +178,57 @@ class MainCharacter {
 
         // collision
         var that = this;
+        var checkHpMain = false;
         this.game.entities.forEach(function (entity) {
             if (!(entity instanceof MainCharacter)) {
-                if (entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)) {
-                    entity.velocity.x = 0;
-                    entity.state = STATE.IDLE;
+                var checkHpMob = false;
+                if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
+                        && entity.gotDamaged === false) {
+                    entity.gotDamaged = true;
+                    entity.hp -= that.meleeDamage;
+                    checkHpMob = true;
                 }
-                else {
-                    if (that.x < entity.x) {
-                        if (entity.velocity) {
-                            entity.facing = FACING_SIDE.LEFT;
-                            entity.state = STATE.MOVING;
-                            entity.velocity.x = -entity.velocityX;
+                if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
+                        && entity.dealDamage === false) {
+                    entity.dealDamage = true;
+                    that.hp -= entity.meleeDamage;
+                    checkHpMain = true;
+                }
+                if (checkHpMob) {
+                    if (entity.hp <= 0) {
+                        entity.dead = true;
+                    }
+                }
+                if (!entity.dead) {
+                    if (entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)) {
+                        entity.velocity.x = 0;
+                        if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                            entity.state = STATE.IDLE;
                         }
-                    } else {
-                        if (entity.velocity) {
-                            entity.facing = FACING_SIDE.RIGHT;
-                            entity.state = STATE.MOVING;
-                            entity.velocity.x = entity.velocityX;
+                        if (entity.canAttackMelee) {
+                            entity.attacking = true;
+                        }
+                    }
+                    else {
+                        if (entity.state != STATE.ATTACKING && entity.velocity) {
+                            if (that.x < entity.x) {
+                                entity.facing = FACING_SIDE.LEFT;
+                                entity.state = STATE.MOVING;
+                                entity.velocity.x = -entity.velocityX;
+                            } else {
+                                entity.facing = FACING_SIDE.RIGHT;
+                                entity.state = STATE.MOVING;
+                                entity.velocity.x = entity.velocityX;
+                            }
                         }
                     }
                 }
             }
         })
+
+        if (checkHpMain && this.hp <= 0) {
+            this.dead = true;
+        }
 
         this.updateBB();
 
@@ -173,12 +246,22 @@ class MainCharacter {
     draw(ctx) {
 
         if (this.dead) {
-            this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+            // this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state === STATE.ATTACKING) {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 60, 0.9);//PARAMS.SCALE);
+            if (this.facing == FACING_SIDE.RIGHT) {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 60, 0.9);//PARAMS.SCALE);
+            } else {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y - 60, 0.9);//PARAMS.SCALE);
+            }
         } else {
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.9);//PARAMS.SCALE);
+            if (this.facing == FACING_SIDE.RIGHT && this.state == STATE.MOVING) {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 40, this.y, 0.9);//PARAMS.SCALE);
+            } else {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.9);//PARAMS.SCALE);
+            }
         }
+
+        this.healthBar.draw(ctx);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';

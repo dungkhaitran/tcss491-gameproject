@@ -64,8 +64,6 @@ const MAX_FALL = 270;
 
 
 const MAX_WIDTH = 2000;
-const MELEE_ATTACK_DURATION = 0.25;
-const MELEE_ATTACK_COOLDOWN = 0.3;
 
 const STATE = {
     IDLE: 0,
