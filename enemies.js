@@ -1,5 +1,3 @@
-// 
-const FALL_ACC = 1800;
 
 // Superclass for the enemies
 class Enemies {
