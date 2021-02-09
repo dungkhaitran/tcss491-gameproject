@@ -6,9 +6,6 @@ class MainCharacter {
         this.game.main = this;
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/2.png");
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/bat.png");
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/birdman.png");
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/darkmage.png");
 
         this.facing = FACING_SIDE.RIGHT;
         this.state = STATE.IDLE;
@@ -64,37 +61,6 @@ class MainCharacter {
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
-
-        // bird man
-        // //facing left
-        // this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        // this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 542, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
-        // this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
-        // this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 736, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
-        // this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 608, 214, 56, 42, 5, 0.15, 9, false, true); // jump
-        
-        // // facing right
-        // this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        // this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 280, 56, 42, 6, 0.15, 9, false, true);  // walk
-        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
-        // this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
-        // this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 214, 56, 42, 5, 0.15, 9, false, true); // jump
-
-        // darkmage
-        // // facing left
-        // this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
-        // this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2095, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
-        // this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
-        // this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
-        // this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
-        
-        // // facing right
-        // this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
-        // this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
-        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 110, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
-        // this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
-        // this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
-        
     };
 
     updateBB() {
@@ -211,7 +177,12 @@ class MainCharacter {
                     }
                     else {
                         if (entity.state != STATE.ATTACKING && entity.velocity) {
-                            if (that.x < entity.x) {
+                            if (Math.abs(that.x - entity.x) <= that.velocityX) {
+                                entity.velocity.x = 0;
+                                if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                                    entity.state = STATE.IDLE;
+                                }
+                            } else  if (that.x < entity.x) {
                                 entity.facing = FACING_SIDE.LEFT;
                                 entity.state = STATE.MOVING;
                                 entity.velocity.x = -entity.velocityX;
@@ -228,6 +199,7 @@ class MainCharacter {
 
         if (checkHpMain && this.hp <= 0) {
             this.dead = true;
+            this.removeFromWorld = true;
         }
 
         this.updateBB();
