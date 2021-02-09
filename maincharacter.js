@@ -80,14 +80,19 @@ class MainCharacter {
         }
     };
     die(){
-        this.velocity.y = -100;
+        this.velocity.y = -640;
         this.dead = true;
     };
 
     update() {
 
         const TICK = this.game.clockTick;
+        if (this.dead) {
+            this.velocity.y += RUN_FALL * TICK;
+            this.y += this.velocity.y * TICK * PARAMS.SCALE;
+        }else{
 
+        
         if (!this.game.left && !this.game.right) {
             this.velocity.x = 0;
             if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
@@ -222,7 +227,7 @@ class MainCharacter {
             this.game.camera.x += this.velocity.x;
             this.game.camera.x = Math.min(this.game.camera.x , MAX_WIDTH - PARAMS.CANVAS_WIDTH);
         }
-
+    }
     };
 
     draw(ctx) {
