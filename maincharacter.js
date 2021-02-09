@@ -61,6 +61,10 @@ class MainCharacter {
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
+
+        //dead animation
+        this.deadAnim = new Animator(this.spritesheet, 26, 2820, 62, 117, 7, 0.1, 326, false, true);
+       
     };
 
     updateBB() {
@@ -74,6 +78,10 @@ class MainCharacter {
             this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
                 this.meleeAttackRangeWidth, this.height);
         }
+    };
+    die(){
+        this.velocity.y = -100;
+        this.dead = true;
     };
 
     update() {
@@ -220,7 +228,7 @@ class MainCharacter {
     draw(ctx) {
 
         if (this.dead) {
-            // this.deadAnim.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+             this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state === STATE.ATTACKING) {
             if (this.facing == FACING_SIDE.RIGHT) {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 60, 0.9);//PARAMS.SCALE);
