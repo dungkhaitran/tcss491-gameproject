@@ -318,7 +318,7 @@ class DarkMage extends Enemies {
         this.meleeAttackCooldown = 0;
 
         this.canAttackMelee = true;
-        this.meleeAttackRangeWidth = 70;
+        this.meleeAttackRangeWidth = 400;
 
         this.updateBB();
     }
@@ -334,14 +334,14 @@ class DarkMage extends Enemies {
         // facing left
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2095, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2060, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
         this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
-        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 110, 300, 60, 100, 8, 0.15, 190, false, true);  // attack
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
     }
@@ -358,7 +358,7 @@ class DarkMage extends Enemies {
             this.BBMeleeAttackRange = new BoundingBox(this.x + this.width * 2.5, this.y + this.height, 
                 this.meleeAttackRangeWidth, this.height); // range attack
         } else {
-            this.BB = new BoundingBox(this.x + this.width / 2, this.y + this.height, this.width * 1.75, this.height);
+            this.BB = new BoundingBox(this.x + this.width, this.y + this.height, this.width * 1.75, this.height);
             this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y + this.height,
                 this.meleeAttackRangeWidth, this.height);
         }
