@@ -25,13 +25,6 @@ class SceneManager {
       this.game.addEntity(background);
     }
 
-    // Add ground level
-    for (var i = -2; i < 100; i += 4) {
-      this.game.addEntity(
-        new Tile5(this.game, PARAMS.BLOCKWIDTH * i, PARAMS.BLOCKWIDTH * 13)
-      );
-    }
-
     // Add mobs
     // this.game.addEntity(
     //   new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)

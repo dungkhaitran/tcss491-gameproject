@@ -216,8 +216,8 @@ class BirdMan extends Enemies {
         this.maxHp = this.hp;
         this.meleeDamage = 100;
 
-        this.MELEE_ATTACK_DURATION = 0.25;
-        this.MELEE_ATTACK_COOLDOWN = 0.3;
+        this.MELEE_ATTACK_DURATION = 1;
+        this.MELEE_ATTACK_COOLDOWN = 3;
 
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
@@ -238,11 +238,11 @@ class BirdMan extends Enemies {
         }
 
         //facing left
-        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 150, 55, 42, 7, 0.15, 9, false, true); // idle
-        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 542, 280, 55, 42, 6, 0.15, 9, false, true);  // walk
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 480, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
-        this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 736, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
-        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 608, 214, 56, 42, 5, 0.15, 9, false, true); // jump
+        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 465, 150, 55, 42, 7, 0.15, 9, true, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);  // walk
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 465, 22, 56, 42, 7, 0.15, 9, true, true);  // attack
+        this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 721, 85, 56, 42, 3, 0.2, 9, true, true);  // hit
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 593, 214, 56, 42, 5, 0.15, 9, true, true); // jump
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
@@ -264,11 +264,11 @@ class BirdMan extends Enemies {
         if(this.facing == FACING_SIDE.RIGHT){
             this.BB = new BoundingBox(this.x + 10, this.y, this.width * 1.5, this.height); // body
             this.BBMeleeAttackRange = new BoundingBox(this.BB.x + this.BB.width, this.y,
-                this.meleeAttackRangeWidth - 20, this.height); // attack range
+                this.meleeAttackRangeWidth - 10, this.height); // attack range
         } else {
-            this.BB = new BoundingBox(this.x + 30, this.y, this.width * 1.5, this.height); // body
-            this.BBMeleeAttackRange = new BoundingBox(this.BB.x - this.BB.width + 30, this.y,
-                this.meleeAttackRangeWidth - 20, this.height); // attack range
+            this.BB = new BoundingBox(this.x + this.width + 15, this.y, this.width * 1.5, this.height); // body
+            this.BBMeleeAttackRange = new BoundingBox(this.BB.x - 50, this.y,
+                this.meleeAttackRangeWidth - 10, this.height); // attack range
         }
     };
 
