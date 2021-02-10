@@ -6,8 +6,8 @@ class SceneManager {
 
     this.main = new MainCharacter(
       this.game,
-      5.5 * PARAMS.BLOCKWIDTH,
-      11 * PARAMS.BLOCKWIDTH
+      5.5 * 16,
+      30 * 16
     );
 
     this.game.main = this.main;

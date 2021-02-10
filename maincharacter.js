@@ -54,42 +54,38 @@ class MainCharacter {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 39, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
-        // this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 35, 1652, 140, 250, 4, 0.1, 219, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 45, 1623, 155, 250, 3, 0.1, 190, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 0, 1860, 155, 250, 3, 0.1, 215, false, true);
 
         // jumping animation
-        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 0, 297, 317, 3, 0.1, 43, false, true);
-        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3575, 843, 303, 322, 3, 0.1, 40, false, true);
+        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 718, 2591, 95, 117, 2, 0.1, 273, false, true);
 
         //dead animation
-        this.deadAnim = new Animator(this.spritesheet, 26, 2820, 62, 117, 7, 0.1, 326, false, true);
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 2820, 62, 117, 7, 0.1, 326, false, true);
        
     };
 
     updateBB() {
         // this.lastBB = this.BB;
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-
+      
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height+ 50);
         // this.lastBBMeleeAttackRange = this.BBMeleeAttackRange;
         if (this.facing == FACING_SIDE.RIGHT) {
-            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth + 80, this.height+ 50);
         } else {
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y,
-                this.meleeAttackRangeWidth, this.height);
+            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth , this.y,
+                this.meleeAttackRangeWidth + 80, this.height + 50);
         }
     };
-    die(){
-        this.velocity.y = -640;
-        this.dead = true;
-    };
+ 
 
     update() {
 
         const TICK = this.game.clockTick;
         if (this.dead) {
-            this.velocity.y += RUN_FALL * TICK;
-            this.y += this.velocity.y * TICK * PARAMS.SCALE;
+            this.deadCounter += this.game.clockTick;
+            if(this.deadCounter > 0.5) this.removeFromWorld = true;
         }else{
 
         
@@ -233,18 +229,18 @@ class MainCharacter {
     draw(ctx) {
 
         if (this.dead) {
-             this.animations.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
+             this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
         } else if (this.state === STATE.ATTACKING) {
             if (this.facing == FACING_SIDE.RIGHT) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 60, 0.9);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 100, 1.3);//PARAMS.SCALE);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y - 60, 0.9);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y - 100, 1.3);//PARAMS.SCALE);
             }
         } else {
             if (this.facing == FACING_SIDE.RIGHT && this.state == STATE.MOVING) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 40, this.y, 0.9);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);//PARAMS.SCALE);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.9);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);//PARAMS.SCALE);
             }
         }
 
@@ -252,11 +248,11 @@ class MainCharacter {
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width + 50, this.BB.height + 50);
 
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
-                 this.BBMeleeAttackRange.width + 23, this.BBMeleeAttackRange.height);
+                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
 
          
         }
