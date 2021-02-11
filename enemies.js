@@ -22,8 +22,8 @@ class Enemies {
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
         this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
 
-        this.hp = 0;
-        this.maxHp = 0;
+        this.hp = 100;
+        this.maxHp = this.hp;
         this.meleeDamage = 0;
 
         this.MELEE_ATTACK_DURATION = 0;
@@ -48,9 +48,9 @@ class Enemies {
         const TICK = this.game.clockTick;
 
         if (this.dead){
-            this.removeFromWorld = true;
-            // this.deadCounter += this.game.clockTick;
-            // if(this.deadCounter > 0.5) this.removeFromWorld = true;
+            this.state = STATE.DEAD;
+            this.deadCounter += this.game.clockTick;
+            if(this.deadCounter > 2.5) this.removeFromWorld = true;
         }
 
         if (this.meleeAttackCooldown > 0) {
@@ -76,21 +76,18 @@ class Enemies {
                 this.meleeAttackCooldown = this.MELEE_ATTACK_COOLDOWN;
             }
         }
+
+        if(this.hp <= 0){
+            this.dead = true;
+        }
+
     }
 
     drawMinimap(ctx, mmX, mmY){
 
     }
     draw(ctx) {
-        // if (this.dead) {
-        //     if(this.flickerFlag){
-        //         ctx.drawImage();
-        //     }
-        //     this.flickerFlag = !this.flickerFlag;
-        // } else {
-        //     this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, PARAMS.SCALE);
-        // }
-
+        
         this.healthBar.draw(ctx);
 
         this.drawDebug(ctx);
@@ -163,6 +160,7 @@ class Bat extends Enemies {
 
     update() {
         super.update();
+        
 
         this.x += this.velocity.x;
         this.updateBB();
@@ -243,6 +241,7 @@ class BirdMan extends Enemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 465, 22, 56, 42, 7, 0.15, 9, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 721, 85, 56, 42, 3, 0.2, 9, true, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 593, 214, 56, 42, 5, 0.15, 9, true, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 721, 85, 56, 42, 3, 0.2, 9, true, false);  // dead
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 150, 55, 42, 7, 0.15, 9, false, true); // idle
@@ -250,6 +249,7 @@ class BirdMan extends Enemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 22, 56, 42, 7, 0.15, 9, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 85, 56, 42, 3, 0.2, 9, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 214, 56, 42, 5, 0.15, 9, false, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 85, 56, 42, 3, 0.2, 9, false, false);  // dead
 
     }
 
@@ -278,7 +278,6 @@ class BirdMan extends Enemies {
 
     draw(ctx) {
         this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
-
         super.draw(ctx);
     }
 }
@@ -335,6 +334,7 @@ class DarkMage extends Enemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, true, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2286, 570, 106, 97, 7, 0.15, 143, true, false); // dead
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
@@ -342,6 +342,8 @@ class DarkMage extends Enemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 570, 106, 97, 7, 0.15, 143, false, false); // dead
+
     }
     update() {
         super.update();
@@ -367,8 +369,11 @@ class DarkMage extends Enemies {
     }
     
     draw(ctx) {
-        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
-
+        if(this.state === STATE.DEAD && this.facing === FACING_SIDE.LEFT){
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.width * 3 - this.game.camera.x, this.y, 2.5);
+        }else{
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        }
         super.draw(ctx);
     }
 }
@@ -424,12 +429,15 @@ class FlyingDemon extends Enemies {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1532, 182, 157, 120, 6, 0.3, 5, true, true);  // run
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 409, 60, 75, 100, 4, 0.15, 175, true, false); // dead
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 570, 182, 157, 120, 6, 0.3, 5, false, true); // idle
         this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 570, 182, 157, 120, 6, 0.3, 5, false, true);  // run
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1956, 60, 75, 100, 4, 0.15, 175, false, false); // dead
+
     }
     update() {
         super.update();
@@ -452,7 +460,7 @@ class FlyingDemon extends Enemies {
     }
     
     draw(ctx) {
-        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);    
 
         super.draw(ctx);
     }

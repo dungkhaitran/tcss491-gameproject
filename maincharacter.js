@@ -17,9 +17,9 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.hp = 200;
+        this.hp = 1000;
         this.maxHp = this.hp;
-        this.meleeDamage = 500;
+        this.meleeDamage = 100;
 
         this.MELEE_ATTACK_DURATION = 0.25;
         this.MELEE_ATTACK_COOLDOWN = 0.3;
@@ -86,7 +86,7 @@ class MainCharacter {
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = true;
+            if(this.deadCounter > 0.5) this.removeFromWorld = false;
             
         } else{        
             if (!this.game.left && !this.game.right) {
@@ -210,7 +210,7 @@ class MainCharacter {
 
             if (checkHpMain && this.hp <= 0) {
                 this.dead = true;
-                //this.removeFromWorld = true;
+                this.removeFromWorld = false;
             }
 
             this.updateBB();
