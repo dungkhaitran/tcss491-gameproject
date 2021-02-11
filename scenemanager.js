@@ -6,8 +6,8 @@ class SceneManager {
 
     this.main = new MainCharacter(
       this.game,
-      5.5 * PARAMS.BLOCKWIDTH,
-      11 * PARAMS.BLOCKWIDTH
+      5.5 * 16,
+      30 * 16
     );
 
     this.game.main = this.main;
@@ -20,7 +20,7 @@ class SceneManager {
     this.x = 0;
 
     // first background
-    for (var i = 0; i <= 1; i++) {
+    for (var i = 0; i <= 5; i++) {
       let background = new darkForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
       this.game.addEntity(background);
     }
@@ -29,13 +29,29 @@ class SceneManager {
     // this.game.addEntity(
     //   new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)
     // );
-    this.game.addEntity(
-      new DarkMage(this.game, PARAMS.BLOCKWIDTH * 15, PARAMS.BLOCKWIDTH * 9.01)
-    );
-    this.game.addEntity(
-      new BirdMan(this.game, PARAMS.BLOCKWIDTH * 1, PARAMS.BLOCKWIDTH * 10.9)
-    );
-    this.main.x = x + 7 * PARAMS.BLOCKWIDTH;
+
+    // Dark mage squad
+    for(var i = 1; i <= 5; i++){
+      this.game.addEntity(
+        new DarkMage(this.game, 900 * i, 375)
+      );
+    }
+    // Birdman squad
+    for(var i = 1; i <= 10; i++){
+      this.game.addEntity(
+        new BirdMan(this.game, 900 * i, 525)
+      );
+    }
+    // Flying Demon squad
+    for(var i = 1; i <= 2; i++){
+      this.game.addEntity(
+        new FlyingDemon(this.game, 900 * i, 100)
+      );
+    }
+
+
+
+    this.main.x = x;
     this.game.addEntity(this.main);
   }
 

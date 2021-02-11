@@ -21,6 +21,7 @@ ASSET_MANAGER.queueDownload("./sprites/tileset/tile3.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/bat.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/birdman.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/darkmage.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/flying-demon.png");
 
 
 ASSET_MANAGER.downloadAll(function () {
