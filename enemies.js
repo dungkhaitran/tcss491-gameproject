@@ -429,14 +429,14 @@ class FlyingDemon extends Enemies {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1532, 182, 157, 120, 6, 0.3, 5, true, true);  // run
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
-        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 409, 60, 75, 100, 4, 0.15, 175, true, false); // dead
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1930, 60, 157, 100, 4, 0.2, 40, true, false); // dead
         
         // facing right
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 570, 182, 157, 120, 6, 0.3, 5, false, true); // idle
         this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 570, 182, 157, 120, 6, 0.3, 5, false, true);  // run
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
-        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1956, 60, 75, 100, 4, 0.15, 175, false, false); // dead
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 390, 60, 157, 100, 4, 0.2, 40, false, false); // dead
 
     }
     update() {

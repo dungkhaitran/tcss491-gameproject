@@ -45,7 +45,7 @@ class SceneManager {
     // Flying Demon squad
     for(var i = 1; i <= 2; i++){
       this.game.addEntity(
-        new FlyingDemon(this.game, 900 * i, 100)
+        new FlyingDemon(this.game, 1000 * i, 220)
       );
     }
 
