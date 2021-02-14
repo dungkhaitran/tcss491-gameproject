@@ -48,14 +48,17 @@ class MainCharacter {
         // idle animation
         this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 28, 101, 62, 115, 2, 0.2, 315, false, true);
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 24, 334, 62, 115, 2, 0.2, 315, true, true);
+      
 
         // walk animation
         this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 39, 571, 93, 107, 8, 0.1, 315, false, true);
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 45, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
-        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 40, 1623, 155, 250, 3, 0.1, 190, false, true);
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
+        //this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 40, 1623, 155, 250, 3, 0.1, 190, false, true);
+        //this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 2, 0.1, 182, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
 
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
@@ -232,9 +235,9 @@ class MainCharacter {
              this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);
         } else if (this.state === STATE.ATTACKING) {
             if (this.facing == FACING_SIDE.RIGHT) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 100, 1.3);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-20, 1.3);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y - 100, 1.3);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y-20, 1.3);//PARAMS.SCALE);
             }
         } else {
             if (this.facing == FACING_SIDE.RIGHT && this.state == STATE.MOVING) {

@@ -6,7 +6,7 @@ class SceneManager {
 
     this.main = new MainCharacter(
       this.game,
-      5.5 * 16,
+      6.5 * 16,
       30 * 16
     );
 
