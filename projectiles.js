@@ -3,7 +3,7 @@ class Projectiles {
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
 
-        this.velocity = {x: -100, y: 0};
+        this.velocity = {x: 100, y: 0};
         this.spritesheet;
 
         this.animation;
@@ -12,7 +12,6 @@ class Projectiles {
         this.height;
 
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-        this.hero = new MainCharacter(this.game, this.x, this.y);
 
         this.vanish = false;
         this.vanishCounter = 0;
@@ -25,16 +24,21 @@ class Projectiles {
     update(){
         const TICK = this.game.clockTick;
 
+        this.x += this.velocity.x + this.game.clockTick;
+
         if(this.vanish){
             this.vanishCounter += this.game.clockTick;
-            if(this.vanishCounter > 0.5) this.removeFromWorld = true;
+            if(this.vanishCounter > 10.5) this.removeFromWorld = true;
         }
-        if(this.x === (this.hero.x + this.hero.width)/2 && this.y === (this.hero.y + this.hero.height)/2){
-            this.vanish = true;
-
-        }
-
     }
+
+    updateBB() {
+        if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+        } else {
+            this.BB = new BoundingBox(this.x + this.width, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+        }
+    };
 
     draw(ctx){
         
@@ -43,7 +47,7 @@ class Projectiles {
 
     drawDebug(ctx){
         if(PARAMS.DEBUG){
-            ctx.strokeStyle = 'Green';
+            ctx.strokeStyle = 'Pink';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
         }
     }
@@ -54,7 +58,7 @@ class DarkFire extends Projectiles {
         super(game, x, y);
         Object.assign(this, {game, x, y});
 
-        this.velocity = {x: -100, y: 0};
+        this.velocity = {x: 20, y: 0};
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/dark-fire.png");
 
         this.darkMage = new DarkMage(this.game, this.x, this.y);
@@ -86,35 +90,34 @@ class DarkFire extends Projectiles {
     }
 
     update(){
-        const TICK = this.game.clockTick;
+        super.update();
 
-        if(this.vanish){
-            this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = true;
+        if(this.darkMage.state === STATE.ATTACKING){
+            if(this.darkMage.facing === FACING_SIDE.RIGHT){
+                this.state = FACING_SIDE.RIGHT;
+                this.x += this.velocity.x + this.game.clockTick;
+            } else {
+                this.state = FACING_SIDE.LEFT;
+                this.x -= this.velocity.x + this.game.clockTick;
+            }
         }
-        if(this.x === (this.hero.x + this.hero.width)/2 && this.y === (this.hero.y + this.hero.height)/2){
-            this.vanish = true;
+        if(this.x === this.darkMage.x) this.vanish = true;
 
-        }
-
+        this.updateBB();
     }
+
+    updateBB() {
+        if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+        } else {
+            this.BB = new BoundingBox(this.x + this.width, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+        }
+    };
 
     draw(ctx){
-        if(this.darkMage.state === STATE.ATTACKING){
-            if(this.darkMage.facing === FACING_SIDE.LEFT){
-                this.animations[STATE.MOVING][FACING_SIDE.LEFT].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
-            }
-            this.animations[STATE.MOVING][FACING_SIDE.RIGHT].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
-        }
+        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2);
 
-        this.drawDebug(ctx);
-    }
-
-    drawDebug(ctx){
-        if(PARAMS.DEBUG){
-            ctx.strokeStyle = 'Green';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        }
+        super.draw(ctx);
     }
 }
 
@@ -123,7 +126,7 @@ class FireSkull extends Projectiles {
         super(game, x, y);
         Object.assign(this, {game, x, y});
 
-        this.velocity = {x: -100, y: 0};
+        this.velocity = {x: -10, y: 0};
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/fire-skull.png");
 
         this.darkMage = new DarkMage(this.game, this.x, this.y);
@@ -157,33 +160,22 @@ class FireSkull extends Projectiles {
     update(){
         const TICK = this.game.clockTick;
 
+        this.x += this.darkMage.x
+
         if(this.vanish){
             this.deadCounter += this.game.clockTick;
             if(this.deadCounter > 0.5) this.removeFromWorld = true;
         }
         if(this.x === (this.hero.x + this.hero.width)/2 && this.y === (this.hero.y + this.hero.height)/2){
             this.vanish = true;
-
         }
 
     }
 
     draw(ctx){
-        if(this.darkMage.state === STATE.ATTACKING){
-            if(this.darkMage.facing === FACING_SIDE.LEFT){
-                this.animations[STATE.MOVING][FACING_SIDE.LEFT].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
-            }
-            this.animations[STATE.MOVING][FACING_SIDE.RIGHT].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
-        }
+        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
 
-        this.drawDebug(ctx);
-    }
-
-    drawDebug(ctx){
-        if(PARAMS.DEBUG){
-            ctx.strokeStyle = 'Green';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        }
+        super.draw(ctx);
     }
 }
 
@@ -245,13 +237,6 @@ class BreathFire extends Projectiles {
             this.animations[STATE.MOVING][FACING_SIDE.RIGHT].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
         }
 
-        this.drawDebug(ctx);
-    }
-
-    drawDebug(ctx){
-        if(PARAMS.DEBUG){
-            ctx.strokeStyle = 'Green';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        }
+        super.draw(ctx);
     }
 }

@@ -348,6 +348,17 @@ class DarkMage extends Enemies {
     update() {
         super.update();
 
+        for(var i = 0; i < this.game.entities.length; i++){
+            var entity = this.game.entities[i];
+            if(entity instanceof MainCharacter && this.state === STATE.ATTACKING){
+                if(this.facing === FACING_SIDE.LEFT){
+                    this.game.addEntity(new DarkFire(this.game, this.x - 70, this.y + this.height - 10));
+                } else {
+                    this.game.addEntity(new DarkFire(this.game, this.x + this.width + 70, this.y + this.height - 10));
+                }
+            }
+        }
+
         this.x += this.velocity.x;
         this.updateBB();
     }
