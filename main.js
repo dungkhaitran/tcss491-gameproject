@@ -11,6 +11,8 @@ ASSET_MANAGER.queueDownload("./sprites/2.png");
 ASSET_MANAGER.queueDownload("./sprites/background/ParFull.png");
 ASSET_MANAGER.queueDownload("./sprites/background/forest.png");
 ASSET_MANAGER.queueDownload("./sprites/background/blood-forest.png");
+ASSET_MANAGER.queueDownload("./sprites/background/Castle-Background.png");
+ASSET_MANAGER.queueDownload("./sprites/background/Ice-Background.png");
 
 // tiles
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile1.png");
@@ -25,6 +27,11 @@ ASSET_MANAGER.queueDownload("./sprites/mobs/flying-demon.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/nightmare-horse.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/knight.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/Fullmain.png");
+
+ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/assassin-cultist.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/big-cultist.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/mage-cultist.png");
+ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/twisted-cultist.png");
 
 // projectiles
 ASSET_MANAGER.queueDownload("./sprites/projectiles/dark-fire.png"); // skill of dark mage

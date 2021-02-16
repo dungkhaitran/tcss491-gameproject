@@ -25,36 +25,45 @@ class SceneManager {
       this.game.addEntity(background);
     }
 
-    // Add mobs
+    // Add mobs 
     // this.game.addEntity(
     //   new Bat(this.game, PARAMS.BLOCKWIDTH * 9, PARAMS.BLOCKWIDTH * 1.01)
     // );
 
     // Dark mage squad
-    for(var i = 1; i <= 5; i++){
-      this.game.addEntity(
-        new DarkMage(this.game, 900 * i, 375)
-      );
-    }
+    // for(var i = 1; i <= 5; i++){
+    //   this.game.addEntity(
+    //     new DarkMage(this.game, 900 * i, 375)
+    //   );
+    // }
+
     // Birdman squad
     // for(var i = 1; i <= 10; i++){
     //   this.game.addEntity(
     //     new BirdMan(this.game, 900 * i, 525)
     //   );
     // }
+
     // Flying Demon squad
     // for(var i = 1; i <= 2; i++){
     //   this.game.addEntity(
     //     new FlyingDemon(this.game, 1000 * i, 220)
     //   );
     // }
-    // Nightmare Horse squad: appears and runs through everything without being damaged and damages the main character if it touches him
+
+    // Nightmare Horse squad
     // for(var i = 1; i <= 2; i++){
     //   this.game.addEntity(
     //     new NightmareHorse(this.game, 500 * i, 450)
     //   );
     // }
 
+    // Knight squad
+    for(var i = 1; i <= 1; i++){
+      this.game.addEntity(
+        new Knight(this.game, 500 * i, 400)
+      );
+    }
 
     this.main.x = x;
     this.game.addEntity(this.main);
