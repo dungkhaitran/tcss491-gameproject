@@ -17,7 +17,7 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.hp = 1000;
+        this.hp = 100000;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
         this.meleeDamage2 = 200;
@@ -224,7 +224,8 @@ class MainCharacter {
             var that = this;
             var checkHpMain = false;
             this.game.entities.forEach(function (entity) {
-                if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText)) {
+                if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
+                        && !(entity instanceof Bullet) && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -233,53 +234,110 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
                         checkHpMob = true;
                     }
-                    if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
-                            && entity.dealDamage === false) {
-                        entity.dealDamage = true;
-                        that.hp -= entity.meleeDamage;
-                        that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.meleeDamage, "Red"));
-                        checkHpMain = true;
-                    }
-                    if (checkHpMob) {
-                        if (entity.hp <= 0) {
-                            entity.dead = true;
+                    if (entity instanceof Enemies) {
+                        if (entity.attacking /*&& entity.BBMeleeAttackRange*/ && that.BB.collide(entity.BBMeleeAttackRange)
+                                && entity.dealDamage === false) {
+                            entity.dealDamage = true;
+                            that.hp -= entity.meleeDamage;
+                            that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.meleeDamage, "Red"));
+                            checkHpMain = true;
                         }
-                    }
-                    if (!entity.dead) {
-                        if (entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)) {
-                            entity.velocity.x = 0;
-                            if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
-                                entity.state = STATE.IDLE;
-                            }
-                            if (entity.canAttackMelee) {
-                                entity.attacking = true;
+                        if (checkHpMob) {
+                            if (entity.hp <= 0) {
+                                entity.hp = 0;
+                                entity.dead = true;
                             }
                         }
-                        else {
-                            if (entity.state != STATE.ATTACKING && entity.velocity) {
-                                if (Math.abs(that.x - entity.x) <= that.velocityX) {
-                                    entity.velocity.x = 0;
-                                    if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
-                                        entity.state = STATE.IDLE;
-                                    }
-                                } else  if (that.x < entity.x) {
-                                    entity.facing = FACING_SIDE.LEFT;
-                                    entity.state = STATE.MOVING;
-                                    entity.velocity.x = -entity.velocityX;
-                                } else {
-                                    entity.facing = FACING_SIDE.RIGHT;
-                                    entity.state = STATE.MOVING;
-                                    entity.velocity.x = entity.velocityX;
+                        // if (entity.BBMeleeAttackRange) {
+                            if (that.BB.collide(entity.BBMeleeAttackRange)) {
+                                entity.velocity.x = 0;
+                                if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                                    entity.state = STATE.IDLE;
+                                }
+                                if (entity.canAttackMelee) {
+                                    entity.attacking = true;
                                 }
                             }
+                            else {
+                                if (entity.velocity) {
+                                if ((that.BB.x + that.BB.width) < entity.BBMeleeAttackRange.x) {
+                                        entity.facing = FACING_SIDE.LEFT;
+                                        entity.state = STATE.MOVING;
+                                        entity.velocity.x = -entity.velocityX;
+                                    } else if (that.BB.x  > (entity.BBMeleeAttackRange.x + entity.BBMeleeAttackRange.width)) {
+                                        entity.facing = FACING_SIDE.RIGHT;
+                                        entity.state = STATE.MOVING;
+                                        entity.velocity.x = entity.velocityX;
+                                    } else {
+                                        entity.velocity.x = 0;
+                                        if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                                            entity.state = STATE.IDLE;
+                                        }
+                                    }
+                                }
+                            }
+                        // }
+                    }
+                    if (entity instanceof FarRangeEnemies) {
+                        // if (entity.attacking && that.BB.collide(entity.BBFarAttackRange)
+                        //         && entity.dealDamage === false) {
+                        //     entity.dealDamage = true;
+                        //     that.hp -= entity.farDamage;
+                        //     that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
+                        //     checkHpMain = true;
+                        // }
+                        if (checkHpMob) {
+                            if (entity.hp <= 0) {
+                                entity.hp = 0;
+                                entity.dead = true;
+                            }
                         }
+                        // if (entity.BBFarAttackRange) {
+                            if (that.BB.collide(entity.BBFarAttackRange)) {
+                                entity.velocity.x = 0;
+                                if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                                    entity.state = STATE.IDLE;
+                                }
+                                if (entity.canAttackFar) {
+                                    entity.attacking = true;
+                                }
+                            }
+                            else {
+                                if (entity.velocity) {
+                                    if ((that.BB.x + that.BB.width) < entity.BBFarAttackRange.x) {
+                                        entity.facing = FACING_SIDE.LEFT;
+                                        entity.state = STATE.MOVING;
+                                        entity.velocity.x = -entity.velocityX;
+                                    } else if (that.BB.x  > (entity.BBFarAttackRange.x + entity.BBFarAttackRange.width)) {
+                                        entity.facing = FACING_SIDE.RIGHT;
+                                        entity.state = STATE.MOVING;
+                                        entity.velocity.x = entity.velocityX;
+                                    } else {
+                                        entity.velocity.x = 0;
+                                        if (entity.state != STATE.ATTACKING && entity.state != STATE.JUMPING) {
+                                            entity.state = STATE.IDLE;
+                                        }
+                                    }
+                                }
+                            }
+                        // }
+                    }
+                }
+
+                if (entity instanceof Bullet) {
+                    if (that.BB.collide(entity.BB)) {
+                        that.hp -= entity.farDamage;
+                        entity.dead = true;
+                        that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
+                        checkHpMain = true;
                     }
                 }
             })
 
             if (checkHpMain && this.hp <= 0) {
+                this.hp = 0;
                 this.dead = true;
-                this.removeFromWorld = false;
+                // this.removeFromWorld = false;
             }
 
             this.updateBB();

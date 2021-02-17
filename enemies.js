@@ -4,7 +4,9 @@ class Enemies {
     constructor(game, x, y){
         Object.assign(this, { game, x, y });
 
-        this.velocity = { x: -PARAMS.BITWIDTH, y: 0}; // 16 pixels per second
+        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
+        // this.velocity = { x: -PARAMS.BITWIDTH, y: 0}; // 16 pixels per second
         this.spritesheet;
 
         this.animation;
@@ -282,113 +284,6 @@ class BirdMan extends Enemies {
     }
 }
 
-class DarkMage extends Enemies {
-    constructor(game, x, y) {
-        super(game, x, y);
-        Object.assign(this, { game, x, y });
-
-        this.velocityX = PARAMS.BITWIDTH / 15;
-        // this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/darkmage.png");
-        // this.state = STATE.MOVING;
-        this.facing = FACING_SIDE.LEFT;
-
-        this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
-        this.flickerFlag = true;
-
-        this.width = 48;
-        this.height = 96;
-
-        this.animations = [];        
-        this.loadAnimations();
-
-        this.hp = 1000;
-        this.maxHp = this.hp;
-        this.meleeDamage = 100;
-
-        this.MELEE_ATTACK_DURATION = 0.5;
-        this.MELEE_ATTACK_COOLDOWN = 2.5;
-
-        this.meleeAttackDuration = 0;
-        this.meleeAttackCooldown = 0;
-
-        this.canAttackMelee = true;
-        this.meleeAttackRangeWidth = 300;
-
-        this.updateBB();
-    }
-
-    loadAnimations() {
-        for(var i = 0; i < STATE.COUNT; i++){
-            this.animations.push([]);
-            for(var j = 0; j < FACING_SIDE.COUNT; j++){
-                this.animations[i].push([]);
-            }
-        }
-
-        // facing left
-        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true); // idle
-        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1570, 60, 100, 8, 0.15, 190, true, true);  // run
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
-        this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
-        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, true, true); // jump
-        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2286, 570, 106, 97, 7, 0.15, 143, true, false); // dead
-        
-        // facing right
-        this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
-        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
-        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
-        this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
-        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
-        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 570, 106, 97, 7, 0.15, 143, false, false); // dead
-
-    }
-    update() {
-        super.update();
-
-        for(var i = 0; i < this.game.entities.length; i++){
-            var entity = this.game.entities[i];
-            if(entity instanceof MainCharacter && this.state === STATE.ATTACKING){
-                if(this.facing === FACING_SIDE.LEFT){
-                    this.game.addEntity(new DarkFire(this.game, this.x - 70, this.y + this.height - 10));
-                } else {
-                    this.game.addEntity(new DarkFire(this.game, this.x + this.width + 70, this.y + this.height - 10));
-                }
-            }
-        }
-
-        this.x += this.velocity.x;
-        this.updateBB();
-    }
-
-    updateBB() {
-        if(this.facing == FACING_SIDE.RIGHT){
-            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5); // body
-            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width * 2.5, this.y + this.height, 
-                this.meleeAttackRangeWidth, this.height); // range attack
-        } else {
-            this.BB = new BoundingBox(this.x + this.width, this.y + this.height + 10, this.width * 2, this.height * 1.5);
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth, this.y + this.height,
-                this.meleeAttackRangeWidth, this.height);
-        }
-    };
-
-    drawMinimap(ctx, mmX, mmY){
-
-    }
-    
-    draw(ctx) {
-        if(this.state === STATE.DEAD && this.facing === FACING_SIDE.LEFT){
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.width * 3 - this.game.camera.x, this.y, 2.5);
-        }else{
-            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
-        }
-        super.draw(ctx);
-    }
-}
-
 class FlyingDemon extends Enemies {
     constructor(game, x, y) {
         super(game, x, y);
@@ -556,3 +451,395 @@ class NightmareHorse extends Enemies {
         super.draw(ctx);
     }
 }
+
+
+// Superclass for the enemies
+class FarRangeEnemies {
+    constructor(game, x, y){
+        Object.assign(this, { game, x, y });
+
+        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
+        // this.velocity = { x: -PARAMS.BITWIDTH, y: 0}; // 16 pixels per second
+        this.spritesheet;
+
+        this.animation;
+        this.paused = true;
+        this.dead = false;
+        this.deadCounter = 0;
+        this.flickerFlag = true;
+
+        this.width = 0;
+        this.height = 0;
+
+        this.state = STATE.IDLE;
+
+        this.hp = 100;
+        this.maxHp = this.hp;
+        this.farDamage = 0;
+
+        this.FAR_ATTACK_DURATION = 0;
+        this.FAR_ATTACK_COOLDOWN = 0;
+
+        this.farAttackDuration = 0;
+        this.farAttackCooldown = 0;
+
+        this.canAttackFar = true;
+        this.attacking = false;
+        this.farAttackRangeWidth = 0;
+
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.BBFarAttackRange = new BoundingBox(this.x + this.width, this.y, this.farAttackRangeWidth, PARAMS.CANVAS_WIDTH);
+
+        this.gotDamaged = false;
+        
+        this.dealDamage = false;
+
+        this.healthBar = new HealthBar(this, game);
+    }
+
+    update(){
+
+        const TICK = this.game.clockTick;
+
+        if (this.dead){
+            this.state = STATE.DEAD;
+            this.deadCounter += this.game.clockTick;
+            if(this.deadCounter > 2.5) this.removeFromWorld = true;
+        }
+
+        if (this.farAttackCooldown > 0) {
+            this.farAttackCooldown -= TICK;
+            if (this.farAttackCooldown <= 0) {
+                this.canAttackFar = true;
+            }
+        }
+    
+        var createBullet = false
+        if (this.attacking) {
+            if (this.farAttackDuration > 0) {
+                this.farAttackDuration -= TICK;
+                if (this.farAttackDuration <= 0) {
+                    this.state = STATE.IDLE;
+                    this.attacking = false;
+                    this.dealDamage = false;
+                }
+            }
+            if (this.farAttackDuration <= 0 && this.farAttackCooldown <= 0) {
+                this.canAttackFar = false;
+                this.state = STATE.ATTACKING;
+                this.farAttackDuration = this.FAR_ATTACK_DURATION;
+                this.farAttackCooldown = this.FAR_ATTACK_COOLDOWN;
+                createBullet = true
+            }
+        }
+
+        if(this.hp <= 0){
+            this.dead = true;
+        }
+
+        return createBullet
+    }
+
+    drawMinimap(ctx, mmX, mmY){
+
+    }
+    draw(ctx) {
+        
+        this.healthBar.draw(ctx);
+
+        this.drawDebug(ctx);
+    }
+
+    drawDebug(ctx) {
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+
+            ctx.strokeStyle = 'Blue';
+            ctx.strokeRect(this.BBFarAttackRange.x - this.game.camera.x, this.BBFarAttackRange.y,
+                this.BBFarAttackRange.width, this.BBFarAttackRange.height);
+        }
+    }
+}
+
+class DarkMage extends FarRangeEnemies {
+    constructor(game, x, y) {
+        super(game, x, y);
+        Object.assign(this, { game, x, y });
+
+        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/darkmage.png");
+        // this.state = STATE.MOVING;
+        this.facing = FACING_SIDE.LEFT;
+
+        this.paused = true;
+        this.dead = false;
+        this.deadCounter = 0;
+        this.flickerFlag = true;
+
+        this.width = 48;
+        this.height = 96;
+
+        this.animations = [];        
+        this.loadAnimations();
+
+        this.hp = 1000;
+        this.maxHp = this.hp;
+        this.farDamage = 80;
+
+        this.FAR_ATTACK_DURATION = 0.5;
+        this.FAR_ATTACK_COOLDOWN = 3.5;
+
+        this.farAttackDuration = 0;
+        this.farAttackCooldown = 0;
+
+        this.canAttackFar = true;
+        this.farAttackRangeWidth = 300;
+
+        this.updateBB();
+    }
+
+    loadAnimations() {
+        for(var i = 0; i < STATE.COUNT; i++){
+            this.animations.push([]);
+            for(var j = 0; j < FACING_SIDE.COUNT; j++){
+                this.animations[i].push([]);
+            }
+        }
+
+        // facing left
+        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1570, 60, 100, 8, 0.15, 190, true, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
+        this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, true, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2286, 570, 106, 97, 7, 0.15, 143, true, false); // dead
+        
+        // facing right
+        this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 860, 60, 75, 100, 5, 0.1, 175, false, true);  // attack
+        this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1835, 60, 100, 3, 0.15, 190, false, true);  // hit
+        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 95, 1335, 60, 100, 2, 0.15, 190, false, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 570, 106, 97, 7, 0.15, 143, false, false); // dead
+
+    }
+    update() {
+        if (super.update()) {
+            var bullet = null
+
+            if (this.facing === FACING_SIDE.RIGHT) {
+                console.log('height mob' + this.height)
+                console.log('y bullet' + this.y + (this.height - 48) / 2)
+                bullet = new BulletOfDarkMage(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 2)
+                bullet.velocity.x = bullet.velocityX
+            } else {
+                console.log('height mob' + this.height)
+                console.log('y bullet' + this.y + (this.height - 48) / 2)
+                bullet = new BulletOfDarkMage(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 2)
+                bullet.velocity.x = -bullet.velocityX
+            }
+            bullet.farDamage = this.farDamage;
+            this.game.addEntity(bullet)
+        }
+
+        this.x += this.velocity.x;
+        this.updateBB();
+    }
+
+    updateBB() {
+        if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5); // body
+            this.BBFarAttackRange = new BoundingBox(this.BB.x + this.width, this.y, 
+                this.farAttackRangeWidth, PARAMS.CANVAS_WIDTH); // range attack
+        } else {
+            this.BB = new BoundingBox(this.x + this.width, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+            this.BBFarAttackRange = new BoundingBox(this.BB.x - this.farAttackRangeWidth, this.y,
+                this.farAttackRangeWidth, PARAMS.CANVAS_WIDTH);
+        }
+    };
+
+    drawMinimap(ctx, mmX, mmY){
+
+    }
+    
+    draw(ctx) {
+        if(this.state === STATE.DEAD && this.facing === FACING_SIDE.LEFT){
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.width * 3 - this.game.camera.x, this.y, 2.5);
+        }else{
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        }
+        super.draw(ctx);
+    }
+}
+
+<<<<<<< HEAD
+class Knight extends Enemies {
+    constructor(game, x, y) {
+        super(game, x, y);
+        Object.assign(this, { game, x, y });
+
+        this.velocityX = PARAMS.BITWIDTH / 15;
+        // this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/knight.png");
+        // this.state = STATE.MOVING;
+        this.facing = FACING_SIDE.LEFT;
+
+        this.paused = true;
+        this.dead = false;
+        this.deadCounter = 0;
+        this.flickerFlag = true;
+
+        this.width = 48;
+        this.height = 96;
+
+        this.animations = [];        
+        this.loadAnimations();
+
+        this.meleeDamage = 100;
+
+        this.MELEE_ATTACK_DURATION = 0.5;
+        this.MELEE_ATTACK_COOLDOWN = 2.5;
+
+        this.meleeAttackDuration = 0;
+        this.meleeAttackCooldown = 0;
+
+        this.canAttackMelee = true;
+        this.meleeAttackRangeWidth = 300;
+
+        this.updateBB();
+    }
+
+    loadAnimations() {
+        for(var i = 0; i < STATE.COUNT; i++){
+            this.animations.push([]);
+            for(var j = 0; j < FACING_SIDE.COUNT; j++){
+                this.animations[i].push([]);
+            }
+        }
+
+        // facing left
+        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 267, 75, 42, 70, 4, 0.2, 22, false, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 524, 140, 42, 70, 8, 0.15, 22,  false, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 530, 10, 67, 60, 7, 0.07, 5.5, false, true);  // attack
+
+        // facing right
+        this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 10, 75, 42, 70, 4, 0.2, 22, false, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 10, 140, 42, 70, 8, 0.15, 22, true, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 10, 10, 67, 60, 7, 0.07, 8, true, true);  // attack
+
+    }
+    update() {
+        super.update();
+
+        this.x += this.velocity.x;
+        this.updateBB();
+    }
+
+    updateBB() {
+        if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x + 15, this.y + 25, this.width * 2, this.height * 2); // body
+            this.BBMeleeAttackRange = new BoundingBox(this.BB.x + this.BB.width, this.BB.y,
+                this.BB.width, this.BB.height);
+        } else {
+            this.BB = new BoundingBox(this.x + 20, this.y + 25, this.width * 2, this.height * 2);
+            this.BBMeleeAttackRange = new BoundingBox(this.BB.x - this.BB.width, this.BB.y,
+                this.BB.width, this.BB.height);
+        }
+    };
+
+    drawMinimap(ctx, mmX, mmY){
+
+    }
+    
+    draw(ctx) {
+        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3.5);    
+
+        super.draw(ctx);
+    }
+}
+=======
+
+class Bullet {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+
+        this.velocityX = PARAMS.BITWIDTH / 3;
+        this.velocity = { x: -this.velocityX, y: 0 };
+
+        this.width = 48;
+        this.height = 48;
+
+        this.farDamage = 0
+
+        this.dead = false
+
+        this.updateBB();
+    };
+
+    update() {
+        if (this.dead){
+            this.removeFromWorld = true;
+            return
+        }
+
+        this.x += this.velocity.x;
+
+        this.updateBB()
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    updateBB() {
+        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+    };
+
+    draw(ctx) {
+        if (PARAMS.DEBUG) {
+            ctx.strokeStyle = 'White';
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
+        }
+    };
+};
+
+
+class BulletOfDarkMage extends Bullet {
+    constructor(game, x, y) {
+        super(game, x, y)
+        Object.assign(this, { game, x, y });
+
+        // this.velocityX = PARAMS.BITWIDTH / 6;
+        // this.velocity = { x: -this.velocityX, y: 0 };
+
+        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/bat.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/birdman.png");
+
+        // this.width = 48;
+        // this.height = 48;
+
+        // this.animation = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true);
+        this.animation = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    updateBB() {
+        super.updateBB()
+    };
+
+    draw(ctx) {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
+        super.draw(ctx);
+    };
+};
+>>>>>>> a5ccd23f38d03d5582cfedbc9b9dad1fafd5d6ba
