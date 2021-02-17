@@ -631,16 +631,17 @@ class DarkMage extends FarRangeEnemies {
             var bullet = null
 
             if (this.facing === FACING_SIDE.RIGHT) {
-                console.log('height mob' + this.height)
-                console.log('y bullet' + this.y + (this.height - 48) / 2)
+                // console.log('height mob' + this.height)
+                // console.log('y bullet' + this.y + (this.height - 48) / 2)
                 bullet = new BulletOfDarkMage(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 2)
                 bullet.velocity.x = bullet.velocityX
             } else {
-                console.log('height mob' + this.height)
-                console.log('y bullet' + this.y + (this.height - 48) / 2)
+                // console.log('height mob' + this.height)
+                // console.log('y bullet' + this.y + (this.height - 48) / 2)
                 bullet = new BulletOfDarkMage(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 2)
                 bullet.velocity.x = -bullet.velocityX
             }
+            bullet.facing = this.facing
             bullet.farDamage = this.farDamage;
             this.game.addEntity(bullet)
         }
@@ -817,9 +818,11 @@ class BulletOfDarkMage extends Bullet {
 
         // this.width = 48;
         // this.height = 48;
+        this.facing = FACING_SIDE.RIGHT;
 
-        // this.animation = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true);
-        this.animation = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
+
+        this.animations = [];
+        this.loadAnimations();
 
         this.updateBB();
     };
@@ -831,12 +834,22 @@ class BulletOfDarkMage extends Bullet {
     drawMinimap(ctx, mmX, mmY) {
     }
 
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        // this.animation = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true);
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
+    }
+
     updateBB() {
         super.updateBB()
     };
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
         super.draw(ctx);
     };
 };
