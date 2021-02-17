@@ -20,16 +20,27 @@ class MainCharacter {
         this.hp = 1000;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
+        this.meleeDamage2 = 200;
 
         this.MELEE_ATTACK_DURATION = 0.25;
         this.MELEE_ATTACK_COOLDOWN = 0.3;
 
+        this.MELEE_ATTACK_DURATION2 = 0.25;
+        this.MELEE_ATTACK_COOLDOWN2 = 0.3;
+
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
 
+        
+        this.meleeAttackDuration2 = 0;
+        this.meleeAttackCooldown2 = 0;
+
         this.canAttackMelee = true;
+        this.canAttackMelee2 = true;
 
         this.meleeAttackRangeWidth = 70;
+        this.meleeAttackRangeWidth2 = 80;
+
         this.width = 48;
         this.height = 96;
         this.updateBB();
@@ -55,10 +66,11 @@ class MainCharacter {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 45, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
-        //this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 40, 1623, 155, 250, 3, 0.1, 190, false, true);
-        //this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 2, 0.1, 182, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
+
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 4, 0.1, 209, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
 
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
@@ -79,6 +91,16 @@ class MainCharacter {
             this.BB = new BoundingBox(this.x, this.y, this.width / 2, this.height+ 5);
             this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth , this.y,
                 this.meleeAttackRangeWidth + 80, this.height + 50);
+        }
+
+        if (this.facing == FACING_SIDE.RIGHT) {
+            this.BB = new BoundingBox(this.x + 20, this.y, this.width / 2, this.height+ 5); //body
+            this.BBMeleeAttackRange2 = new BoundingBox(this.x + this.width, this.y, 
+                this.meleeAttackRangeWidth2 + 80, this.height+ 50);  // melee range
+        } else {
+            this.BB = new BoundingBox(this.x, this.y, this.width / 2, this.height+ 5);
+            this.BBMeleeAttackRange2 = new BoundingBox(this.x - this.meleeAttackRangeWidth2 , this.y,
+                this.meleeAttackRangeWidth2 + 80, this.height + 50);
         }
     };
  
@@ -150,6 +172,50 @@ class MainCharacter {
                     this.meleeAttackCooldown = this.MELEE_ATTACK_COOLDOWN;
                 }
             }
+
+            // attack 2
+            if (this.meleeAttackCooldown2 > 0) {
+                this.meleeAttackCooldown2 -= TICK;
+                if (this.meleeAttackCooldown2 <= 0) {
+                    this.canAttackMelee2 = true;
+                }
+            }
+        
+            if (this.game.attacking2) {
+                if (this.meleeAttackDuration2 > 0) {
+                    this.meleeAttackDuration2 -= TICK;
+                    if (this.meleeAttackDuration2 <= 0) {
+                        this.state = STATE.IDLE;
+                        this.game.attacking2 = false;
+                        this.game.entities.forEach(function (entity) {
+                            if (!(entity instanceof MainCharacter)) {
+                                entity.gotDamaged = false;
+                            }
+                        })                                
+                    }
+                }
+                if (this.meleeAttackDuration2 <= 0 && this.meleeAttackCooldown2 <= 0) {
+                    this.canAttackMelee2 = false;
+                    this.state = STATE.ATTACKING2;
+                    this.meleeAttackDuration2 = this.MELEE_ATTACK_DURATION2;
+                    this.meleeAttackCooldown2 = this.MELEE_ATTACK_COOLDOWN2;
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             this.x += this.velocity.x;
             this.y += this.velocity.y;
@@ -239,7 +305,14 @@ class MainCharacter {
             } else {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y-20, 1.3);//PARAMS.SCALE);
             }
-        } else {
+        } else if (this.state === STATE.ATTACKING2) {
+            if (this.facing == FACING_SIDE.RIGHT) {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-100, 1.3);
+            } else {
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y-100, 1.3);//PARAMS.SCALE);
+            }
+        } 
+        else {
             if (this.facing == FACING_SIDE.RIGHT && this.state == STATE.MOVING) {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);
             } else {
@@ -256,7 +329,10 @@ class MainCharacter {
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
                  this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
-
+            
+                 ctx.strokeStyle = 'Purple';
+                 ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
+                      this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
          
         }
     };

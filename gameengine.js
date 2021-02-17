@@ -56,6 +56,11 @@ class GameEngine {
                         that.attacking = true;
                     }
                     break;
+                case "KeyX":
+                    if (that.main.canAttackMelee2) {
+                        that.attacking2 = true;
+                    }
+                    break;
             }
         }, false);
 
