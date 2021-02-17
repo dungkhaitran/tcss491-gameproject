@@ -612,7 +612,7 @@ class DarkMage extends FarRangeEnemies {
         // facing left
         this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true); // idle
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1570, 60, 100, 8, 0.15, 190, true, true);  // run
-        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2070, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2060, 60, 75, 100, 5, 0.1, 175, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1835, 60, 100, 3, 0.15, 190, true, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, true, true); // jump
         this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2286, 570, 106, 97, 7, 0.15, 143, true, false); // dead
@@ -760,96 +760,3 @@ class Knight extends Enemies {
         super.draw(ctx);
     }
 }
-
-class Bullet {
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
-
-        this.velocityX = PARAMS.BITWIDTH / 3;
-        this.velocity = { x: -this.velocityX, y: 0 };
-
-        this.width = 48;
-        this.height = 48;
-
-        this.farDamage = 0
-
-        this.dead = false
-
-        this.updateBB();
-    };
-
-    update() {
-        if (this.dead){
-            this.removeFromWorld = true;
-            return
-        }
-
-        this.x += this.velocity.x;
-
-        this.updateBB()
-    };
-
-    drawMinimap(ctx, mmX, mmY) {
-    }
-
-    updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
-    };
-
-    draw(ctx) {
-        if (PARAMS.DEBUG) {
-            ctx.strokeStyle = 'White';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
-        }
-    };
-};
-
-
-class BulletOfDarkMage extends Bullet {
-    constructor(game, x, y) {
-        super(game, x, y)
-        Object.assign(this, { game, x, y });
-
-        // this.velocityX = PARAMS.BITWIDTH / 6;
-        // this.velocity = { x: -this.velocityX, y: 0 };
-
-        // this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/bat.png");
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/birdman.png");
-
-        // this.width = 48;
-        // this.height = 48;
-        this.facing = FACING_SIDE.RIGHT;
-
-
-        this.animations = [];
-        this.loadAnimations();
-
-        this.updateBB();
-    };
-
-    update() {
-        super.update()
-    };
-
-    drawMinimap(ctx, mmX, mmY) {
-    }
-
-    loadAnimations() {
-        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
-            this.animations.push([]);
-        }
-
-        // this.animation = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true);
-        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
-        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 527, 280, 55, 42, 6, 0.15, 9, true, true);
-    }
-
-    updateBB() {
-        super.updateBB()
-    };
-
-    draw(ctx) {
-        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1);
-        super.draw(ctx);
-    };
-};

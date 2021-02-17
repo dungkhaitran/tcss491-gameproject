@@ -31,11 +31,11 @@ class SceneManager {
     // );
 
     // Dark mage squad
-    // for(var i = 1; i <= 5; i++){
-    //   this.game.addEntity(
-    //     new DarkMage(this.game, 900 * i, 375)
-    //   );
-    // }
+    for(var i = 1; i <= 5; i++){
+      this.game.addEntity(
+        new DarkMage(this.game, 900 * i, 375)
+      );
+    }
 
     // Birdman squad
     // for(var i = 1; i <= 10; i++){
@@ -57,14 +57,14 @@ class SceneManager {
     //     new NightmareHorse(this.game, 500 * i, 450)
     //   );
     // }
-    /*
+    
     // Knight squad
-    for(var i = 1; i <= 1; i++){
-      this.game.addEntity(
-        new Knight(this.game, 500 * i, 400)
-      );
-    }
-    */
+    // for(var i = 1; i <= 1; i++){
+    //   this.game.addEntity(
+    //     new Knight(this.game, 500 * i, 400)
+    //   );
+    // }
+    
     this.main.x = x;
     this.game.addEntity(this.main);
   }
