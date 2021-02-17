@@ -25,8 +25,8 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION = 0.25;
         this.MELEE_ATTACK_COOLDOWN = 0.3;
 
-        this.MELEE_ATTACK_DURATION2 = 0.25;
-        this.MELEE_ATTACK_COOLDOWN2 = 0.3;
+        this.MELEE_ATTACK_DURATION2 = 0.25; // 3
+        this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
@@ -71,12 +71,14 @@ class MainCharacter {
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
 
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
-        /*
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
-        */
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
+        
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.1, 209, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
+        
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 718, 2591, 95, 117, 2, 0.1, 273, false, true);
@@ -116,18 +118,18 @@ class MainCharacter {
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = false;
+            if (this.deadCounter > 0.5) this.removeFromWorld = false;
             
         } else{        
             if (!this.game.left && !this.game.right) {
                 this.velocity.x = 0;
-                if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.IDLE;
                 }
             } else if (this.game.left) {
                 this.facing = FACING_SIDE.LEFT;
-                if (this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
-                    this.state = STATE.MOVING;
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
+                        this.state = STATE.MOVING;
                 }
 
                 if (this.x <= 0) {
@@ -139,7 +141,7 @@ class MainCharacter {
             } 
             else if (this.game.right) {
                 this.facing = FACING_SIDE.RIGHT;
-                if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
                 }
 
