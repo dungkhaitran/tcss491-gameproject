@@ -32,7 +32,7 @@ class MainCharacter {
         this.meleeAttackCooldown = 0;
 
         
-        this.meleeAttackDuration2 = 0;
+        this.meleeAttackDuration2 = 0 ;
         this.meleeAttackCooldown2 = 0;
 
         this.canAttackMelee = true;
@@ -43,6 +43,8 @@ class MainCharacter {
 
         this.width = 48;
         this.height = 96;
+
+        
         this.updateBB();
 
         this.healthBar = new HealthBar(this, game);
@@ -66,12 +68,15 @@ class MainCharacter {
         this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 45, 781, 93, 107, 8, 0.1, 315, true, true);
 
         // attacking animation
-        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 2, 0.1, 182, false, true);
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
 
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 4, 0.1, 209, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
-
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
+        /*
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
+        */
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 718, 2591, 95, 117, 2, 0.1, 273, false, true);
@@ -121,7 +126,7 @@ class MainCharacter {
                 }
             } else if (this.game.left) {
                 this.facing = FACING_SIDE.LEFT;
-                if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
                 }
 
@@ -131,7 +136,8 @@ class MainCharacter {
                 } else {
                     this.velocity.x = -MIN_WALK;
                 }
-            } else if (this.game.right) {
+            } 
+            else if (this.game.right) {
                 this.facing = FACING_SIDE.RIGHT;
                 if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
@@ -144,6 +150,19 @@ class MainCharacter {
                     this.velocity.x = MIN_WALK;
                 }
             }
+            
+
+
+            
+
+
+
+
+
+
+
+
+
 
             if (this.meleeAttackCooldown > 0) {
                 this.meleeAttackCooldown -= TICK;
@@ -191,7 +210,7 @@ class MainCharacter {
                             if (!(entity instanceof MainCharacter)) {
                                 entity.gotDamaged = false;
                             }
-                        })                                
+                        })                               
                     }
                 }
                 if (this.meleeAttackDuration2 <= 0 && this.meleeAttackCooldown2 <= 0) {
@@ -225,7 +244,7 @@ class MainCharacter {
             var checkHpMain = false;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
-                        && !(entity instanceof Bullet) && !entity.dead) {
+                        /*&& !(entity instanceof Bullet)*/ && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -234,8 +253,9 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
                         checkHpMob = true;
                     }
+                    /*
                     if (entity instanceof Enemies) {
-                        if (entity.attacking /*&& entity.BBMeleeAttackRange*/ && that.BB.collide(entity.BBMeleeAttackRange)
+                        if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
                             entity.dealDamage = true;
                             that.hp -= entity.meleeDamage;
@@ -278,6 +298,7 @@ class MainCharacter {
                             }
                         // }
                     }
+                    /*
                     if (entity instanceof FarRangeEnemies) {
                         // if (entity.attacking && that.BB.collide(entity.BBFarAttackRange)
                         //         && entity.dealDamage === false) {
@@ -322,8 +343,9 @@ class MainCharacter {
                             }
                         // }
                     }
+                    */
                 }
-
+                /*
                 if (entity instanceof Bullet) {
                     if (that.BB.collide(entity.BB)) {
                         that.hp -= entity.farDamage;
@@ -332,6 +354,7 @@ class MainCharacter {
                         checkHpMain = true;
                     }
                 }
+                */
             })
 
             if (checkHpMain && this.hp <= 0) {
@@ -363,13 +386,13 @@ class MainCharacter {
             } else {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y-20, 1.3);//PARAMS.SCALE);
             }
-        } else if (this.state === STATE.ATTACKING2) {
+        }else if (this.state === STATE.ATTACKING2) {
             if (this.facing == FACING_SIDE.RIGHT) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-100, 1.3);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-20, 1.3);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y-100, 1.3);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y-20, 1.3);//PARAMS.SCALE);
             }
-        } 
+        }
         else {
             if (this.facing == FACING_SIDE.RIGHT && this.state == STATE.MOVING) {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);
@@ -378,7 +401,17 @@ class MainCharacter {
             }
         }
 
-        this.healthBar.draw(ctx);
+
+
+
+      
+
+
+
+
+
+        
+     
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
@@ -391,6 +424,8 @@ class MainCharacter {
                  ctx.strokeStyle = 'Purple';
                  ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
                       this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
+         
+                 this.healthBar.draw(ctx);
          
         }
     };
