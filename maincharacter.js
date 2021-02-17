@@ -244,7 +244,7 @@ class MainCharacter {
             var checkHpMain = false;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
-                        /*&& !(entity instanceof Bullet)*/ && !entity.dead) {
+                        && !(entity instanceof Bullet) && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -253,7 +253,6 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
                         checkHpMob = true;
                     }
-                    /*
                     if (entity instanceof Enemies) {
                         if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
@@ -298,7 +297,6 @@ class MainCharacter {
                             }
                         // }
                     }
-                    /*
                     if (entity instanceof FarRangeEnemies) {
                         // if (entity.attacking && that.BB.collide(entity.BBFarAttackRange)
                         //         && entity.dealDamage === false) {
@@ -343,9 +341,7 @@ class MainCharacter {
                             }
                         // }
                     }
-                    */
                 }
-                /*
                 if (entity instanceof Bullet) {
                     if (that.BB.collide(entity.BB)) {
                         that.hp -= entity.farDamage;
@@ -354,7 +350,6 @@ class MainCharacter {
                         checkHpMain = true;
                     }
                 }
-                */
             })
 
             if (checkHpMain && this.hp <= 0) {

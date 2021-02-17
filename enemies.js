@@ -675,7 +675,6 @@ class DarkMage extends FarRangeEnemies {
     }
 }
 
-<<<<<<< HEAD
 class Knight extends Enemies {
     constructor(game, x, y) {
         super(game, x, y);
@@ -760,7 +759,6 @@ class Knight extends Enemies {
         super.draw(ctx);
     }
 }
-=======
 
 class Bullet {
     constructor(game, x, y) {
@@ -842,4 +840,3 @@ class BulletOfDarkMage extends Bullet {
         super.draw(ctx);
     };
 };
->>>>>>> a5ccd23f38d03d5582cfedbc9b9dad1fafd5d6ba
