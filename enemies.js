@@ -682,9 +682,10 @@ class RunningEnemies {
     constructor(game, x, y){
         Object.assign(this, { game, x, y });
 
-        this.velocityX = PARAMS.BITWIDTH / 4;
+        this.velocityX = PARAMS.BITWIDTH / 2.5;
         this.velocity = { x: -this.velocityX, y: 0 };
         this.spritesheet = null;
+        this.facing = FACING_SIDE.LEFT
 
         this.paused = true;
         this.deadCounter = 0;
