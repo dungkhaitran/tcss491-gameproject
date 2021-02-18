@@ -187,19 +187,6 @@ class MainCharacter {
                     this.velocity.x = MIN_WALK;
                 }
             }
-            
-
-
-            
-
-
-
-
-
-
-
-
-
 
             if (this.meleeAttackCooldown > 0) {
                 this.meleeAttackCooldown -= TICK;
@@ -265,21 +252,6 @@ class MainCharacter {
                     this.meleeAttackCooldown2 = this.MELEE_ATTACK_COOLDOWN2;
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             this.x += this.velocity.x;
             this.y += this.velocity.y;
@@ -448,18 +420,6 @@ class MainCharacter {
             }
         }
 
-
-
-
-      
-
-
-
-
-
-        
-     
-
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width + 50, this.BB.height + 50);
@@ -473,9 +433,6 @@ class MainCharacter {
                 this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
     
             this.healthBar.draw(ctx);
-         
-            ctx.strokeStyle = 'Red';
-            ctx.strokeRect(100, 100, 40, 40);
         }
     };
 

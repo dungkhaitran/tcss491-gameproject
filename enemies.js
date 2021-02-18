@@ -378,7 +378,7 @@ class NightmareHorse extends Enemies {
         super(game, x, y);
         Object.assign(this, { game, x, y });
 
-        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocityX = PARAMS.BITWIDTH / 4;
         // this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/nightmare-horse.png");
         // this.state = STATE.MOVING;
