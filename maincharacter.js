@@ -17,7 +17,7 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.hp = 100000;
+        this.hp = 5000;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
         this.meleeDamage2 = 200;
@@ -25,8 +25,8 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION = 0.25;
         this.MELEE_ATTACK_COOLDOWN = 0.3;
 
-        this.MELEE_ATTACK_DURATION2 = 0.25;
-        this.MELEE_ATTACK_COOLDOWN2 = 0.3;
+        this.MELEE_ATTACK_DURATION2 = 0.25; // 3
+        this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
@@ -48,6 +48,23 @@ class MainCharacter {
         this.updateBB();
 
         this.healthBar = new HealthBar(this, game);
+
+        this.jumping = false
+        this.canJump = true
+        this.jumpingDelta = -30
+        this.durationJumping = 0
+        this.jumpingSteps = []
+        for (var i = 20; i >= 0; i--) {
+            this.jumpingSteps.push(this.jumpingDelta)
+            this.jumpingDelta += i / 7
+            if (this.jumpingDelta >= 0) {
+                break
+            }
+        }
+
+        for (var i = this.jumpingSteps.length - 1; i >= 0; i--) {
+            this.jumpingSteps.push(-this.jumpingSteps[i])
+        }
     };
 
     loadAnimations() {
@@ -71,12 +88,15 @@ class MainCharacter {
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
 
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
-        /*
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
-        */
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
+        
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 1660, 155, 250, 4, 0.1, 205, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 26, 1919, 155, 250, 4, 0.1, 205, false, true);
+
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
+        // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
+        
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 718, 2591, 95, 117, 2, 0.1, 273, false, true);
@@ -116,17 +136,35 @@ class MainCharacter {
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = false;
+            if (this.deadCounter > 0.5) this.removeFromWorld = false;
             
-        } else{        
+        } else{
+            if (this.game.jumping) {
+                if (this.durationJumping < (this.jumpingSteps.length / 2)) {
+                    if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2) {
+                        this.state = STATE.JUMPING
+                    }
+                    this.velocity.y = this.jumpingSteps[this.durationJumping++]
+                } else if (this.durationJumping >= (this.jumpingSteps.length / 2) && this.durationJumping < this.jumpingSteps.length) {
+                    this.velocity.y = this.jumpingSteps[this.durationJumping++]
+                } else {
+                    this.game.jumping = false
+                    this.canJump = true
+                    this.velocity.y = 0
+                    this.durationJumping = 0
+                    if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2) {
+                        this.state = STATE.IDLE
+                    }
+                }
+            }
             if (!this.game.left && !this.game.right) {
                 this.velocity.x = 0;
-                if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.IDLE;
                 }
             } else if (this.game.left) {
                 this.facing = FACING_SIDE.LEFT;
-                if (this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
                 }
 
@@ -136,10 +174,9 @@ class MainCharacter {
                 } else {
                     this.velocity.x = -MIN_WALK;
                 }
-            } 
-            else if (this.game.right) {
+            } else if (this.game.right) {
                 this.facing = FACING_SIDE.RIGHT;
-                if (this.state != STATE.ATTACKING && this.state != STATE.JUMPING) {
+                if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
                 }
 
@@ -150,19 +187,6 @@ class MainCharacter {
                     this.velocity.x = MIN_WALK;
                 }
             }
-            
-
-
-            
-
-
-
-
-
-
-
-
-
 
             if (this.meleeAttackCooldown > 0) {
                 this.meleeAttackCooldown -= TICK;
@@ -175,7 +199,11 @@ class MainCharacter {
                 if (this.meleeAttackDuration > 0) {
                     this.meleeAttackDuration -= TICK;
                     if (this.meleeAttackDuration <= 0) {
-                        this.state = STATE.IDLE;
+                        if (this.durationJumping > 0) {
+                            this.state = STATE.JUMPING;
+                        } else {
+                            this.state = STATE.IDLE;
+                        }
                         this.game.attacking = false;
                         this.game.entities.forEach(function (entity) {
                             if (!(entity instanceof MainCharacter)) {
@@ -204,11 +232,15 @@ class MainCharacter {
                 if (this.meleeAttackDuration2 > 0) {
                     this.meleeAttackDuration2 -= TICK;
                     if (this.meleeAttackDuration2 <= 0) {
-                        this.state = STATE.IDLE;
+                        if (this.durationJumping > 0) {
+                            this.state = STATE.JUMPING;
+                        } else {
+                            this.state = STATE.IDLE;
+                        }
                         this.game.attacking2 = false;
                         this.game.entities.forEach(function (entity) {
                             if (!(entity instanceof MainCharacter)) {
-                                entity.gotDamaged = false;
+                                entity.gotDamaged2 = false;
                             }
                         })                               
                     }
@@ -221,21 +253,6 @@ class MainCharacter {
                 }
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             this.x += this.velocity.x;
             this.y += this.velocity.y;
 
@@ -244,7 +261,7 @@ class MainCharacter {
             var checkHpMain = false;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
-                        && !(entity instanceof Bullet) && !entity.dead) {
+                        && !(entity instanceof Bullet) && !(entity instanceof RunningEnemies) && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -253,7 +270,14 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
                         checkHpMob = true;
                     }
-                    if (entity instanceof Enemies) {
+                    if (that.game.attacking2 && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
+                            && entity.gotDamaged2 === false) {
+                        entity.gotDamaged2 = true;
+                        entity.hp -= that.meleeDamage2;
+                        that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage2, "White"));
+                        checkHpMob = true;
+                    }
+                    if (entity instanceof MeleeRangeEnemies) {
                         if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
                             entity.dealDamage = true;
@@ -298,13 +322,6 @@ class MainCharacter {
                         // }
                     }
                     if (entity instanceof FarRangeEnemies) {
-                        // if (entity.attacking && that.BB.collide(entity.BBFarAttackRange)
-                        //         && entity.dealDamage === false) {
-                        //     entity.dealDamage = true;
-                        //     that.hp -= entity.farDamage;
-                        //     that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
-                        //     checkHpMain = true;
-                        // }
                         if (checkHpMob) {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
@@ -350,6 +367,14 @@ class MainCharacter {
                         checkHpMain = true;
                     }
                 }
+                if (entity instanceof RunningEnemies) {
+                    if (!entity.dealDamage && that.BB.collide(entity.BB)) {
+                        entity.dealDamage = true
+                        that.hp -= entity.damage;
+                        that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.damage, "Red"));
+                        checkHpMain = true;
+                    }
+                }
             })
 
             if (checkHpMain && this.hp <= 0) {
@@ -368,7 +393,7 @@ class MainCharacter {
                 this.game.camera.x += this.velocity.x;
                 this.game.camera.x = Math.min(this.game.camera.x , MAX_WIDTH - PARAMS.CANVAS_WIDTH);
             }
-    }
+        }
     };
 
     draw(ctx) {
@@ -383,9 +408,9 @@ class MainCharacter {
             }
         }else if (this.state === STATE.ATTACKING2) {
             if (this.facing == FACING_SIDE.RIGHT) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-20, 1.3);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-40, 1.3);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y-20, 1.3);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y, 1.3);//PARAMS.SCALE);
             }
         }
         else {
@@ -395,18 +420,8 @@ class MainCharacter {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);
             }
         }
-
-
-
-
-      
-
-
-
-
-
-        
-     
+    
+        this.healthBar.draw(ctx);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
@@ -414,14 +429,11 @@ class MainCharacter {
 
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
-                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
-            
-                 ctx.strokeStyle = 'Purple';
-                 ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
-                      this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
-         
-                 this.healthBar.draw(ctx);
-         
+            this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+    
+            ctx.strokeStyle = 'Purple';
+            ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
+                this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
         }
     };
 

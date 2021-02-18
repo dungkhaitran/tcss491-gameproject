@@ -23,6 +23,10 @@ class Bullet {
 
         this.x += this.velocity.x;
 
+        if ((this.x < -this.width) || (this.x > MAX_WIDTH)) {
+            this.removeFromWorld = true
+        }
+
         this.updateBB()
     };
 
