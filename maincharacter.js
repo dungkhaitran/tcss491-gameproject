@@ -99,7 +99,7 @@ class MainCharacter {
         
         // jumping animation
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 29, 2587, 77, 112, 2, 0.1, 273, false, true);
-        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 718, 2591, 95, 117, 2, 0.1, 273, false, true);
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 715, 2592, 77, 112, 2, 0.1, 273, false, true);
 
         //dead animation
         this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 25, 2830, 140, 105, 7, 0.15, 240, false, false);
