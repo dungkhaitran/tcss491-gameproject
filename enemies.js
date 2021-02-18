@@ -39,6 +39,7 @@ class Enemies {
         this.meleeAttackRangeWidth = 0;
 
         this.gotDamaged = false;
+        this.gotDamaged2 = false;
         
         this.dealDamage = false;
 
@@ -492,6 +493,7 @@ class FarRangeEnemies {
         this.BBFarAttackRange = new BoundingBox(this.x + this.width, this.y, this.farAttackRangeWidth, PARAMS.CANVAS_WIDTH);
 
         this.gotDamaged = false;
+        this.gotDamaged2 = false;
         
         this.dealDamage = false;
 
@@ -631,13 +633,9 @@ class DarkMage extends FarRangeEnemies {
             var bullet = null
 
             if (this.facing === FACING_SIDE.RIGHT) {
-                // console.log('height mob' + this.height)
-                // console.log('y bullet' + this.y + (this.height - 48) / 2)
                 bullet = new BulletOfDarkMage(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 2)
                 bullet.velocity.x = bullet.velocityX
             } else {
-                // console.log('height mob' + this.height)
-                // console.log('y bullet' + this.y + (this.height - 48) / 2)
                 bullet = new BulletOfDarkMage(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 2)
                 bullet.velocity.x = -bullet.velocityX
             }

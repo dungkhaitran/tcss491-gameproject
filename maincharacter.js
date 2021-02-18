@@ -211,7 +211,7 @@ class MainCharacter {
                         this.game.attacking2 = false;
                         this.game.entities.forEach(function (entity) {
                             if (!(entity instanceof MainCharacter)) {
-                                entity.gotDamaged = false;
+                                entity.gotDamaged2 = false;
                             }
                         })                               
                     }
@@ -254,6 +254,13 @@ class MainCharacter {
                         entity.gotDamaged = true;
                         entity.hp -= that.meleeDamage;
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage, "White"));
+                        checkHpMob = true;
+                    }
+                    if (that.game.attacking2 && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
+                            && entity.gotDamaged2 === false) {
+                        entity.gotDamaged2 = true;
+                        entity.hp -= that.meleeDamage2;
+                        that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage2, "White"));
                         checkHpMob = true;
                     }
                     if (entity instanceof Enemies) {
