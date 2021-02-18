@@ -17,7 +17,7 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.hp = 100000;
+        this.hp = 5000;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
         this.meleeDamage2 = 200;
@@ -261,7 +261,7 @@ class MainCharacter {
             var checkHpMain = false;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
-                        && !(entity instanceof Bullet) && !entity.dead) {
+                        && !(entity instanceof Bullet) && !(entity instanceof RunningEnemies) && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -277,7 +277,7 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage2, "White"));
                         checkHpMob = true;
                     }
-                    if (entity instanceof Enemies) {
+                    if (entity instanceof MeleeRangeEnemies) {
                         if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
                             entity.dealDamage = true;
@@ -322,13 +322,6 @@ class MainCharacter {
                         // }
                     }
                     if (entity instanceof FarRangeEnemies) {
-                        // if (entity.attacking && that.BB.collide(entity.BBFarAttackRange)
-                        //         && entity.dealDamage === false) {
-                        //     entity.dealDamage = true;
-                        //     that.hp -= entity.farDamage;
-                        //     that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
-                        //     checkHpMain = true;
-                        // }
                         if (checkHpMob) {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
@@ -371,6 +364,14 @@ class MainCharacter {
                         that.hp -= entity.farDamage;
                         entity.dead = true;
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
+                        checkHpMain = true;
+                    }
+                }
+                if (entity instanceof RunningEnemies) {
+                    if (!entity.dealDamage && that.BB.collide(entity.BB)) {
+                        entity.dealDamage = true
+                        that.hp -= entity.damage;
+                        that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.damage, "Red"));
                         checkHpMain = true;
                     }
                 }
@@ -419,6 +420,8 @@ class MainCharacter {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.3);
             }
         }
+    
+        this.healthBar.draw(ctx);
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
@@ -431,8 +434,6 @@ class MainCharacter {
             ctx.strokeStyle = 'Purple';
             ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
                 this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
-    
-            this.healthBar.draw(ctx);
         }
     };
 
