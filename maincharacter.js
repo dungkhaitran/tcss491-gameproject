@@ -74,8 +74,9 @@ class MainCharacter {
         // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1505, 1672, 159, 146, 4, 0.1, 182, false, true);
         // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1495, 1901, 159, 146, 4, 0.1, 182, false, true);
         
-        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.1, 209, false, true);
-        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.1, 215, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 0, 1660, 155, 250, 4, 0.1, 205, false, true);
+        this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 26, 1919, 155, 250, 4, 0.1, 205, false, true);
+
         // this.animations[STATE.ATTACKING2][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 26, 1693, 90, 104, 3, 0.5, 209, false, true);
         // this.animations[STATE.ATTACKING2][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 15, 1860, 155, 250, 3, 0.5, 215, false, true);
         
@@ -385,9 +386,9 @@ class MainCharacter {
             }
         }else if (this.state === STATE.ATTACKING2) {
             if (this.facing == FACING_SIDE.RIGHT) {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-20, 1.3);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y-40, 1.3);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y-20, 1.3);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth2, this.y, 1.3);//PARAMS.SCALE);
             }
         }
         else {
