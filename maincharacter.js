@@ -48,6 +48,23 @@ class MainCharacter {
         this.updateBB();
 
         this.healthBar = new HealthBar(this, game);
+
+        this.jumping = false
+        this.canJump = true
+        this.jumpingDelta = -30
+        this.durationJumping = 0
+        this.jumpingSteps = []
+        for (var i = 20; i >= 0; i--) {
+            this.jumpingSteps.push(this.jumpingDelta)
+            this.jumpingDelta += i / 7
+            if (this.jumpingDelta >= 0) {
+                break
+            }
+        }
+
+        for (var i = this.jumpingSteps.length - 1; i >= 0; i--) {
+            this.jumpingSteps.push(-this.jumpingSteps[i])
+        }
     };
 
     loadAnimations() {
@@ -121,7 +138,25 @@ class MainCharacter {
             this.deadCounter += this.game.clockTick;
             if (this.deadCounter > 0.5) this.removeFromWorld = false;
             
-        } else{        
+        } else{
+            if (this.game.jumping) {
+                if (this.durationJumping < (this.jumpingSteps.length / 2)) {
+                    if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2) {
+                        this.state = STATE.JUMPING
+                    }
+                    this.velocity.y = this.jumpingSteps[this.durationJumping++]
+                } else if (this.durationJumping >= (this.jumpingSteps.length / 2) && this.durationJumping < this.jumpingSteps.length) {
+                    this.velocity.y = this.jumpingSteps[this.durationJumping++]
+                } else {
+                    this.game.jumping = false
+                    this.canJump = true
+                    this.velocity.y = 0
+                    this.durationJumping = 0
+                    if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2) {
+                        this.state = STATE.IDLE
+                    }
+                }
+            }
             if (!this.game.left && !this.game.right) {
                 this.velocity.x = 0;
                 if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
@@ -130,7 +165,7 @@ class MainCharacter {
             } else if (this.game.left) {
                 this.facing = FACING_SIDE.LEFT;
                 if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
-                        this.state = STATE.MOVING;
+                    this.state = STATE.MOVING;
                 }
 
                 if (this.x <= 0) {
@@ -139,8 +174,7 @@ class MainCharacter {
                 } else {
                     this.velocity.x = -MIN_WALK;
                 }
-            } 
-            else if (this.game.right) {
+            } else if (this.game.right) {
                 this.facing = FACING_SIDE.RIGHT;
                 if (this.state != STATE.ATTACKING && this.state != STATE.ATTACKING2 && this.state != STATE.JUMPING) {
                     this.state = STATE.MOVING;
@@ -178,7 +212,11 @@ class MainCharacter {
                 if (this.meleeAttackDuration > 0) {
                     this.meleeAttackDuration -= TICK;
                     if (this.meleeAttackDuration <= 0) {
-                        this.state = STATE.IDLE;
+                        if (this.durationJumping > 0) {
+                            this.state = STATE.JUMPING;
+                        } else {
+                            this.state = STATE.IDLE;
+                        }
                         this.game.attacking = false;
                         this.game.entities.forEach(function (entity) {
                             if (!(entity instanceof MainCharacter)) {
@@ -207,7 +245,11 @@ class MainCharacter {
                 if (this.meleeAttackDuration2 > 0) {
                     this.meleeAttackDuration2 -= TICK;
                     if (this.meleeAttackDuration2 <= 0) {
-                        this.state = STATE.IDLE;
+                        if (this.durationJumping > 0) {
+                            this.state = STATE.JUMPING;
+                        } else {
+                            this.state = STATE.IDLE;
+                        }
                         this.game.attacking2 = false;
                         this.game.entities.forEach(function (entity) {
                             if (!(entity instanceof MainCharacter)) {
@@ -378,7 +420,7 @@ class MainCharacter {
                 this.game.camera.x += this.velocity.x;
                 this.game.camera.x = Math.min(this.game.camera.x , MAX_WIDTH - PARAMS.CANVAS_WIDTH);
             }
-    }
+        }
     };
 
     draw(ctx) {
@@ -424,14 +466,16 @@ class MainCharacter {
 
             ctx.strokeStyle = 'Yellow';
             ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
-                 this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
-            
-                 ctx.strokeStyle = 'Purple';
-                 ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
-                      this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
+            this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+    
+            ctx.strokeStyle = 'Purple';
+            ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
+                this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
+    
+            this.healthBar.draw(ctx);
          
-                 this.healthBar.draw(ctx);
-         
+            ctx.strokeStyle = 'Red';
+            ctx.strokeRect(100, 100, 40, 40);
         }
     };
 

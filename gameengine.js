@@ -49,7 +49,9 @@ class GameEngine {
                     break;
                 case "ArrowUp":
                 case "Space":
-                    that.jumping = true;
+                    if (that.main.canJump) {
+                        that.jumping = true;
+                    }
                     break;
                 case "KeyZ":
                     if (that.main.canAttackMelee) {
@@ -74,10 +76,10 @@ class GameEngine {
                 case "KeyD":
                     that.right = false;
                     break;
-                case "ArrowUp":
-                case "Space":
-                    that.jumping = false;
-                    break;
+                // case "ArrowUp":
+                // case "Space":
+                //     that.jumping = false;
+                //     break;
             }
         }, false);    
     };
