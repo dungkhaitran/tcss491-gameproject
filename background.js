@@ -36,7 +36,7 @@ class forest {
     }
 }
 
-class darkForest {
+class bloodForest {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
 
@@ -54,3 +54,43 @@ class darkForest {
             this.x - this.game.camera.x, this.y, 1000, 650);
     }
 }
+
+class deadScreen {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+
+        // spritesheet
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/game-over-background.png");
+    }
+    update() {
+
+    }
+    drawMiniMap(ctx, mmx, mmy) {
+
+    }
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, 0, 0, this.spritesheet.width, this.spritesheet.height, 
+            this.x - this.game.camera.x, this.y, 1000, 650);
+    }
+}
+
+
+class iceCave {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+
+        // spritesheet
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/Ice-Background.png");
+    }
+    update() {
+
+    }
+    drawMiniMap(ctx, mmx, mmy) {
+
+    }
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, 0, 0, this.spritesheet.width, this.spritesheet.height, 
+            this.x - this.game.camera.x, this.y, 1000, 650);
+    }
+}
+

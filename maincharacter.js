@@ -17,7 +17,7 @@ class MainCharacter {
         this.loadAnimations();
         
 
-        this.hp = 5000;
+        this.hp = 1000;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
         this.meleeDamage2 = 200;

@@ -21,30 +21,29 @@ class SceneManager {
 
     // first background
     for (var i = 0; i <= 5; i++) {
-      let background = new darkForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+      let background = new bloodForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
       this.game.addEntity(background);
     }
 
     // Add mobs 
-
     // Dark mage squad
     for(var i = 1; i <= 10; i++){
       this.game.addEntity(
-        new DarkMage(this.game, 900 * i, 375)
+        new DarkMage(this.game, 1300 * i, 375)
       );
     }
 
     // Birdman squad
     for(var i = 1; i <= 20; i++){
       this.game.addEntity(
-        new BirdMan(this.game, 500 * i/3, 525)
+        new BirdMan(this.game, 1000 * i, 525)
       );
     }
 
     // Flying Demon squad
     for(var i = 1; i <= 5; i++){
       this.game.addEntity(
-        new FlyingDemon(this.game, 500 * i, 50)
+        new FlyingDemon(this.game, 1500 * i, 50)
       );
     }
 
