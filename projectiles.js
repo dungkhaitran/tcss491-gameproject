@@ -114,13 +114,14 @@ class BulletOfFlyingDemon extends Bullet {
         }
 
         //facing left
-        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 32, 15, 120, 70, 5, 0.15, 28, true, false); // moving
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 32, 15, 120, 70, 5, 0.3, 28, false, false); // moving
         //facing right
-        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 808, 15, 120, 70, 5, 0.15, 28, false, false); // moving
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 828, 15, 120, 70, 5, 0.3, 28, true, false); // moving
     }
 
     update(){
         super.update();
+       
         if(this.facing === FACING_SIDE.LEFT){
             this.x -= 1;
             this.y += 5;
@@ -133,8 +134,11 @@ class BulletOfFlyingDemon extends Bullet {
     updateBB() {
         super.updateBB()
 
-        this.BB.width = this.BB.height = 90;
-        this.BB.y = this.BB.y - 60;
+        this.BB.x += 100;
+        this.BB.y += 10;
+        this.BB.width += 80;
+        this.BB.height += 70;
+        
     };
 
     draw(ctx) {

@@ -32,7 +32,7 @@ window.requestAnimFrame = (function () {
 //};
 
 const PARAMS = {
-    DEBUG: true,
+    DEBUG: false,
     SCALE: 3,
     BITWIDTH: 16
 };
