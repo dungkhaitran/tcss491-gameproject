@@ -15,7 +15,6 @@ class MainCharacter {
 
         this.animations = [];
         this.loadAnimations();
-        
 
         this.hp = 5000;
         this.maxHp = this.hp;
@@ -277,7 +276,7 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage2, "White"));
                         checkHpMob = true;
                     }
-                    if (entity instanceof MeleeRangeEnemies) {
+                    if (entity instanceof MeleeEnemies) {
                         if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
                             entity.dealDamage = true;
@@ -321,7 +320,7 @@ class MainCharacter {
                             }
                         // }
                     }
-                    if (entity instanceof FarRangeEnemies) {
+                    if (entity instanceof RangeEnemies) {
                         if (checkHpMob) {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
