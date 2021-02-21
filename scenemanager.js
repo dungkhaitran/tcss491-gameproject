@@ -11,10 +11,13 @@ class SceneManager {
     );
 
     this.game.main = this.main;
+    this.loadGameLevels();
 
-    this.firstLevel = new firstLevel(this.game, this.main, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
-    //this.secondLevel = new secondLevel(this.game, this.main, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+  }
 
+  loadGameLevels() {
+    // this.firstLevel = new firstLevel(this.game, this.main, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
+    this.secondLevel = new secondLevel(this.game, this.main, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
   }
 
   update() {

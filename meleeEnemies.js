@@ -22,6 +22,7 @@ class MeleeEnemies {
 
         this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
         this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, this.meleeAttackRangeWidth, this.height);
+        this.main = new MainCharacter(this.game, this.x, this.y)
 
         this.hp = 100;
         this.maxHp = this.hp;
@@ -129,7 +130,7 @@ class BirdMan extends MeleeEnemies {
         this.animations = [];        
         this.loadAnimations();
 
-        this.hp = 500;
+        this.hp = 700;
         this.maxHp = this.hp;
         this.meleeDamage = 100;
 

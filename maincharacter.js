@@ -357,6 +357,10 @@ class MainCharacter {
                             }
                         // }
                     }
+
+                    if(entity.gotDamaged || entity.gotDamaged2){
+                        entity.state = STATE.HIT;
+                    }
                 }
                 if (entity instanceof Bullet) {
                     if (that.BB.collide(entity.BB)) {
@@ -374,6 +378,7 @@ class MainCharacter {
                         checkHpMain = true;
                     }
                 }
+
             })
 
             if (checkHpMain && this.hp <= 0) {
