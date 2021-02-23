@@ -28,7 +28,7 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 const PARAMS = {
-    DEBUG: true,
+    DEBUG: false,
     SCALE: 3,
     BITWIDTH: 16
 };
@@ -69,5 +69,9 @@ const STATE = {
     HIT: 4,
     DEAD:5,
     ATTACKING2: 6,
-    COUNT: 7
+    VANISH: 7,
+    ARISE: 8,
+    AMBUSH: 9,
+    FALL: 10,
+    COUNT: 11
 }

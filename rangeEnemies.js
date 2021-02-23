@@ -331,3 +331,116 @@ class FlyingDemon extends RangeEnemies {
         super.draw(ctx);
     }
 }
+
+class mageCultist extends RangeEnemies {
+    constructor(game, x, y) {
+        super(game, x, y);
+        Object.assign(this, { game, x, y });
+
+        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
+        // this.state = STATE.MOVING;
+        this.facing = FACING_SIDE.LEFT;
+
+        this.paused = true;
+        this.dead = false;
+        this.deadCounter = 0;
+        this.flickerFlag = true;
+
+        this.width = 48;
+        this.height = 96;
+
+        this.animations = [];        
+        this.loadAnimations();
+
+        this.hp = 500;
+        this.maxHp = this.hp;
+        this.farDamage = 200;
+
+        this.FAR_ATTACK_DURATION = 0.5;
+        this.FAR_ATTACK_COOLDOWN = 3.5;
+
+        this.farAttackDuration = 0;
+        this.farAttackCooldown = 0;
+
+        this.canAttackFar = true;
+        this.farAttackRangeWidth = 600;
+
+        this.beingDamaged = false;
+
+        this.updateBB();
+    }
+
+    loadAnimations() {
+        for(var i = 0; i < STATE.COUNT; i++){
+            this.animations.push([]);
+            for(var j = 0; j < FACING_SIDE.COUNT; j++){
+                this.animations[i].push([]);
+            }
+        }
+
+        // facing left
+        this.animations[STATE.IDLE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1067, 60, 100, 8, 0.15, 190, true, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2085, 1570, 60, 100, 8, 0.15, 190, true, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2065, 60, 75, 100, 5, 0.15, 175, true, true);  // attack
+        this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3355, 1817, 60, 100, 3, 0.15, 190, true, true);  // hit
+        this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 3600, 1335, 60, 100, 2, 0.15, 190, true, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 2286, 570, 106, 97, 7, 0.15, 143, true, false); // dead
+        
+        // facing right
+        this.animations[STATE.IDLE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1067, 60, 100, 8, 0.15, 190, false, true); // idle
+        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1570, 60, 100, 8, 0.15, 190, false, true);  // run
+        this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 870, 60, 75, 100, 5, 0.15, 175, false, true);  // attack
+        this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1817, 60, 100, 3, 0.15, 190, false, true);  // hit
+        this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 1817, 60, 100, 3, 0.15, 190, false, true); // jump
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 105, 570, 106, 97, 7, 0.15, 143, false, false); // dead
+
+    }
+    update() {
+        if (super.update()) {
+            var bullet = null
+
+            if (this.facing === FACING_SIDE.RIGHT) {
+                bullet = new BulletOfDarkMage(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 1.5)
+                bullet.velocity.x = bullet.velocityX
+            } else {
+                bullet = new BulletOfDarkMage(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 1.5)
+                bullet.velocity.x = -bullet.velocityX
+            }
+            bullet.facing = this.facing
+            bullet.farDamage = this.farDamage;
+            this.game.addEntity(bullet)
+        }
+
+        
+
+        this.x += this.velocity.x;
+        this.updateBB();
+    }
+
+    updateBB() {
+        if(this.facing == FACING_SIDE.RIGHT){
+            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5); // body
+            this.BBFarAttackRange = new BoundingBox(this.BB.x + this.width*2, this.BB.y, 
+                this.farAttackRangeWidth, this.BB.height); // range attack
+        } else {
+            this.BB = new BoundingBox(this.x + this.width, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+            this.BBFarAttackRange = new BoundingBox(this.BB.x - this.farAttackRangeWidth, this.BB.y,
+                this.farAttackRangeWidth, this.BB.height);
+        }
+    };
+
+    drawMinimap(ctx, mmX, mmY){
+
+    }
+    
+    draw(ctx) {
+        if(this.state === STATE.DEAD && this.facing === FACING_SIDE.LEFT){
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.width * 3 - this.game.camera.x, this.y, 2.5);
+        }else{
+            this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        }
+        super.draw(ctx);
+    }
+}
