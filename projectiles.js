@@ -45,7 +45,6 @@ class Bullet {
     };
 };
 
-
 class BulletOfDarkMage extends Bullet {
     constructor(game, x, y) {
         super(game, x, y)
@@ -145,9 +144,9 @@ class BulletOfFlyingDemon extends Bullet {
         this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2);
         super.draw(ctx);
     };
-}
+};
 
-class FireSkull extends Projectiles {
+class FireSkull extends Bullet {
     constructor(game, x, y){
         super(game, x, y);
         Object.assign(this, {game, x, y});
@@ -203,4 +202,97 @@ class FireSkull extends Projectiles {
 
         super.draw(ctx);
     }
-}
+};
+
+class FireOfCultist extends Bullet {
+    constructor(game, x, y) {
+        super(game, x, y)
+        Object.assign(this, { game, x, y });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+        this.velocityX = PARAMS.BITWIDTH / 2;
+
+        this.animations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 196, 139, 22, 14, 4, 0.15, 24, false, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 6, 139, 22, 14, 4, 0.15, 24, false, true); // moving
+    }
+
+    updateBB() {
+        super.updateBB()
+
+        this.BB.width += 30;
+    };
+
+    draw(ctx) {
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3.5);
+        super.draw(ctx);
+    };
+};
+
+class FireImpactOfCultist {
+    constructor(game, x, y) {
+        //super(game, x, y)
+        Object.assign(this, { game, x, y });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+
+        this.animations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 242, 258, 22, 22, 5, 0.15, 22, false, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 4, 258, 22, 22, 5, 0.15, 22, false, true); // moving
+    }
+
+    updateBB() {
+        super.updateBB()
+
+        this.BB.width = this.BB.height = 90;
+        this.BB.y = this.BB.y - 60;
+    };
+
+    draw(ctx) {
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 80, 2);
+        super.draw(ctx);
+    };
+};

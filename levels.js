@@ -73,19 +73,56 @@ class secondLevel {
     
         // Add mobs 
         // assassin cultists
-        for(var i = 1; i <= 5; i++){
+        for(var i = 1; i <= 3; i++){
           this.game.addEntity(
             new assassinCultist(this.game, 500 * i, 525)
           );
         }
         // big cultists
-        for(var i = 1; i <= 5; i++){
+        for(var i = 1; i <= 3; i++){
           this.game.addEntity(
             new bigCultist(this.game, 500 * i, 350)
           );
         }
-        
+        // mage cultists
+        for(var i = 1; i <= 2; i++){
+          this.game.addEntity(
+            new mageCultist(this.game, 1000 * i, 500)
+          );
+        }
+        // twisted cultists
+        for(var i = 1; i <= 3; i++){
+          this.game.addEntity(
+            new twistedCultist(this.game, 1000 * i, 500)
+          );
+        }
+
+
         this.main.x = x;
         this.game.addEntity(this.main);
       }
+}
+
+class bossLevel {
+  constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
+
+  }
+
+  loadLevel(x, y) {
+      this.game.entities = [];
+      this.x = 0;
+  
+      // first background
+      for (var i = 0; i <= 5; i++) {
+        let background = new nightBackground(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+        this.game.addEntity(background);
+      }
+  
+      
+
+
+      this.main.x = x;
+      this.game.addEntity(this.main);
+    }
 }
