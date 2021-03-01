@@ -1,3 +1,4 @@
+
 class HealthBar {
     constructor(agent, game) {
         Object.assign(this, {agent, game});
@@ -8,7 +9,7 @@ class HealthBar {
     }
 
     draw(ctx) {
-        if (this.agent.hp < this.agent.maxHp) {
+        if (!this.agent.dead && this.agent.hp < this.agent.maxHp) {
             var ratio = this.agent.hp / this.agent.maxHp;
             ctx.strokeStyle = "Black";
             ctx.fillStyle = ratio < 0.2 ? "Red" : ratio < 0.5 ? "Yellow" : "Green";

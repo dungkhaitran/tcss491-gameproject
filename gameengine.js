@@ -12,13 +12,7 @@ class GameEngine {
         this.surfaceWidth = null;
         this.surfaceHeight = null;
 
-        this.left = false;
-        this.right = false;
-        this.up = false;
-        this.down = false;
-
-        this.state = GAME_STATE.ONGOING
-        this.level = 1
+        this.reset()
     };
 
     init(ctx) {
@@ -28,6 +22,16 @@ class GameEngine {
         this.startInput();
         this.timer = new Timer();
     };
+
+    reset() {
+        this.left = false;
+        this.right = false;
+        this.up = false;
+        this.down = false;
+
+        this.state = GAME_STATE.ONGOING
+        this.level = 1
+    }
 
     start() {
         var that = this;
@@ -76,8 +80,8 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keyup", function (e) {
             if (that.state != GAME_STATE.ONGOING) {
                 that.main.reset()
-                that.state = GAME_STATE.ONGOING
-                that.level = 1
+                that.reset()
+                that.camera.x = 0
                 that.camera.loadGame()
                 return
             }

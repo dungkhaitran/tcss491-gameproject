@@ -141,9 +141,7 @@ class MainCharacter {
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            console.log("this.deadCounter: " + this.deadCounter)
             if (this.deadCounter > 0.5) {
-                console.log("lose")
                 this.removeFromWorld = false;
                 this.game.state = GAME_STATE.LOSE
                 this.game.camera.loadGame()
@@ -301,6 +299,7 @@ class MainCharacter {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
                                 entity.dead = true;
+                                entity.velocity.x = 0
                                 that.killedEnemiesCount++
                                 checkEndGame = true
                             }
@@ -340,6 +339,7 @@ class MainCharacter {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
                                 entity.dead = true;
+                                entity.velocity.x = 0
                                 that.killedEnemiesCount++
                                 checkEndGame = true
                             }

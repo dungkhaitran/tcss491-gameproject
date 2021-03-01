@@ -18,7 +18,6 @@ class SceneManager {
 
   loadGame() {
     if (this.game.state === GAME_STATE.LOSE) {
-      console.log(this.game.state)
       new LoseLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     } else if (this.game.state === GAME_STATE.WIN) {
       new WinLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
