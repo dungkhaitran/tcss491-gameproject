@@ -60,6 +60,7 @@ const MAX_FALL = 270;
 
 
 const MAX_WIDTH = 2000;
+const HP_MAIN = 50000;
 
 const STATE = {
     IDLE: 0,
@@ -74,4 +75,10 @@ const STATE = {
     AMBUSH: 9,
     FALL: 10,
     COUNT: 11
+}
+
+const GAME_STATE = {
+    ONGOING: 0
+    , LOSE: 1
+    , WIN: 2
 }

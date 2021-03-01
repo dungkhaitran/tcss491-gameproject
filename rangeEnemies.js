@@ -133,7 +133,7 @@ class DarkMage extends RangeEnemies {
 
         this.hp = 500;
         this.maxHp = this.hp;
-        this.farDamage = 100;
+        this.farDamage = 200;
 
         this.FAR_ATTACK_DURATION = 0.5;
         this.FAR_ATTACK_COOLDOWN = 3.5;
@@ -179,10 +179,10 @@ class DarkMage extends RangeEnemies {
             var bullet = null
 
             if (this.facing === FACING_SIDE.RIGHT) {
-                bullet = new FireSkull(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 1.5)
+                bullet = new BulletOfDarkMage(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 1.5)
                 bullet.velocity.x = bullet.velocityX
             } else {
-                bullet = new FireSkull(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 1.5)
+                bullet = new BulletOfDarkMage(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 1.5)
                 bullet.velocity.x = -bullet.velocityX
             }
             bullet.facing = this.facing
@@ -244,7 +244,7 @@ class FlyingDemon extends RangeEnemies {
 
         this.hp = 700;
         this.maxHp = this.hp;
-        this.farDamage = 200;
+        this.farDamage = 300;
 
         this.FAR_ATTACK_DURATION = 0.8;
         this.FAR_ATTACK_COOLDOWN = 3.5;
@@ -352,7 +352,7 @@ class mageCultist extends RangeEnemies {
 
         this.hp = 500;
         this.maxHp = this.hp;
-        this.farDamage = 200;
+        this.farDamage = 250;
 
         this.FAR_ATTACK_DURATION = 1;
         this.FAR_ATTACK_COOLDOWN = 3.5;

@@ -1,6 +1,6 @@
 class firstLevel {
-    constructor(game, main, x, y){
-        Object.assign(this, {game, main, x, y});
+    constructor(game, x, y){
+        Object.assign(this, {game, x, y});
         
     }
 
@@ -50,8 +50,15 @@ class firstLevel {
         //   );
         // }
         
-        this.main.x = x;
-        this.game.addEntity(this.main);
+
+        this.game.main = new MainCharacter(
+          this.game,
+          6.5 * 16,
+          30 * 16
+        );
+    
+        this.game.main.x = x;
+        this.game.addEntity(this.game.main);
       }
 }
 
@@ -67,69 +74,98 @@ class secondLevel {
     
         // first background
         for (var i = 0; i <= 5; i++) {
-          let background = new nightBackground(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+          let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
     
         // Add mobs 
         // assassin cultists
-        for(var i = 1; i <= 3; i++){
+        for(var i = 1; i <= 5; i++){
           this.game.addEntity(
-            new assassinCultist(this.game, 500 * i, 525)
+            new assassinCultist(this.game, 1500 * i, 525)
           );
         }
         // big cultists
         for(var i = 1; i <= 3; i++){
           this.game.addEntity(
-            new bigCultist(this.game, 500 * i, 350)
+            new bigCultist(this.game, 2000 * i, 350)
           );
         }
         // mage cultists
-        for(var i = 1; i <= 2; i++){
+        for(var i = 1; i <= 5; i++){
           this.game.addEntity(
-            new mageCultist(this.game, 1000 * i, 500)
+            new mageCultist(this.game, 4000 * i, 500)
           );
         }
         // twisted cultists
-        for(var i = 1; i <= 3; i++){
+        for(var i = 1; i <= 4; i++){
           this.game.addEntity(
-            new twistedCultist(this.game, 1000 * i, 500)
+            new twistedCultist(this.game, 3500 * i, 500)
           );
         }
 
-
-        this.main.x = x;
-        this.game.addEntity(this.main);
+        this.game.main = new MainCharacter(
+          this.game,
+          6.5 * 16,
+          30 * 16
+        );
+    
+        this.game.main.x = x;
+        this.game.addEntity(this.game.main);
       }
 }
 
-class finalLevel {
+// class finalLevel {
+//   constructor(game, main, x, y){
+//       Object.assign(this, {game, main, x, y});
+
+//   }
+
+//   loadLevel(x, y) {
+//       this.game.entities = [];
+//       this.x = 0;
+  
+//       // first background
+//       for (var i = 0; i <= 5; i++) {
+//         let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+//         this.game.addEntity(background);
+//       }
+  
+      
+
+//       // big cultists
+//        for(var i = 1; i <= 1; i++){
+//         this.game.addEntity(
+//           new bigCultist(this.game, 500 * i, 350)
+//         );
+//       }
+
+
+//       this.main.x = x;
+//       this.game.addEntity(this.main);
+//     }
+// }
+
+class LoseLevel {
   constructor(game, main, x, y){
       Object.assign(this, {game, main, x, y});
 
   }
 
   loadLevel(x, y) {
-      this.game.entities = [];
-      this.x = 0;
-  
-      // first background
-      for (var i = 0; i <= 5; i++) {
-        let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
-        this.game.addEntity(background);
-      }
-  
-      
+      let background = new Lose(this.game, 0, 0);
+      this.game.addEntity(background);
+    }
+}
 
-      // big cultists
-       for(var i = 1; i <= 1; i++){
-        this.game.addEntity(
-          new bigCultist(this.game, 500 * i, 350)
-        );
-      }
+class WinLevel {
+  constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
 
+  }
 
-      this.main.x = x;
-      this.game.addEntity(this.main);
+  loadLevel(x, y) {
+      let background = new Win(this.game, 0, 0);
+      this.game.addEntity(background);
     }
 }

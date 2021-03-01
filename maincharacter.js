@@ -7,19 +7,8 @@ class MainCharacter {
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/2.png");
 
-        this.facing = FACING_SIDE.RIGHT;
-        this.state = STATE.IDLE;
-        this.dead = false;
-
-        this.velocity = { x: 0, y: 0 };
-
         this.animations = [];
         this.loadAnimations();
-
-        this.hp = 5000;
-        this.maxHp = this.hp;
-        this.meleeDamage = 100;
-        this.meleeDamage2 = 200;
 
         this.MELEE_ATTACK_DURATION = 0.25;
         this.MELEE_ATTACK_COOLDOWN = 0.3;
@@ -27,22 +16,11 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION2 = 0.25; // 3
         this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
-        this.meleeAttackDuration = 0;
-        this.meleeAttackCooldown = 0;
-
-        
-        this.meleeAttackDuration2 = 0 ;
-        this.meleeAttackCooldown2 = 0;
-
-        this.canAttackMelee = true;
-        this.canAttackMelee2 = true;
-
         this.meleeAttackRangeWidth = 70;
         this.meleeAttackRangeWidth2 = 80;
 
         this.width = 48;
         this.height = 96;
-
         
         this.updateBB();
 
@@ -64,7 +42,35 @@ class MainCharacter {
         for (var i = this.jumpingSteps.length - 1; i >= 0; i--) {
             this.jumpingSteps.push(-this.jumpingSteps[i])
         }
+
+        this.reset()
     };
+
+    reset() {
+        this.facing = FACING_SIDE.RIGHT;
+        this.state = STATE.IDLE;
+        this.deadCounter = 0;
+        this.dead = false;
+
+        this.velocity = { x: 0, y: 0 };
+
+        this.hp = HP_MAIN;
+        this.maxHp = this.hp;
+
+        this.meleeDamage = 100;
+        this.meleeDamage2 = 200;
+
+        this.meleeAttackDuration = 0;
+        this.meleeAttackCooldown = 0;
+
+        this.meleeAttackDuration2 = 0 ;
+        this.meleeAttackCooldown2 = 0;
+
+        this.canAttackMelee = true;
+        this.canAttackMelee2 = true;
+
+        this.killedEnemiesCount = 0;
+    }
 
     loadAnimations() {
         for (var i = 0; i < STATE.COUNT; i++) { // states
@@ -135,7 +141,13 @@ class MainCharacter {
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            if (this.deadCounter > 0.5) this.removeFromWorld = false;
+            console.log("this.deadCounter: " + this.deadCounter)
+            if (this.deadCounter > 0.5) {
+                console.log("lose")
+                this.removeFromWorld = false;
+                this.game.state = GAME_STATE.LOSE
+                this.game.camera.loadGame()
+            }
             
         } else{
             if (this.game.jumping) {
@@ -256,8 +268,8 @@ class MainCharacter {
             this.y += this.velocity.y;
 
             // collision
-            var that = this;
             var checkHpMain = false;
+            var that = this;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
                         && !(entity instanceof Bullet) && !(entity instanceof RunningEnemies) && !entity.dead) {
@@ -276,6 +288,7 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.meleeDamage2, "White"));
                         checkHpMob = true;
                     }
+                    var checkEndGame = false
                     if (entity instanceof MeleeEnemies) {
                         if (entity.attacking && entity.BBMeleeAttackRange && that.BB.collide(entity.BBMeleeAttackRange)
                                 && entity.dealDamage === false) {
@@ -288,6 +301,8 @@ class MainCharacter {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
                                 entity.dead = true;
+                                that.killedEnemiesCount++
+                                checkEndGame = true
                             }
                         }
                         // if (entity.BBMeleeAttackRange) {
@@ -325,6 +340,8 @@ class MainCharacter {
                             if (entity.hp <= 0) {
                                 entity.hp = 0;
                                 entity.dead = true;
+                                that.killedEnemiesCount++
+                                checkEndGame = true
                             }
                         }
                         // if (entity.BBFarAttackRange) {
@@ -357,6 +374,31 @@ class MainCharacter {
                             }
                         // }
                     }
+
+                    if (checkEndGame) {
+                        console.log("killed: " + that.killedEnemiesCount)
+
+                        switch (that.game.level) {
+                            case 1:
+                                // if (this.game.killedEnemiesCount >= 45) {
+                                if (that.killedEnemiesCount >= 11) {
+                                    that.game.level++
+                                    that.killedEnemiesCount = 0
+                                    that.game.camera.loadGame()
+                                    that.game.camera.x = 0
+                                }
+                                break;
+                        
+                            case 2:
+                                // if (this.game.killedEnemiesCount >= 11) {
+                                if (that.killedEnemiesCount >= 45) {
+                                    that.game.state = GAME_STATE.WIN
+                                    that.game.camera.loadGame()
+                                    that.game.camera.x = 0
+                                }
+                                break;
+                        }
+            }
 
                     if(entity.gotDamaged || entity.gotDamaged2){
                         entity.state = STATE.HIT;

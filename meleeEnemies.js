@@ -318,7 +318,7 @@ class assassinCultist extends MeleeEnemies {
         this.animations = [];        
         this.loadAnimations();
 
-        this.hp = 1000;
+        this.hp = 800;
         this.maxHp = this.hp;
         this.meleeDamage = 150;
 
@@ -532,9 +532,9 @@ class twistedCultist extends MeleeEnemies {
         this.animations = [];        
         this.loadAnimations();
 
-        this.hp = 1000;
+        this.hp = 1200;
         this.maxHp = this.hp;
-        this.meleeDamage = 200;
+        this.meleeDamage = 150;
 
         this.MELEE_ATTACK_DURATION = 1;
         this.MELEE_ATTACK_COOLDOWN = 3;
