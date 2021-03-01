@@ -103,7 +103,7 @@ class secondLevel {
       }
 }
 
-class bossLevel {
+class finalLevel {
   constructor(game, main, x, y){
       Object.assign(this, {game, main, x, y});
 
@@ -115,11 +115,18 @@ class bossLevel {
   
       // first background
       for (var i = 0; i <= 5; i++) {
-        let background = new nightBackground(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+        let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
         this.game.addEntity(background);
       }
   
       
+
+      // big cultists
+       for(var i = 1; i <= 1; i++){
+        this.game.addEntity(
+          new bigCultist(this.game, 500 * i, 350)
+        );
+      }
 
 
       this.main.x = x;
