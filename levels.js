@@ -1,6 +1,6 @@
 class firstLevel {
-    constructor(game, main, x, y){
-        Object.assign(this, {game, main, x, y});
+    constructor(game, x, y){
+        Object.assign(this, {game, x, y});
         
     }
 
@@ -50,8 +50,15 @@ class firstLevel {
         //   );
         // }
         
-        this.main.x = x;
-        this.game.addEntity(this.main);
+
+        this.game.main = new MainCharacter(
+          this.game,
+          6.5 * 16,
+          30 * 16
+        );
+    
+        this.game.main.x = x;
+        this.game.addEntity(this.game.main);
       }
 }
 
@@ -97,9 +104,14 @@ class secondLevel {
           );
         }
 
-
-        this.main.x = x;
-        this.game.addEntity(this.main);
+        this.game.main = new MainCharacter(
+          this.game,
+          6.5 * 16,
+          30 * 16
+        );
+    
+        this.game.main.x = x;
+        this.game.addEntity(this.game.main);
       }
 }
 
@@ -124,5 +136,29 @@ class bossLevel {
 
       this.main.x = x;
       this.game.addEntity(this.main);
+    }
+}
+
+class LoseLevel {
+  constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
+
+  }
+
+  loadLevel(x, y) {
+      let background = new Lose(this.game, 0, 0);
+      this.game.addEntity(background);
+    }
+}
+
+class WinLevel {
+  constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
+
+  }
+
+  loadLevel(x, y) {
+      let background = new Win(this.game, 0, 0);
+      this.game.addEntity(background);
     }
 }

@@ -13,6 +13,8 @@ ASSET_MANAGER.queueDownload("./sprites/background/forest.png");
 ASSET_MANAGER.queueDownload("./sprites/background/blood-forest.png");
 ASSET_MANAGER.queueDownload("./sprites/background/Castle-Background.png");
 ASSET_MANAGER.queueDownload("./sprites/background/Ice-Background.png");
+ASSET_MANAGER.queueDownload("./sprites/background/game-over-background.png");
+ASSET_MANAGER.queueDownload("./sprites/background/win.png");
 
 // tiles
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile1.png");

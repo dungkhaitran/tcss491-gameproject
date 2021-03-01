@@ -16,6 +16,9 @@ class GameEngine {
         this.right = false;
         this.up = false;
         this.down = false;
+
+        this.state = GAME_STATE.ONGOING
+        this.level = 1
     };
 
     init(ctx) {
@@ -28,6 +31,7 @@ class GameEngine {
 
     start() {
         var that = this;
+        that.camera.loadGame();
         (function gameLoop() {
             that.loop();
             requestAnimFrame(gameLoop, that.ctx.canvas);
@@ -38,6 +42,9 @@ class GameEngine {
         var that = this;
 
         this.ctx.canvas.addEventListener("keydown", function (e) {
+            if (that.state != GAME_STATE.ONGOING) {
+                return
+            }
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
@@ -67,6 +74,13 @@ class GameEngine {
         }, false);
 
         this.ctx.canvas.addEventListener("keyup", function (e) {
+            if (that.state != GAME_STATE.ONGOING) {
+                that.main.reset()
+                that.state = GAME_STATE.ONGOING
+                that.level = 1
+                that.camera.loadGame()
+                return
+            }
             switch (e.code) {
                 case "ArrowLeft":
                 case "KeyA":
@@ -96,6 +110,9 @@ class GameEngine {
     };
 
     update() {
+        if (this.state != GAME_STATE.ONGOING) {
+            return
+        }
         var entitiesCount = this.entities.length;
 
         for (var i = 0; i < entitiesCount; i++) {
