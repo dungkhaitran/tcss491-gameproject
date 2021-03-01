@@ -376,12 +376,9 @@ class MainCharacter {
                     }
 
                     if (checkEndGame) {
-                        console.log("killed: " + that.killedEnemiesCount)
-
                         switch (that.game.level) {
                             case 1:
-                                // if (this.game.killedEnemiesCount >= 45) {
-                                if (that.killedEnemiesCount >= 11) {
+                                if (that.killedEnemiesCount >= 45) {
                                     that.game.level++
                                     that.killedEnemiesCount = 0
                                     that.game.camera.loadGame()
@@ -390,8 +387,7 @@ class MainCharacter {
                                 break;
                         
                             case 2:
-                                // if (this.game.killedEnemiesCount >= 11) {
-                                if (that.killedEnemiesCount >= 45) {
+                                if (that.killedEnemiesCount >= 11) {
                                     that.game.state = GAME_STATE.WIN
                                     that.game.camera.loadGame()
                                     that.game.camera.x = 0
