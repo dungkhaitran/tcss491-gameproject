@@ -82,25 +82,25 @@ class secondLevel {
         // assassin cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new assassinCultist(this.game, 1500 * i, 525)
+            new assassinCultist(this.game, 800 * i, 525)
           );
         }
         // big cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new bigCultist(this.game, 2000 * i, 350)
+            new bigCultist(this.game, 1300 * i, 350)
           );
         }
         // mage cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new mageCultist(this.game, 4000 * i, 500)
+            new mageCultist(this.game, 1000 * i, 500)
           );
         }
         // twisted cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new twistedCultist(this.game, 3500 * i, 500)
+            new twistedCultist(this.game, 900 * i, 500)
           );
         }
 
