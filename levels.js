@@ -169,3 +169,14 @@ class WinLevel {
       this.game.addEntity(background);
     }
 }
+class StartLevel {
+       constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
+
+  }
+
+  loadLevel(x, y) {
+      let background = new Start(this.game, 0, 0);
+      this.game.addEntity(background);
+    }
+}

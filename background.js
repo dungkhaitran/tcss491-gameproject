@@ -117,7 +117,7 @@ class Lose {
         Object.assign(this, { game, x, y });
 
         // spritesheet
-        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/game-over-background.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/lose.png");
     }
     update() {
 
@@ -137,6 +137,24 @@ class Win {
 
         // spritesheet
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/win.png");
+    }
+    update() {
+
+    }
+    drawMiniMap(ctx, mmx, mmy) {
+
+    }
+    draw(ctx) {
+        ctx.drawImage(this.spritesheet, 0, 0, this.spritesheet.width, this.spritesheet.height, 
+            0, 0, 1000, 650);
+    }
+}
+class Start {
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+
+        // spritesheet
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/background/start.png");
     }
     update() {
 
