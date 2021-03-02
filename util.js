@@ -81,4 +81,5 @@ const GAME_STATE = {
     ONGOING: 0
     , LOSE: 1
     , WIN: 2
+    , START:3
 }
