@@ -18,8 +18,9 @@ ASSET_MANAGER.queueDownload("./sprites/background/old-dark-castle.png");
 ASSET_MANAGER.queueDownload("./sprites/background/night-town.png");
 ASSET_MANAGER.queueDownload("./sprites/background/Castle-Background.png");
 ASSET_MANAGER.queueDownload("./sprites/background/Ice-Background.png");
-ASSET_MANAGER.queueDownload("./sprites/background/game-over-background.png");
+ASSET_MANAGER.queueDownload("./sprites/background/lose.png");
 ASSET_MANAGER.queueDownload("./sprites/background/win.png");
+ASSET_MANAGER.queueDownload("./sprites/background/start.png");
 
 // tiles
 ASSET_MANAGER.queueDownload("./sprites/tileset/tile1.png");

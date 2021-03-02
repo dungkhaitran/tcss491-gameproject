@@ -21,7 +21,9 @@ class SceneManager {
       new LoseLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     } else if (this.game.state === GAME_STATE.WIN) {
       new WinLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
-    } else {
+    }else if(this.game.state === GAME_STATE.START){
+      new StartLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH,0 * PARAMS.BLOCKWIDTH)
+    }else {
       this.levels[this.game.level].loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     }
   }
