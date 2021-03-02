@@ -4,8 +4,11 @@
  * Members: Hung Thai, Dung Tran, Quoc Phung
  */
 
+ // main character
 var ASSET_MANAGER = new AssetManager();
 ASSET_MANAGER.queueDownload("./sprites/2.png");
+ASSET_MANAGER.queueDownload("./sprites/full-main.png");
+
 
 //backgrounds
 ASSET_MANAGER.queueDownload("./sprites/background/ParFull.png");
@@ -35,7 +38,6 @@ ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/mage-cultist.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/cultist/twisted-cultist.png");
 
 ASSET_MANAGER.queueDownload("./sprites/mobs/knight.png");
-ASSET_MANAGER.queueDownload("./sprites/mobs/Fullmain.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/archer.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/knight-2.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/skeleton.png");
