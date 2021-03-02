@@ -148,23 +148,18 @@ class BulletOfFlyingDemon extends Bullet {
 
 class FireSkull extends Bullet {
     constructor(game, x, y){
-        super(game, x, y);
-        Object.assign(this, {game, x, y});
+        super(game, x, y)
+        Object.assign(this, { game, x, y });
 
-        this.velocity = {x: -10, y: 0};
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/fire-skull.png");
 
-        this.darkMage = new DarkMage(this.game, this.x, this.y);
+        this.facing = FACING_SIDE.RIGHT;
+        this.velocityX = PARAMS.BITWIDTH / 2;
 
         this.animations = [];
         this.loadAnimations();
-        
-        this.width;
-        this.height;
 
-        this.vanish = false;
-        this.dealDamage = true;
-        this.gotDamaged = false;
+        this.updateBB();
 
     }
 
@@ -177,28 +172,20 @@ class FireSkull extends Bullet {
         }
 
         //facing left
-        this.animations[STATE.MOVING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 10, 130, 86, 90, 8, 0.15, 12, true, true); // moving
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 10, 130, 86, 90, 8, 0.15, 12, false, true); // moving
         //facing right
-        this.animations[STATE.MOVING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 10, 20, 86, 90, 8, 0.15, 12, false, true); // moving
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 10, 20, 86, 90, 8, 0.15, 12, false, true); // moving
     }
 
     update(){
-        const TICK = this.game.clockTick;
+        super.updateBB()
 
-        this.x += this.darkMage.x
-
-        if(this.vanish){
-            this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 0.5) this.removeFromWorld = true;
-        }
-        if(this.x === (this.hero.x + this.hero.width)/2 && this.y === (this.hero.y + this.hero.height)/2){
-            this.vanish = true;
-        }
+        this.BB.width += 30;
 
     }
 
     draw(ctx){
-        this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.5);
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.5);
 
         super.draw(ctx);
     }

@@ -59,7 +59,7 @@ class MainCharacter {
         this.maxHp = this.hp;
 
         this.meleeDamage = 100;
-        this.meleeDamage2 = 200;
+        this.meleeDamage2 = 0;
 
         this.meleeAttackDuration = 0;
         this.meleeAttackCooldown = 0;
@@ -419,6 +419,21 @@ class MainCharacter {
                 this.hp = 0;
                 this.dead = true;
                 // this.removeFromWorld = false;
+            }
+
+            if(this.state === STATE.ATTACKING2){
+                var bullet = null
+            
+                if (this.facing === FACING_SIDE.RIGHT) {
+                    bullet = new FireSkull(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                    bullet.velocity.x += 10;
+                } else {
+                    bullet = new FireSkull(this.game, this.BB.x - this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                    bullet.velocity.x -= 10
+                }
+                bullet.facing = this.facing;
+                bullet.farDamage = this.farDamage;
+                setTimeout(() => {this.game.addEntity(bullet);}, 300);
             }
 
             this.updateBB();
