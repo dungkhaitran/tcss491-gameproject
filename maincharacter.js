@@ -378,7 +378,7 @@ class MainCharacter {
                     if (checkEndGame) {
                         switch (that.game.level) {
                             case 1:
-                                if (that.killedEnemiesCount >= 45) {
+                                if (that.killedEnemiesCount >= 5) {
                                     that.game.level++
                                     that.killedEnemiesCount = 0
                                     that.game.camera.loadGame()

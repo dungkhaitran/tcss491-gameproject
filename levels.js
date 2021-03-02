@@ -16,21 +16,21 @@ class firstLevel {
     
         // Add mobs 
         // Dark mage squad
-        for(var i = 1; i <= 10; i++){
+        for(var i = 1; i <= 2; i++){
           this.game.addEntity(
             new DarkMage(this.game, 1300 * i, 375)
           );
         }
     
         // Birdman squad
-        for(var i = 1; i <= 20; i++){
+        for(var i = 1; i <= 2; i++){
           this.game.addEntity(
             new BirdMan(this.game, 1000 * i, 525)
           );
         }
     
         // Flying Demon squad
-        for(var i = 1; i <= 5; i++){
+        for(var i = 1; i <= 1; i++){
           this.game.addEntity(
             new FlyingDemon(this.game, 1500 * i, 50)
           );
@@ -39,7 +39,7 @@ class firstLevel {
         // Nightmare Horse squad
         for(var i = 1; i <= 10; i++){
           this.game.addEntity(
-            new NightmareHorse(this.game, 2000 * i, 450, FACING_SIDE.LEFT)
+            new NightmareHorse(this.game, 1200 * i, 450, FACING_SIDE.LEFT)
           );
         }
         
