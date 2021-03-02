@@ -387,7 +387,7 @@ class MainCharacter {
                                 break;
                         
                             case 2:
-                                if (that.killedEnemiesCount >= 11) {
+                                if (that.killedEnemiesCount >= 7) {
                                     that.game.state = GAME_STATE.WIN
                                     that.game.camera.loadGame()
                                     that.game.camera.x = 0
