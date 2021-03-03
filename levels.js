@@ -2,12 +2,14 @@ class firstLevel {
     constructor(game, x, y){
         Object.assign(this, {game, x, y});
         
+       
     }
 
     loadLevel(x, y) {
         this.game.entities = [];
         this.x = 0;
-    
+      
+        
         // first background
         for (var i = 0; i <= 5; i++) {
           let background = new bloodForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
@@ -56,9 +58,10 @@ class firstLevel {
           6.5 * 16,
           32 * 16
         );
-    
+      
         this.game.main.x = x;
         this.game.addEntity(this.game.main);
+       
       }
 }
 
