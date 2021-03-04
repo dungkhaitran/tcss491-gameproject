@@ -11,13 +11,10 @@ ASSET_MANAGER.queueDownload("./sprites/full-main.png");
 
 
 //backgrounds
-ASSET_MANAGER.queueDownload("./sprites/background/ParFull.png");
+ASSET_MANAGER.queueDownload("./sprites/background/cave.jpg");
 ASSET_MANAGER.queueDownload("./sprites/background/forest.png");
 ASSET_MANAGER.queueDownload("./sprites/background/blood-forest.png");
 ASSET_MANAGER.queueDownload("./sprites/background/old-dark-castle.png");
-ASSET_MANAGER.queueDownload("./sprites/background/night-town.png");
-ASSET_MANAGER.queueDownload("./sprites/background/Castle-Background.png");
-ASSET_MANAGER.queueDownload("./sprites/background/Ice-Background.png");
 ASSET_MANAGER.queueDownload("./sprites/background/lose.png");
 ASSET_MANAGER.queueDownload("./sprites/background/win.png");
 ASSET_MANAGER.queueDownload("./sprites/background/start.png");
@@ -58,6 +55,9 @@ ASSET_MANAGER.queueDownload("./sprites/effects/shine.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/snow.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/spark.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/sunburn.png");
+
+// items
+ASSET_MANAGER.queueDownload("./sprites/decoration/health-potion.png");
 
 
 ASSET_MANAGER.downloadAll(function () {

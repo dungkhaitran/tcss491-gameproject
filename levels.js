@@ -10,10 +10,12 @@ class firstLevel {
     
         // first background
         for (var i = 0; i <= 5; i++) {
-          let background = new bloodForest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+          let background = new forest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
     
+        this.game.addEntity(new healthPotion(this.game, 300, 570));
+        
         // Add mobs 
         // Dark mage squad
         for(var i = 1; i <= 2; i++){
@@ -74,7 +76,7 @@ class secondLevel {
     
         // first background
         for (var i = 0; i <= 5; i++) {
-          let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+          let background = new cave(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
     
@@ -82,32 +84,32 @@ class secondLevel {
         // assassin cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new assassinCultist(this.game, 800 * i, 525)
+            new assassinCultist(this.game, 800 * i, 475)
           );
         }
         // big cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new bigCultist(this.game, 1300 * i, 350)
+            new bigCultist(this.game, 1300 * i, 300)
           );
         }
         // mage cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new mageCultist(this.game, 1000 * i, 500)
+            new mageCultist(this.game, 1000 * i, 450)
           );
         }
         // twisted cultists
         for(var i = 1; i <= 2; i++){
           this.game.addEntity(
-            new twistedCultist(this.game, 900 * i, 500)
+            new twistedCultist(this.game, 900 * i, 450)
           );
         }
 
         this.game.main = new MainCharacter(
           this.game,
           6.5 * 16,
-          32 * 16
+          450
         );
     
         this.game.main.x = x;
