@@ -1,14 +1,16 @@
 class Bullet {
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team) {
+        Object.assign(this, { game, x, y, team });
 
-        this.velocityX = PARAMS.BITWIDTH / 3;
+        this.velocityX = 11;
         this.velocity = { x: -this.velocityX, y: 0 };
 
         this.width = 48;
         this.height = 48;
 
         this.farDamage = 0
+
+        this.type = BULLET_TYPE.BULLET_NORMAL
 
         this.dead = false
 
@@ -23,7 +25,9 @@ class Bullet {
 
         this.x += this.velocity.x;
 
-        if ((this.x < -this.width) || (this.x > MAX_WIDTH)) {
+        var camera = this.x - this.game.camera.x;
+        if ((camera <= -this.width) || (camera >= PARAMS.CANVAS_WIDTH) || (this.y <= -this.height) || (this.y >= 650)) {
+            this.dead = true
             this.removeFromWorld = true
         }
 
@@ -46,9 +50,9 @@ class Bullet {
 };
 
 class BulletOfDarkMage extends Bullet {
-    constructor(game, x, y) {
-        super(game, x, y)
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/dark-fire.png");
 
@@ -92,13 +96,14 @@ class BulletOfDarkMage extends Bullet {
 };
 
 class BulletOfFlyingDemon extends Bullet {
-    constructor(game, x, y){
-        super(game, x, y)
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team = TEAM.TEAM_MOB){
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/breath-fire.png");
 
         this.facing = FACING_SIDE.RIGHT;
+        this.velocity.x = 0;
 
         this.animations = [];
         this.loadAnimations();
@@ -122,7 +127,7 @@ class BulletOfFlyingDemon extends Bullet {
         super.update();
        
         if(this.facing === FACING_SIDE.LEFT){
-            this.x -= 1;
+            this.x -= 10;
             this.y += 5;
         }else{
             this.x += 10;
@@ -147,14 +152,15 @@ class BulletOfFlyingDemon extends Bullet {
 };
 
 class FireSkull extends Bullet {
-    constructor(game, x, y){
-        super(game, x, y)
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team = TEAM.TEAM_MAIN){
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/fire-skull.png");
 
         this.facing = FACING_SIDE.RIGHT;
-        this.velocityX = PARAMS.BITWIDTH / 2;
+
+        this.damage = 233
 
         this.animations = [];
         this.loadAnimations();
@@ -178,10 +184,28 @@ class FireSkull extends Bullet {
     }
 
     update(){
-        super.updateBB()
+        super.update()
 
         this.BB.width += 30;
 
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
+                if (!that.dead && !entity.dead && that.BB.collide(entity.BB)) {
+                    entity.hp -= that.damage;
+                    that.dead = true;
+                    that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
+
+                    if (entity.hp <= 0) {
+                        entity.hp = 0;
+                        entity.dead = true;
+                        entity.velocity.x = 0
+                        that.own.killedEnemiesCount++
+                        that.own.checkEndGame(that.own)
+                    }
+                }
+            }
+        })
     }
 
     draw(ctx){
@@ -192,9 +216,9 @@ class FireSkull extends Bullet {
 };
 
 class FireOfCultist extends Bullet {
-    constructor(game, x, y) {
-        super(game, x, y)
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
 
@@ -239,9 +263,9 @@ class FireOfCultist extends Bullet {
 };
 
 class FireImpactOfCultist {
-    constructor(game, x, y) {
-        //super(game, x, y)
-        Object.assign(this, { game, x, y });
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+        //super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
 

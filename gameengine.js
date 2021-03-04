@@ -29,7 +29,7 @@ class GameEngine {
         this.up = false;
         this.down = false;
 
-        this.state = GAME_STATE.ONGOING
+        this.state = GAME_STATE.START
         this.level = 1
     }
 
@@ -70,19 +70,28 @@ class GameEngine {
                     }
                     break;
                 case "KeyX":
-                    if (that.main.canAttackMelee2) {
-                        that.attacking2 = true;
+                    // if (that.main.canAttackMelee2) {
+                    //     that.attacking2 = true;
+                    // }
+                    if (that.main.canCastSkill2) {
+                        that.castSkill2 = true;
                     }
                     break;
             }
         }, false);
 
         this.ctx.canvas.addEventListener("keyup", function (e) {
-            if (that.state != GAME_STATE.ONGOING) {
-                that.main.reset()
-                that.reset()
-                that.camera.x = 0
-                that.camera.loadGame()
+            if (that.state !== GAME_STATE.ONGOING) {
+                if (e.code === "Enter") {
+                    if (that.state === GAME_STATE.START) {
+                        that.state = GAME_STATE.ONGOING
+                        that.camera.loadGame()
+                    } else {
+                        that.main.reset()
+                        that.reset()
+                        that.camera.x = 0
+                    }
+                }
                 return
             }
             switch (e.code) {

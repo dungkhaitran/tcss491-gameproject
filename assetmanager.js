@@ -24,31 +24,109 @@ class AssetManager {
     downloadAll(callback) {
         if (this.downloadQueue.length === 0) setTimeout(callback, 10);
         for (var i = 0; i < this.downloadQueue.length; i++) {
-            var img = new Image();
+           
             var that = this;
 
             var path = this.downloadQueue[i];
+            var ext = path.substring(path.length - 3);
             console.log(path);
+            switch(ext){
+                case 'png':
+                    var img = new Image();
+                    img.addEventListener("load", function () {
+                        console.log("Loaded " + this.src);
+                        that.successCount++;
+                        if (that.isDone()) callback();
+                    });
+                    img.addEventListener("error", function () {
+                        console.log("Error loading " + this.src);
+                        that.errorCount++;
+                        if (that.isDone()) callback();
+                    });
+                    img.src = path;
+                    this.cache[path] = img;
+                    break;
+                case 'mp3':    
+                var aud = new Audio();
+                aud.addEventListener("loadeddata", function(){
+                    console.log("Loaded " + this.src);
+                    that.successCount++;
+                    if(that.isDone()) callback();
+                });
+                aud.addEventListener("error", function(){
+                    console.log("Error loading " + this.src);
+                    that.errorCount++;
+                    if(that.isDone()) callback();
+                });
+                aud.addEventListener("ended", function(){
+                        aud.pause();
+                        aud.currentTime = 0;
+                });
 
-            img.addEventListener("load", function () {
-                console.log("Loaded " + this.src);
-                that.successCount++;
-                if (that.isDone()) callback();
-            });
+                aud.src = path;
+                aud.load();
 
-            img.addEventListener("error", function () {
-                console.log("Error loading " + this.src);
-                that.errorCount++;
-                if (that.isDone()) callback();
-            });
+                this.cache[path] = aud;
+                break;
 
-            img.src = path;
-            this.cache[path] = img;
+
+            }
+           
+           
+
+           
+
+           
         }
     };
 
     getAsset(path) {
         return this.cache[path];
     };
+    
+    //for audio as lecture
+    playAsset(path){
+        let audio = this.cache[path];
+        audio.currentTime =0;
+        audio.play();
+    };
+
+    muteAudio(mute){
+        for(var key in this.cache){
+            let asset = this.cache[key];
+            if(asset instanceof Audio){
+                asset.muted = mute;
+            }
+        }
+    };
+    adjustVolume(volume){
+        for(var key in this.cache){
+            let asset = this.cache[key];
+            if(asset instanceof Audio){
+                asset.volume = volume;
+            }
+        }
+    };
+
+    pauseBackgroundMusic(){
+        for(var key in this.cache){
+            let asset = this.cache[key];
+            if(asset instanceof Audio){
+                asset.pause();
+                asset.currentTime = 0;
+            }
+        }
+    };
+
+    autoRepeat(path){
+        var aud = this.cache[path];
+        aud.addEventListener("ended", function(){
+            aud.play();
+        });
+    };
+
+
+
+
 };
 
