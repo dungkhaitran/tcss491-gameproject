@@ -30,7 +30,7 @@ class SceneManager {
       this.levels[this.game.level].loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     }
   }
-  /* audio
+  // audio
   updateAudio(){
     var mute = document.getElementById("mute").checked;
     var volume = document.getElementById("volume").value;
@@ -38,7 +38,7 @@ class SceneManager {
     ASSET_MANAGER.muteAudio(mute);
     ASSET_MANAGER.adjustVolume(volume);
   };
-  */
+  
   update() {
     PARAMS.DEBUG = document.getElementById("debug").checked;
     this.updateAudio();

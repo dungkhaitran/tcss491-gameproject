@@ -55,8 +55,11 @@ ASSET_MANAGER.queueDownload("./sprites/effects/shine.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/snow.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/spark.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/sunburn.png");
+
 //background music
 ASSET_MANAGER.queueDownload("./music/first-stage-music.mp3");
+ASSET_MANAGER.queueDownload("./music/second-stage-music.mp3");
+ASSET_MANAGER.queueDownload("./music/final-boss-music.mp3");
 
 // items
 ASSET_MANAGER.queueDownload("./sprites/decoration/health-potion.png");
@@ -64,7 +67,7 @@ ASSET_MANAGER.queueDownload("./sprites/decoration/health-potion.png");
 
 ASSET_MANAGER.downloadAll(function () {
   var gameEngine = new GameEngine();
-  ASSET_MANAGER.autoRepeat("./music/background-music.mp3");
+  ASSET_MANAGER.autoRepeat("./music/first-stage-music.mp3");
   PARAMS.BLOCKWIDTH = PARAMS.BITWIDTH * PARAMS.SCALE;
 
   var canvas = document.getElementById("gameWorld");
