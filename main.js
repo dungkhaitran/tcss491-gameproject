@@ -56,8 +56,7 @@ ASSET_MANAGER.queueDownload("./sprites/effects/snow.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/spark.png");
 ASSET_MANAGER.queueDownload("./sprites/effects/sunburn.png");
 //background music
-ASSET_MANAGER.queueDownload("./music/background-music.mp3");
-
+ASSET_MANAGER.queueDownload("./music/first-stage-music.mp3");
 
 // items
 ASSET_MANAGER.queueDownload("./sprites/decoration/health-potion.png");
