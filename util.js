@@ -28,7 +28,7 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 const PARAMS = {
-    DEBUG: false,
+    DEBUG: true,
     SCALE: 3,
     BITWIDTH: 16
 };
@@ -82,4 +82,14 @@ const GAME_STATE = {
     , LOSE: 1
     , WIN: 2
     , START:3
+}
+
+const TEAM = {
+    TEAM_MAIN: 0
+    , TEAM_MOB: 1
+}
+
+const BULLET_TYPE = {
+    BULLET_NORMAL: 0
+    , BULLET_AOE: 1
 }

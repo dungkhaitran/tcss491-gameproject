@@ -16,6 +16,9 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION2 = 0.25; // 3
         this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
+        this.SKILL2_DURATION = 0.02; // 3
+        this.SKILL2_COOLDOWN = 1; // 3.3
+
         this.meleeAttackRangeWidth = 70;
         this.meleeAttackRangeWidth2 = 0;
 
@@ -67,8 +70,12 @@ class MainCharacter {
         this.meleeAttackDuration2 = 0;
         this.meleeAttackCooldown2 = 0;
 
+        this.skill2Duration = 0
+        this.skill2Cooldown = 0
+
         this.canAttackMelee = true;
         this.canAttackMelee2 = true;
+        this.canCastSkill2 = true;
 
         this.killedEnemiesCount = 0;
     }
@@ -134,6 +141,7 @@ class MainCharacter {
     update() {
 
         const TICK = this.game.clockTick;
+
         if (this.dead) {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
@@ -258,6 +266,48 @@ class MainCharacter {
                 }
             }
 
+            // skill 2
+            if (this.skill2Cooldown > 0) {
+                this.skill2Cooldown -= TICK;
+                if (this.skill2Cooldown <= 0) {
+                    this.canCastSkill2 = true;
+                }
+            }
+
+            if (this.skill2Duration > 0) {
+                this.skill2Duration -= TICK;
+                if (this.skill2Duration <= 0) {
+                    var bullet = null
+            
+                    if (this.facing === FACING_SIDE.RIGHT) {
+                        bullet = new FireSkull(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                        bullet.velocity.x = bullet.velocityX
+                    } else {
+                        bullet = new FireSkull(this.game, this.BB.x - this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                        bullet.velocity.x = -bullet.velocityX
+                    }
+                    bullet.own = this
+                    bullet.facing = this.facing;
+                    setTimeout(() => {this.game.addEntity(bullet);}, 300);
+
+                    if (this.durationJumping > 0) {
+                        this.state = STATE.JUMPING;
+                    } else {
+                        this.state = STATE.IDLE;
+                    }
+                }
+            }
+    
+            if (this.game.castSkill2) {
+                if (this.skill2Cooldown <= 0) {
+                    this.game.castSkill2 = false;
+                    this.canCastSkill2 = false;
+                    this.state = STATE.ATTACKING2;
+                    this.skill2Duration = this.SKILL2_DURATION;
+                    this.skill2Cooldown = this.SKILL2_COOLDOWN;
+                }
+            }
+
             this.x += this.velocity.x;
             this.y += this.velocity.y;
 
@@ -372,32 +422,15 @@ class MainCharacter {
                     }
 
                     if (checkEndGame) {
-                        switch (that.game.level) {
-                            case 1:
-                                if (that.killedEnemiesCount >= 5) {
-                                    that.game.level++
-                                    that.killedEnemiesCount = 0
-                                    that.game.camera.loadGame()
-                                    that.game.camera.x = 0
-                                }
-                                break;
-                        
-                            case 2:
-                                if (that.killedEnemiesCount >= 7) {
-                                    that.game.state = GAME_STATE.WIN
-                                    that.game.camera.loadGame()
-                                    that.game.camera.x = 0
-                                }
-                                break;
-                        }
-            }
+                        that.checkEndGame(that)
+                    }
 
                     if(entity.gotDamaged || entity.gotDamaged2){
                         entity.state = STATE.HIT;
                     }
                 }
                 if (entity instanceof Bullet) {
-                    if (that.BB.collide(entity.BB)) {
+                    if (entity.team === TEAM.TEAM_MOB && that.BB.collide(entity.BB)) {
                         that.hp -= entity.farDamage;
                         entity.dead = true;
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
@@ -421,21 +454,6 @@ class MainCharacter {
                 // this.removeFromWorld = false;
             }
 
-            if(this.state === STATE.ATTACKING2){
-                var bullet = null
-            
-                if (this.facing === FACING_SIDE.RIGHT) {
-                    bullet = new FireSkull(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
-                    bullet.velocity.x += 10;
-                } else {
-                    bullet = new FireSkull(this.game, this.BB.x - this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
-                    bullet.velocity.x -= 10
-                }
-                bullet.facing = this.facing;
-                bullet.farDamage = this.farDamage;
-                setTimeout(() => {this.game.addEntity(bullet);}, 300);
-            }
-
             this.updateBB();
 
             var cameraCharacter = this.x - this.game.camera.x;
@@ -448,6 +466,27 @@ class MainCharacter {
             }
         }
     };
+
+    checkEndGame(that) {
+        switch (that.game.level) {
+            case 1:
+                if (that.killedEnemiesCount >= 5) {
+                    that.game.level++
+                    that.killedEnemiesCount = 0
+                    that.game.camera.loadGame()
+                    that.game.camera.x = 0
+                }
+                break;
+        
+            case 2:
+                if (that.killedEnemiesCount >= 7) {
+                    that.game.state = GAME_STATE.WIN
+                    that.game.camera.loadGame()
+                    that.game.camera.x = 0
+                }
+                break;
+        }
+    }
 
     draw(ctx) {
 
@@ -480,13 +519,13 @@ class MainCharacter {
             ctx.strokeStyle = 'Red';
             ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width + 50, this.BB.height + 50);
 
-            ctx.strokeStyle = 'Yellow';
-            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
-            this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+            // ctx.strokeStyle = 'Yellow';
+            // ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+            // this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
     
-            ctx.strokeStyle = 'Purple';
-            ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
-                this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
+            // ctx.strokeStyle = 'Purple';
+            // ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
+            //     this.BBMeleeAttackRange2.width, this.BBMeleeAttackRange2.height);
         }
     };
 
