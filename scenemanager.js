@@ -15,20 +15,20 @@ class SceneManager {
     // this.finalLevel = new finalLevel(this.game, this.main, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH);
     this.levels[1] = new firstLevel(this.game, this.x, this.y)
     this.levels[2] = new secondLevel(this.game, this.x, this.y)
-   
  
   }
 
   loadGame() {
     if (this.game.state === GAME_STATE.LOSE) {
-      new LoseLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
+      this.game.addEntity(new Lose(this.game, this.x, this.y));
     } else if (this.game.state === GAME_STATE.WIN) {
-      new WinLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
+      this.game.addEntity(new Win(this.game, this.x, this.y));
     }else if(this.game.state === GAME_STATE.START){
       new StartLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH,0 * PARAMS.BLOCKWIDTH)
     }else {
       this.levels[this.game.level].loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     }
+
   }
   // audio
   updateAudio(){

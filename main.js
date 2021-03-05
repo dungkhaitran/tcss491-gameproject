@@ -6,9 +6,7 @@
 
  // main character
 var ASSET_MANAGER = new AssetManager();
-ASSET_MANAGER.queueDownload("./sprites/2.png");
 ASSET_MANAGER.queueDownload("./sprites/full-main.png");
-
 
 //backgrounds
 ASSET_MANAGER.queueDownload("./sprites/background/cave.jpg");
@@ -18,11 +16,6 @@ ASSET_MANAGER.queueDownload("./sprites/background/old-dark-castle.png");
 ASSET_MANAGER.queueDownload("./sprites/background/lose.png");
 ASSET_MANAGER.queueDownload("./sprites/background/win.png");
 ASSET_MANAGER.queueDownload("./sprites/background/start.png");
-
-// tiles
-ASSET_MANAGER.queueDownload("./sprites/tileset/tile1.png");
-ASSET_MANAGER.queueDownload("./sprites/tileset/tile2.png");
-ASSET_MANAGER.queueDownload("./sprites/tileset/tile3.png");
 
 // enemies
 ASSET_MANAGER.queueDownload("./sprites/mobs/birdman.png");
@@ -47,14 +40,6 @@ ASSET_MANAGER.queueDownload("./sprites/projectiles/breath-fire.png"); // skill o
 ASSET_MANAGER.queueDownload("./sprites/projectiles/arrow.png"); // skill of archer
 ASSET_MANAGER.queueDownload("./sprites/projectiles/tornado.png"); // skill of 
 ASSET_MANAGER.queueDownload("./sprites/projectiles/tornado-2.png"); // skill of
-
-ASSET_MANAGER.queueDownload("./sprites/effects/aura.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/beam.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/explosion.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/shine.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/snow.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/spark.png");
-ASSET_MANAGER.queueDownload("./sprites/effects/sunburn.png");
 
 //background music
 ASSET_MANAGER.queueDownload("./music/first-stage-music.mp3");

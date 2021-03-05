@@ -60,7 +60,7 @@ const MAX_FALL = 270;
 
 
 const MAX_WIDTH = 5000;
-const HP_MAIN = 50000;
+const HP_MAIN = 10000;
 
 const STATE = {
     IDLE: 0,

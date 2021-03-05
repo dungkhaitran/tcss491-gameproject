@@ -148,29 +148,29 @@ class secondLevel {
 //     }
 // }
 
-class LoseLevel {
-  constructor(game, main, x, y){
-      Object.assign(this, {game, main, x, y});
+// class LoseLevel {
+//   constructor(game, main, x, y){
+//       Object.assign(this, {game, main, x, y});
 
-  }
+//   }
 
-  loadLevel(x, y) {
-      let background = new Lose(this.game, 0, 0);
-      this.game.addEntity(background);
-    }
-}
+//   loadLevel(x, y) {
+//       let background = new Lose(this.game, 0, 0);
+//       this.game.addEntity(background);
+//     }
+// }
 
-class WinLevel {
-  constructor(game, main, x, y){
-      Object.assign(this, {game, main, x, y});
+// class WinLevel {
+//   constructor(game, main, x, y){
+//       Object.assign(this, {game, main, x, y});
 
-  }
+//   }
 
-  loadLevel(x, y) {
-      let background = new Win(this.game, 0, 0);
-      this.game.addEntity(background);
-    }
-}
+//   loadLevel(x, y) {
+//       let background = new Win(this.game, 0, 0);
+//       this.game.addEntity(background);
+//     }
+// }
 class StartLevel {
        constructor(game, main, x, y){
       Object.assign(this, {game, main, x, y});
