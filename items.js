@@ -48,7 +48,7 @@ class healthPotion extends DropItems {
     }
 
     draw(ctx) {
-        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1)//0.7);
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 0.7);
         super.draw(ctx)
     };
 }

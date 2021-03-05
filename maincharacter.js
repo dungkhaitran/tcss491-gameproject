@@ -19,11 +19,11 @@ class MainCharacter {
         this.SKILL2_DURATION = 0.02; // 3
         this.SKILL2_COOLDOWN = 1; // 3.3
 
-        this.meleeAttackRangeWidth = 70;
+        this.meleeAttackRangeWidth = 130;
         this.meleeAttackRangeWidth2 = 0;
 
-        this.width = 48;
-        this.height = 48;
+        this.width = 60;
+        this.height = 105;
         this.CHAR_SIZE = 3.5;
         
         this.updateBB();
@@ -119,24 +119,24 @@ class MainCharacter {
 
     updateBB() {
         if (this.facing == FACING_SIDE.RIGHT) {
-            this.BB = new BoundingBox(this.x + 20, this.y, this.width / 2, this.height / 2); //body
-            this.BBMeleeAttackRange = new BoundingBox(this.x + this.width, this.y, 
-                this.meleeAttackRangeWidth + 60, this.height+ 50);  // melee range
+            this.BB = new BoundingBox(this.x + 20, this.y, this.width, this.height); //body
+            this.BBMeleeAttackRange = new BoundingBox(this.x + 20 + this.width, this.y, 
+                this.meleeAttackRangeWidth, this.height);  // melee range
         } else {
-            this.BB = new BoundingBox(this.x, this.y, this.width / 2, this.height+ 5);
-            this.BBMeleeAttackRange = new BoundingBox(this.x - this.meleeAttackRangeWidth , this.y,
-                this.meleeAttackRangeWidth + 80, this.height + 50);
+            this.BB = new BoundingBox(this.x + 20, this.y, this.width, this.height);
+            this.BBMeleeAttackRange = new BoundingBox(this.x + 20 - this.meleeAttackRangeWidth , this.y,
+                this.meleeAttackRangeWidth, this.height);
         }
 
-        if (this.facing == FACING_SIDE.RIGHT) {
-            this.BB = new BoundingBox(this.x + 20, this.y, this.width / 2, this.height+ 5); //body
-            this.BBMeleeAttackRange2 = new BoundingBox(this.x, this.y, 
-                this.meleeAttackRangeWidth2, this.height+ 50);  // melee range
-        } else {
-            this.BB = new BoundingBox(this.x, this.y, this.width / 2, this.height+ 5);
-            this.BBMeleeAttackRange2 = new BoundingBox(this.x, this.y,
-                this.meleeAttackRangeWidth2, this.height + 50);
-        }
+        // if (this.facing == FACING_SIDE.RIGHT) {
+        //     this.BB = new BoundingBox(this.x + 20, this.y, this.width / 2, this.height+ 5); //body
+        //     this.BBMeleeAttackRange2 = new BoundingBox(this.x, this.y, 
+        //         this.meleeAttackRangeWidth2, this.height+ 50);  // melee range
+        // } else {
+        //     this.BB = new BoundingBox(this.x, this.y, this.width / 2, this.height+ 5);
+        //     this.BBMeleeAttackRange2 = new BoundingBox(this.x, this.y,
+        //         this.meleeAttackRangeWidth2, this.height + 50);
+        // }
     };
  
 
@@ -459,7 +459,7 @@ class MainCharacter {
                             that.hp = that.maxHp
                         }
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, entity.val, "Yellow"));
-                    }                    
+                    }
                 }
 
             })
@@ -519,8 +519,8 @@ class MainCharacter {
         }
 
         if (drop) {
-            var val = (Math.floor(Math.random() * 10) + 1) * 100
-            this.game.addEntity(new healthPotion(this.game, entity.x, entity.y + entity.height - 35, val))
+            var val = (Math.floor(Math.random() * 10) + 1) * 50
+            this.game.addEntity(new healthPotion(this.game, entity.BB.x + entity.BB.width / 3, entity.BB.y + (entity.BB.height - 35) * 0.7, val))
             this.chanceDropItems= 0
         }
     
@@ -555,11 +555,11 @@ class MainCharacter {
 
         if (PARAMS.DEBUG) {
             ctx.strokeStyle = 'Red';
-            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width + 50, this.BB.height + 50);
+            ctx.strokeRect(this.BB.x - this.game.camera.x, this.BB.y, this.BB.width, this.BB.height);
 
-            // ctx.strokeStyle = 'Yellow';
-            // ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
-            // this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
+            ctx.strokeStyle = 'Yellow';
+            ctx.strokeRect(this.BBMeleeAttackRange.x - this.game.camera.x, this.BBMeleeAttackRange.y,
+            this.BBMeleeAttackRange.width, this.BBMeleeAttackRange.height);
     
             // ctx.strokeStyle = 'Purple';
             // ctx.strokeRect(this.BBMeleeAttackRange2.x - this.game.camera.x, this.BBMeleeAttackRange2.y,
