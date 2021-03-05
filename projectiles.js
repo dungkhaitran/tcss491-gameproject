@@ -197,12 +197,13 @@ class FireSkull extends Bullet {
                     that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
 
                     if (entity.hp <= 0) {
+                        that.own.dropItems(entity)
                         entity.hp = 0;
                         entity.dead = true;
                         entity.velocity.x = 0
                         that.own.killedEnemiesCount++
                         that.own.checkEndGame(that.own)
-                    }
+            }
                 }
             }
         })

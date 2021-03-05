@@ -14,8 +14,6 @@ class firstLevel {
           let background = new forest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
-    
-        this.game.addEntity(new healthPotion(this.game, 300, 570));
         
         // Add mobs 
         // Dark mage squad

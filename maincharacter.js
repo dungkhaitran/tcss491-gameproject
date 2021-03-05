@@ -78,6 +78,8 @@ class MainCharacter {
         this.canCastSkill2 = true;
 
         this.killedEnemiesCount = 0;
+
+        this.chanceDropItems = 0
     }
 
     loadAnimations() {
@@ -316,7 +318,9 @@ class MainCharacter {
             var that = this;
             this.game.entities.forEach(function (entity) {
                 if (!(entity instanceof MainCharacter) && !(entity instanceof DamageText) 
-                        && !(entity instanceof Bullet) && !(entity instanceof RunningEnemies) && !entity.dead) {
+                        && !(entity instanceof Bullet) && !(entity instanceof RunningEnemies)
+                        && !(entity instanceof DropItems)
+                        && !entity.dead) {
                     var checkHpMob = false;
                     if (that.game.attacking && entity.BB && that.BBMeleeAttackRange.collide(entity.BB)
                             && entity.gotDamaged === false) {
@@ -343,6 +347,7 @@ class MainCharacter {
                         }
                         if (checkHpMob) {
                             if (entity.hp <= 0) {
+                                that.dropItems(entity)
                                 entity.hp = 0;
                                 entity.dead = true;
                                 entity.velocity.x = 0
@@ -383,6 +388,7 @@ class MainCharacter {
                     if (entity instanceof RangeEnemies) {
                         if (checkHpMob) {
                             if (entity.hp <= 0) {
+                                that.dropItems(entity)
                                 entity.hp = 0;
                                 entity.dead = true;
                                 entity.velocity.x = 0
@@ -428,7 +434,7 @@ class MainCharacter {
                     if(entity.gotDamaged || entity.gotDamaged2){
                         entity.state = STATE.HIT;
                     }
-                }
+                } else
                 if (entity instanceof Bullet) {
                     if (entity.team === TEAM.TEAM_MOB && that.BB.collide(entity.BB)) {
                         that.hp -= entity.farDamage;
@@ -436,7 +442,7 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
                         checkHpMain = true;
                     }
-                }
+                } else
                 if (entity instanceof RunningEnemies) {
                     if (!entity.dealDamage && that.BB.collide(entity.BB)) {
                         entity.dealDamage = true
@@ -444,6 +450,16 @@ class MainCharacter {
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.damage, "Red"));
                         checkHpMain = true;
                     }
+                } else
+                if (entity instanceof DropItems) {
+                    if (that.BB.collide(entity.BB)) {
+                        entity.removeFromWorld = true
+                        that.hp += entity.val
+                        if (that.hp > that.maxHp) {
+                            that.hp = that.maxHp
+                        }
+                        that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, entity.val, "Yellow"));
+                    }                    
                 }
 
             })
@@ -486,6 +502,28 @@ class MainCharacter {
                 }
                 break;
         }
+    }
+
+    dropItems(entity) {
+        var rand = Math.floor(Math.random() * 100)
+
+        var drop = false
+        if (this.chanceDropItems >= 3) {
+            drop = true
+        } else {
+            if (rand < 40) {
+                drop = true
+            } else {
+                this.chanceDropItems++;
+            }
+        }
+
+        if (drop) {
+            var val = (Math.floor(Math.random() * 10) + 1) * 100
+            this.game.addEntity(new healthPotion(this.game, entity.x, entity.y + entity.height - 35, val))
+            this.chanceDropItems= 0
+        }
+    
     }
 
     draw(ctx) {

@@ -40,6 +40,10 @@ class DamageText {
    draw(ctx) {
         ctx.font = '24px "Press Start 2P"';
         ctx.fillStyle = this.textColor;
-        ctx.fillText(this.damage, this.x - this.game.camera.x, this.y);
+        if (this.damage > 0) {
+            ctx.fillText("+" + this.damage, this.x - this.game.camera.x, this.y);
+        } else {
+            ctx.fillText(this.damage, this.x - this.game.camera.x, this.y);
+        }
     };
 };
