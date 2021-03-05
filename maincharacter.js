@@ -520,7 +520,7 @@ class MainCharacter {
 
         if (drop) {
             var val = (Math.floor(Math.random() * 10) + 1) * 50
-            this.game.addEntity(new healthPotion(this.game, entity.BB.x + entity.BB.width / 3, entity.BB.y + (entity.BB.height - 35) * 0.7, val))
+            this.game.addEntity(new healthPotion(this.game, entity.BB.x + entity.BB.width / 3, entity.BB.y + entity.BB.height - 35 * 0.7, val))
             this.chanceDropItems= 0
         }
     

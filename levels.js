@@ -109,7 +109,7 @@ class secondLevel {
         this.game.main = new MainCharacter(
           this.game,
           6.5 * 16,
-          450
+          460
         );
     
         this.game.main.x = x;
