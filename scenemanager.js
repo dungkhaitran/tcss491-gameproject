@@ -20,9 +20,9 @@ class SceneManager {
 
   loadGame() {
     if (this.game.state === GAME_STATE.LOSE) {
-      this.game.addEntity(new Lose(this.game, this.x, this.y));
+      this.game.addEntity(new Lose(this.game, this.game.x, this.y));
     } else if (this.game.state === GAME_STATE.WIN) {
-      this.game.addEntity(new Win(this.game, this.x, this.y));
+      this.game.addEntity(new Win(this.game, this.game.x, this.y));
     }else if(this.game.state === GAME_STATE.START){
       new StartLevel(this.game, this.x, this.y).loadLevel(2.5 * PARAMS.BLOCKWIDTH,0 * PARAMS.BLOCKWIDTH)
     }else {

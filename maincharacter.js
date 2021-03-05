@@ -16,7 +16,7 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION2 = 0.25; // 3
         this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
-        this.SKILL2_DURATION = 0.02; // 3
+        this.SKILL2_DURATION = 0.3; // 3
         this.SKILL2_COOLDOWN = 1; // 3.3
 
         this.meleeAttackRangeWidth = 130;
@@ -282,15 +282,15 @@ class MainCharacter {
                     var bullet = null
             
                     if (this.facing === FACING_SIDE.RIGHT) {
-                        bullet = new FireSkull(this.game, this.BB.x + this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                        bullet = new Tornado(this.game, this.BB.x - this.BB.width, this.BB.y - (this.BB.height - 48))
                         bullet.velocity.x = bullet.velocityX
                     } else {
-                        bullet = new FireSkull(this.game, this.BB.x - this.BB.width, this.BB.y + (this.BB.height - 48) / 3)
+                        bullet = new Tornado(this.game, this.BB.x - 10, this.BB.y - (this.BB.height - 48))
                         bullet.velocity.x = -bullet.velocityX
                     }
                     bullet.own = this
                     bullet.facing = this.facing;
-                    setTimeout(() => {this.game.addEntity(bullet);}, 300);
+                    setTimeout(() => {this.game.addEntity(bullet);}, 100);
 
                     if (this.durationJumping > 0) {
                         this.state = STATE.JUMPING;
@@ -441,6 +441,7 @@ class MainCharacter {
                         entity.dead = true;
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
                         checkHpMain = true;
+                        
                     }
                 } else
                 if (entity instanceof RunningEnemies) {

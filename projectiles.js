@@ -308,3 +308,121 @@ class FireImpactOfCultist {
         super.draw(ctx);
     };
 };
+
+class Tornado extends Bullet {
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/tornado.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+        this.velocityX = PARAMS.BITWIDTH / 2;
+
+        this.damage = 250
+
+        this.animations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 6, 0.08, 70, true, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 768, 160, 65, 68, 6, 0.08, 70, false, true); // moving
+    }
+
+    updateBB() {
+        super.updateBB()
+
+        this.BB.width += 45;
+        this.BB.height += 120;
+
+        var that = this;
+        this.game.entities.forEach(function (entity) {
+            if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
+                if (!that.dead && !entity.dead && that.BB.collide(entity.BB)) {
+                    entity.hp -= that.damage;
+                    that.dead = true;
+                    that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
+
+                    if (entity.hp <= 0) {
+                        that.own.dropItems(entity)
+                        entity.hp = 0;
+                        entity.dead = true;
+                        entity.velocity.x = 0
+                        that.own.killedEnemiesCount++
+                        that.own.checkEndGame(that.own)
+            }
+                }
+            }
+        })
+    };
+
+    draw(ctx) {
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        super.draw(ctx);
+    };
+};
+
+class TornadoImpact extends Bullet {
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/tornado.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+
+        this.animations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 26, 75, 68, 5, 0.1, 50, true, false); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 800, 26, 75, 68, 5, 0.1, 50, false, false); // moving
+    }
+
+    updateBB() {
+        super.updateBB()
+
+        this.BB.width += 45;
+        this.BB.height += 120;
+
+    };
+
+    draw(ctx) {
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        super.draw(ctx);
+    };
+};

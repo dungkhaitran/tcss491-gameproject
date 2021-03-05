@@ -28,7 +28,7 @@ window.requestAnimFrame = (function () {
 // add global parameters here
 
 const PARAMS = {
-    DEBUG: true,
+    DEBUG: false,
     SCALE: 3,
     BITWIDTH: 16
 };
@@ -60,7 +60,7 @@ const MAX_FALL = 270;
 
 
 const MAX_WIDTH = 5000;
-const HP_MAIN = 10000;
+const HP_MAIN = 5000;
 
 const STATE = {
     IDLE: 0,
