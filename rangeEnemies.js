@@ -139,7 +139,7 @@ class DarkMage extends RangeEnemies {
         this.farAttackCooldown = 0;
 
         this.canAttackFar = true;
-        this.farAttackRangeWidth = 600;
+        this.farAttackRangeWidth = 450;
 
         this.beingDamaged = false;
 
@@ -250,7 +250,7 @@ class FlyingDemon extends RangeEnemies {
         this.farAttackCooldown = 0;
 
         this.canAttackFar = true;
-        this.farAttackRangeWidth = 300;
+        this.farAttackRangeWidth = 400;
 
         this.updateBB();
     }
@@ -282,11 +282,12 @@ class FlyingDemon extends RangeEnemies {
         if (super.update()) {
             var bullet = null
 
+            var y = this.BB.y + (this.BB.height - 48) / 2
             if (this.facing === FACING_SIDE.RIGHT) {
-                bullet = new BulletOfFlyingDemon(this.game, this.BB.x, this.BB.y + this.BB.height / 2)
+                bullet = new BulletOfFlyingDemon(this.game, this.BB.x, y)
                 
             } else {
-                bullet = new BulletOfFlyingDemon(this.game, this.BB.x - this.BB.width,  this.BB.y + (this.BB.height - 48) / 2)
+                bullet = new BulletOfFlyingDemon(this.game, this.BB.x - this.BB.width, y)
                 
             }
             bullet.facing = this.facing

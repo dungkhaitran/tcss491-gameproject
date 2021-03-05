@@ -51,11 +51,9 @@ class GameEngine {
             }
             switch (e.code) {
                 case "ArrowLeft":
-                case "KeyA":
                     that.left = true;
                     break;
                 case "ArrowRight":
-                case "KeyD":
                     that.right = true;
                     break;
                 case "ArrowUp":
@@ -64,12 +62,12 @@ class GameEngine {
                         that.jumping = true;
                     }
                     break;
-                case "KeyZ":
+                case "KeyQ":
                     if (that.main.canAttackMelee) {
                         that.attacking = true;
                     }
                     break;
-                case "KeyX":
+                case "KeyW":
                     // if (that.main.canAttackMelee2) {
                     //     that.attacking2 = true;
                     // }
@@ -96,11 +94,9 @@ class GameEngine {
             }
             switch (e.code) {
                 case "ArrowLeft":
-                case "KeyA":
                     that.left = false;
                     break;
                 case "ArrowRight":
-                case "KeyD":
                     that.right = false;
                     break;
                 // case "ArrowUp":
