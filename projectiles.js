@@ -426,3 +426,4 @@ class TornadoImpact extends Bullet {
         super.draw(ctx);
     };
 };
+

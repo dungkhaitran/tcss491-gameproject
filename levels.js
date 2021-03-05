@@ -51,6 +51,8 @@ class firstLevel {
         //   );
         // }
         
+        this.game.addEntity(new Boss(this.game, 800, 500));
+
 
         this.game.main = new MainCharacter(
           this.game,
@@ -117,36 +119,28 @@ class secondLevel {
       }
 }
 
-// class finalLevel {
-//   constructor(game, main, x, y){
-//       Object.assign(this, {game, main, x, y});
+class finalLevel {
+  constructor(game, main, x, y){
+      Object.assign(this, {game, main, x, y});
 
-//   }
+  }
 
-//   loadLevel(x, y) {
-//       this.game.entities = [];
-//       this.x = 0;
+  loadLevel(x, y) {
+      this.game.entities = [];
+      this.x = 0;
   
-//       // first background
-//       for (var i = 0; i <= 5; i++) {
-//         let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
-//         this.game.addEntity(background);
-//       }
+      // first background
+      for (var i = 0; i <= 5; i++) {
+        let background = new oldCastle(this.game, i * PARAMS.CANVAS_WIDTH, 0);
+        this.game.addEntity(background);
+      }
   
-      
+      this.game.addEntity(new Boss(this.game, 1000, 500));
 
-//       // big cultists
-//        for(var i = 1; i <= 1; i++){
-//         this.game.addEntity(
-//           new bigCultist(this.game, 500 * i, 350)
-//         );
-//       }
-
-
-//       this.main.x = x;
-//       this.game.addEntity(this.main);
-//     }
-// }
+      this.main.x = x;
+      this.game.addEntity(this.main);
+    }
+}
 
 // class LoseLevel {
 //   constructor(game, main, x, y){

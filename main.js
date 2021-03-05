@@ -33,13 +33,16 @@ ASSET_MANAGER.queueDownload("./sprites/mobs/archer.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/knight-2.png");
 ASSET_MANAGER.queueDownload("./sprites/mobs/skeleton.png");
 
+// boss
+ASSET_MANAGER.queueDownload("./sprites/boss/boss.png");
+ASSET_MANAGER.queueDownload("./sprites/boss/boss-skills.png"); // skills
+
 // projectiles
 ASSET_MANAGER.queueDownload("./sprites/projectiles/dark-fire.png"); // skill of dark mage
 ASSET_MANAGER.queueDownload("./sprites/projectiles/fire-skull.png"); // skill of 
 ASSET_MANAGER.queueDownload("./sprites/projectiles/breath-fire.png"); // skill of flying demon
 ASSET_MANAGER.queueDownload("./sprites/projectiles/arrow.png"); // skill of archer
 ASSET_MANAGER.queueDownload("./sprites/projectiles/tornado.png"); // skill of 
-ASSET_MANAGER.queueDownload("./sprites/projectiles/tornado-2.png"); // skill of
 
 //background music
 ASSET_MANAGER.queueDownload("./music/first-stage-music.mp3");
