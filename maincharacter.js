@@ -16,8 +16,11 @@ class MainCharacter {
         this.MELEE_ATTACK_DURATION2 = 0.25; // 3
         this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
-        this.SKILL2_DURATION = 0.3; // 3
-        this.SKILL2_COOLDOWN = 1; // 3.3
+        this.SKILL2_DURATION = 0.3
+        this.SKILL2_COOLDOWN = 1
+
+        this.SKILL3_DURATION = 0.3
+        this.SKILL3_COOLDOWN = 1
 
         this.meleeAttackRangeWidth = 85;
         this.meleeAttackRangeWidth2 = 0;
@@ -73,9 +76,13 @@ class MainCharacter {
         this.skill2Duration = 0
         this.skill2Cooldown = 0
 
+        this.skill3Duration = 0
+        this.skill3Cooldown = 0
+
         this.canAttackMelee = true;
         this.canAttackMelee2 = true;
         this.canCastSkill2 = true;
+        this.canCastSkill3 = true;
 
         this.killedEnemiesCount = 0;
 
@@ -85,9 +92,9 @@ class MainCharacter {
     loadAnimations() {
         for (var i = 0; i < STATE.COUNT; i++) { // states
             this.animations.push([]);
-                for (var k = 0; k < FACING_SIDE.COUNT; k++) { // directions
-                    this.animations[i].push([]);
-                }
+            for (var k = 0; k < FACING_SIDE.COUNT; k++) { // directions
+                this.animations[i].push([]);
+            }
         }
 
         // idle animation
@@ -119,9 +126,9 @@ class MainCharacter {
 
     updateBB() {
         if (this.facing == FACING_SIDE.RIGHT) {
-            this.BB = new BoundingBox(this.x + 20, this.y, this.width, this.height); //body
+            this.BB = new BoundingBox(this.x + 20, this.y, this.width, this.height);
             this.BBMeleeAttackRange = new BoundingBox(this.x + 20 + this.width, this.y, 
-                this.meleeAttackRangeWidth, this.height);  // melee range
+                this.meleeAttackRangeWidth, this.height);
         } else {
             this.BB = new BoundingBox(this.x + 20, this.y, this.width, this.height);
             this.BBMeleeAttackRange = new BoundingBox(this.x + 20 - this.meleeAttackRangeWidth , this.y,
@@ -307,6 +314,49 @@ class MainCharacter {
                     this.state = STATE.ATTACKING2;
                     this.skill2Duration = this.SKILL2_DURATION;
                     this.skill2Cooldown = this.SKILL2_COOLDOWN;
+                }
+            }
+
+            // skill 3
+            if (this.skill3Cooldown > 0) {
+                this.skill3Cooldown -= TICK;
+                if (this.skill3Cooldown <= 0) {
+                    this.canCastSkill3 = true;
+                }
+            }
+
+            if (this.skill3Duration > 0) {
+                this.skill3Duration -= TICK;
+                if (this.skill3Duration <= 0) {
+                    var bullet = null
+            
+                    var y = this.BB.y - 20
+                    if (this.facing === FACING_SIDE.RIGHT) {
+                        bullet = new FireSkull(this.game, this.BB.x + this.BB.width, y)
+                        bullet.velocity.x = bullet.velocityX
+                    } else {
+                        bullet = new FireSkull(this.game, this.BB.x - this.BB.width, y)
+                        bullet.velocity.x = -bullet.velocityX
+                    }
+                    bullet.own = this
+                    bullet.facing = this.facing;
+                    setTimeout(() => {this.game.addEntity(bullet);}, 100);
+
+                    if (this.durationJumping > 0) {
+                        this.state = STATE.JUMPING;
+                    } else {
+                        this.state = STATE.IDLE;
+                    }
+                }
+            }
+    
+            if (this.game.castSkill3) {
+                if (this.skill3Cooldown <= 0) {
+                    this.game.castSkill3 = false;
+                    this.canCastSkill3 = false;
+                    this.state = STATE.ATTACKING2;
+                    this.skill3Duration = this.SKILL3_DURATION;
+                    this.skill3Cooldown = this.SKILL3_COOLDOWN;
                 }
             }
 

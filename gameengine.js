@@ -75,7 +75,12 @@ class GameEngine {
                         that.castSkill2 = true;
                     }
                     break;
-            }
+                case "KeyE":
+                    if (that.main.canCastSkill3) {
+                        that.castSkill3 = true;
+                    }
+                    break;
+                }
         }, false);
 
         this.ctx.canvas.addEventListener("keyup", function (e) {

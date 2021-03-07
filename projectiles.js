@@ -168,6 +168,9 @@ class FireSkull extends Bullet {
 
         this.facing = FACING_SIDE.RIGHT;
 
+        this.width = 78
+        this.height = 78
+
         this.damage = 233
 
         this.animations = [];
@@ -175,14 +178,15 @@ class FireSkull extends Bullet {
 
         this.updateBB();
 
+        this.damagedEntities = []
     }
 
     loadAnimations(){
         for(var i = 0; i < STATE.COUNT; i++){
             this.animations.push([]);
-            for(var j = 0; j < FACING_SIDE.COUNT; j++){
-                this.animations[i].push([]);
-            }
+            // for(var j = 0; j < FACING_SIDE.COUNT; j++){
+            //     this.animations[i].push([]);
+            // }
         }
 
         //facing left
@@ -194,24 +198,32 @@ class FireSkull extends Bullet {
     update(){
         super.update()
 
-        this.BB.width += 30;
+        // this.BB.width += 30;
 
         var that = this;
         this.game.entities.forEach(function (entity) {
             if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
-                if (!that.dead && !entity.dead && that.BB.collide(entity.BB)) {
-                    entity.hp -= that.damage;
-                    that.dead = true;
-                    that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
-
-                    if (entity.hp <= 0) {
-                        that.own.dropItems(entity)
-                        entity.hp = 0;
-                        entity.dead = true;
-                        entity.velocity.x = 0
-                        that.own.killedEnemiesCount++
-                        that.own.checkEndGame(that.own)
-            }
+                if (!entity.dead && that.BB.collide(entity.BB)) {
+                    var damaged = false
+                    that.damagedEntities.forEach(function (damagedEntity) {
+                        if (damagedEntity === entity) {
+                            damaged = true
+                        }
+                    })
+                    if (!damaged) {
+                        that.damagedEntities.push(entity)
+                        entity.hp -= that.damage;
+                        that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
+    
+                        if (entity.hp <= 0) {
+                            that.own.dropItems(entity)
+                            entity.hp = 0;
+                            entity.dead = true;
+                            entity.velocity.x = 0
+                            that.own.killedEnemiesCount++
+                            that.own.checkEndGame(that.own)
+                        }
+                    }
                 }
             }
         })
@@ -372,16 +384,16 @@ class Tornado extends Bullet {
         }
 
         //facing left
-        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 6, 0.08, 70, true, true); // moving
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 4, 0.08, 70, true, true); // moving
         //facing right
-        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 768, 160, 65, 68, 6, 0.08, 70, false, true); // moving
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1040, 160, 65, 68, 4, 0.08, 70, false, true); // moving
 
         for (var k = 0; k < FACING_SIDE.COUNT; k++) {
             this.impactAnimations.push([]);
         }
 
         //facing left
-        this.impactAnimations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 26, 75, 68, 5, 0.1, 50, true, false); // moving
+        this.impactAnimations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 158, 26, 75, 68, 5, 0.1, 50, true, false); // moving
         //facing right
         this.impactAnimations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 800, 26, 75, 68, 5, 0.1, 50, false, false); // moving
     }
