@@ -38,7 +38,7 @@ class firstLevel {
         }
     
         // Nightmare Horse squad
-        for(var i = 1; i <= 3; i++){
+        for(var i = 1; i <= 10; i++){
           this.game.addEntity(
             new NightmareHorse(this.game, 1200 * i, 450, FACING_SIDE.LEFT)
           );
