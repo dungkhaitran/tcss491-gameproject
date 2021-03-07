@@ -310,7 +310,7 @@ class FireImpactOfCultist {
 };
 
 class Tornado extends Bullet {
-    constructor(game, x, y, team = TEAM.TEAM_MOB) {
+    constructor(game, x, y, team = TEAM.TEAM_MAIN) {
         super(game, x, y, team)
         Object.assign(this, { game, x, y, team });
 
@@ -321,6 +321,9 @@ class Tornado extends Bullet {
 
         this.damage = 250
 
+        this.width = 120
+        this.height = 168
+
         this.animations = [];
         this.loadAnimations();
 
@@ -329,28 +332,6 @@ class Tornado extends Bullet {
 
     update() {
         super.update()
-
-    };
-
-    drawMinimap(ctx, mmX, mmY) {
-    }
-
-    loadAnimations() {
-        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
-            this.animations.push([]);
-        }
-
-        //facing left
-        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 6, 0.08, 70, true, true); // moving
-        //facing right
-        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 768, 160, 65, 68, 6, 0.08, 70, false, true); // moving
-    }
-
-    updateBB() {
-        super.updateBB()
-
-        this.BB.width += 45;
-        this.BB.height += 120;
 
         var that = this;
         this.game.entities.forEach(function (entity) {
@@ -367,11 +348,25 @@ class Tornado extends Bullet {
                         entity.velocity.x = 0
                         that.own.killedEnemiesCount++
                         that.own.checkEndGame(that.own)
-            }
+                    }
                 }
             }
         })
     };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    loadAnimations() {
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.animations.push([]);
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 6, 0.08, 70, true, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 768, 160, 65, 68, 6, 0.08, 70, false, true); // moving
+    }
 
     draw(ctx) {
         this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
