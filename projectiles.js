@@ -13,13 +13,21 @@ class Bullet {
         this.type = BULLET_TYPE.BULLET_NORMAL
 
         this.dead = false
+        this.deadCounter = 0
 
         this.updateBB();
     };
 
     update() {
         if (this.dead){
-            this.removeFromWorld = true;
+            if (this.impactAnimations) {
+                this.deadCounter += this.game.clockTick;
+                if (this.deadCounter > 0.5) {
+                    this.removeFromWorld = true
+                }
+            } else {
+                this.removeFromWorld = true;
+            }
             return
         }
 
@@ -325,6 +333,7 @@ class Tornado extends Bullet {
         this.height = 168
 
         this.animations = [];
+        this.impactAnimations = [];
         this.loadAnimations();
 
         this.updateBB();
@@ -366,10 +375,23 @@ class Tornado extends Bullet {
         this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 160, 65, 68, 6, 0.08, 70, true, true); // moving
         //facing right
         this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 768, 160, 65, 68, 6, 0.08, 70, false, true); // moving
+
+        for (var k = 0; k < FACING_SIDE.COUNT; k++) {
+            this.impactAnimations.push([]);
+        }
+
+        //facing left
+        this.impactAnimations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 40, 26, 75, 68, 5, 0.1, 50, true, false); // moving
+        //facing right
+        this.impactAnimations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 800, 26, 75, 68, 5, 0.1, 50, false, false); // moving
     }
 
     draw(ctx) {
-        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        if (this.dead && this.impactAnimations) {
+            this.impactAnimations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        } else {
+            this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        }
         super.draw(ctx);
     };
 };

@@ -19,7 +19,7 @@ class MainCharacter {
         this.SKILL2_DURATION = 0.3; // 3
         this.SKILL2_COOLDOWN = 1; // 3.3
 
-        this.meleeAttackRangeWidth = 130;
+        this.meleeAttackRangeWidth = 85;
         this.meleeAttackRangeWidth2 = 0;
 
         this.width = 60;
@@ -148,7 +148,7 @@ class MainCharacter {
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
             if (this.deadCounter > 0.5) {
-                this.removeFromWorld = false;
+                this.removeFromWorld = true//false;
                 this.game.state = GAME_STATE.LOSE
                 this.game.camera.loadGame()
             }
@@ -535,7 +535,7 @@ class MainCharacter {
             if (this.facing == FACING_SIDE.RIGHT) {
                 this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 20, this.CHAR_SIZE);
             } else {
-                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - this.meleeAttackRangeWidth, this.y - 20, this.CHAR_SIZE);//PARAMS.SCALE);
+                this.animations[this.state][this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 75, this.y - 20, this.CHAR_SIZE);//PARAMS.SCALE);
             }
         }else if (this.state === STATE.ATTACKING2) {
             if (this.facing == FACING_SIDE.RIGHT) {
