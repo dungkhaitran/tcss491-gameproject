@@ -205,12 +205,9 @@ class FireSkull extends Bullet {
             if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
                 if (!entity.dead && that.BB.collide(entity.BB)) {
                     var damaged = false
-                    var count = 0
                     that.damagedEntities.forEach(function (damagedEntity) {
                         if (damagedEntity === entity) {
                             damaged = true
-                            count++
-                            console.log("damaged true, count: " + count + " length: " + that.damagedEntities.length)
                         }
                     })
                     if (!damaged) {
