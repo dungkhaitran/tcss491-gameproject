@@ -268,9 +268,9 @@ class BossThunder extends Bullet {
         }
 
         //facing left
-        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 355, 20, 45, 205, 9, 0.15, 209, true, true); // moving
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 355, 20, 85, 205, 9, 0.15, 209, true, false); // moving
         //facing right
-        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 2655, 20, 45, 205, 9, 0.15, 209, false, true); // moving
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 2655, 20, 60, 205, 9, 0.15, 195, false, false); // moving
     }
 
     updateBB() {
@@ -301,7 +301,42 @@ class BossThunder extends Bullet {
     };
 
     draw(ctx) {
-        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 2.5);
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.5);
+        super.draw(ctx);
+    };
+};
+
+class TeslaBall extends Bullet {
+    constructor(game, x, y, team = TEAM.TEAM_MAIN) {
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/tesla-ball.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+        this.velocityX = 0;
+
+        this.damage = 250
+
+        this.width = 120
+        this.height = 168
+
+        this.animation = new Animator(this.spritesheet, 18, 15, 85, 100, 11, 0.1, 43, false, false);
+
+        this.updateBB();
+    };
+
+    update() {
+        super.update()
+
+    };
+
+    drawMinimap(ctx, mmX, mmY) {
+    }
+
+    draw(ctx) {
+        this.animation.drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 3.5);
+        
         super.draw(ctx);
     };
 };

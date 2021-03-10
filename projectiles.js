@@ -230,7 +230,7 @@ class FireSkull extends Bullet {
     }
 
     draw(ctx){
-        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y, 1.5);
+        this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x, this.y - 100, 2.5);
 
         super.draw(ctx);
     }
@@ -455,4 +455,5 @@ class TornadoImpact extends Bullet {
         super.draw(ctx);
     };
 };
+
 

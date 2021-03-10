@@ -17,10 +17,10 @@ class MainCharacter {
         this.MELEE_ATTACK_COOLDOWN2 = 0.3; // 3.3
 
         this.SKILL2_DURATION = 0.3
-        this.SKILL2_COOLDOWN = 1
+        this.SKILL2_COOLDOWN = 0.1
 
         this.SKILL3_DURATION = 0.3
-        this.SKILL3_COOLDOWN = 1
+        this.SKILL3_COOLDOWN = 0.2
 
         this.meleeAttackRangeWidth = 85;
         this.meleeAttackRangeWidth2 = 0;
@@ -477,6 +477,8 @@ class MainCharacter {
                         // }
                     }
 
+                    
+
                     if (checkEndGame) {
                         that.checkEndGame(that)
                     }
@@ -537,7 +539,7 @@ class MainCharacter {
     checkEndGame(that) {
         switch (that.game.level) {
             case 1:
-                if (that.killedEnemiesCount >= 5) {
+                if (that.killedEnemiesCount >= 3) {
                     that.game.level++
                     that.killedEnemiesCount = 0
                     that.game.camera.loadGame()
@@ -546,7 +548,16 @@ class MainCharacter {
                 break;
         
             case 2:
-                if (that.killedEnemiesCount >= 7) {
+                if (that.killedEnemiesCount >= 4) {
+                    that.game.level++
+                    that.killedEnemiesCount = 0
+                    that.game.camera.loadGame()
+                    that.game.camera.x = 0
+                }
+                break;
+
+            case 3:
+                if (that.killedEnemiesCount >= 1) {
                     that.game.state = GAME_STATE.WIN
                     that.game.camera.loadGame()
                     that.game.camera.x = 0
