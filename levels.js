@@ -8,7 +8,8 @@ class firstLevel {
         this.game.entities = [];
         this.x = 0;
       
-        ASSET_MANAGER.playAsset("./music/final-boss-music.mp3");
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset("./music/first-stage-music.mp3");
 
         // first background
         for (var i = 0; i <= 10; i++) {
@@ -70,7 +71,8 @@ class secondLevel {
         this.game.entities = [];
         this.x = 0;
 
-        // ASSET_MANAGER.playAsset("./music/second-stage-music.mp3");
+        ASSET_MANAGER.pauseBackgroundMusic();
+        ASSET_MANAGER.playAsset("./music/second-stage-music.mp3");
     
         // first background
         for (var i = 0; i <= 5; i++) {
@@ -124,6 +126,9 @@ class finalLevel {
   loadLevel(x, y) {
       this.game.entities = [];
       this.x = 0;
+
+      ASSET_MANAGER.pauseBackgroundMusic();
+      ASSET_MANAGER.playAsset("./music/final-boss-music.mp3");
   
       // first background
       for (var i = 0; i <= 5; i++) {
@@ -148,7 +153,7 @@ class finalLevel {
 }
 
 class StartLevel {
-       constructor(game, main, x, y){
+      constructor(game, main, x, y){
       Object.assign(this, {game, main, x, y});
 
   }
