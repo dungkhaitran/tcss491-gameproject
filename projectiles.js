@@ -372,8 +372,8 @@ class Tornado extends Bullet {
                         entity.hp = 0;
                         entity.dead = true;
                         entity.velocity.x = 0
-                        that.own.killedEnemiesCount++
-                        that.own.checkEndGame(that.own)
+                        // that.own.killedEnemiesCount++
+                        // that.own.checkEndGame(that.own)
                     }
                 }
             }
