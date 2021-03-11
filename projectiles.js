@@ -226,7 +226,7 @@ class FireSkull extends Bullet {
                             entity.dead = true;
                             entity.velocity.x = 0
                             // that.own.killedEnemiesCount++
-                            that.own.checkEndGame(that.own)
+                            // that.own.checkEndGame(that.own)
                         }
                     }
                 }

@@ -402,7 +402,7 @@ class MainCharacter {
                                 entity.dead = true;
                                 entity.velocity.x = 0
                                 // that.killedEnemiesCount++
-                                checkEndGame = true
+                                // checkEndGame = true
                             }
                         }
                         // if (entity.BBMeleeAttackRange) {
@@ -443,7 +443,7 @@ class MainCharacter {
                                 entity.dead = true;
                                 entity.velocity.x = 0
                                 // that.killedEnemiesCount++
-                                checkEndGame = true
+                                // checkEndGame = true
                             }
                         }
                         // if (entity.BBFarAttackRange) {
