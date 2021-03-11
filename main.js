@@ -45,6 +45,7 @@ ASSET_MANAGER.queueDownload("./sprites/projectiles/breath-fire.png"); // skill o
 ASSET_MANAGER.queueDownload("./sprites/projectiles/arrow.png"); // skill of archer
 ASSET_MANAGER.queueDownload("./sprites/projectiles/tornado.png"); // skill of 
 ASSET_MANAGER.queueDownload("./sprites/projectiles/tesla-ball.png"); // skill of 
+ASSET_MANAGER.queueDownload("./sprites/projectiles/comet.png"); // skill of 
 
 
 //background music
