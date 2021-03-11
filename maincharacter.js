@@ -401,7 +401,7 @@ class MainCharacter {
                                 entity.hp = 0;
                                 entity.dead = true;
                                 entity.velocity.x = 0
-                                that.killedEnemiesCount++
+                                // that.killedEnemiesCount++
                                 checkEndGame = true
                             }
                         }
@@ -417,7 +417,7 @@ class MainCharacter {
                             }
                             else {
                                 if (entity.velocity) {
-                                if ((that.BB.x + that.BB.width) < entity.BBMeleeAttackRange.x) {
+                                    if ((that.BB.x + that.BB.width) < entity.BBMeleeAttackRange.x) {
                                         entity.facing = FACING_SIDE.LEFT;
                                         entity.state = STATE.MOVING;
                                         entity.velocity.x = -entity.velocityX;
@@ -442,7 +442,7 @@ class MainCharacter {
                                 entity.hp = 0;
                                 entity.dead = true;
                                 entity.velocity.x = 0
-                                that.killedEnemiesCount++
+                                // that.killedEnemiesCount++
                                 checkEndGame = true
                             }
                         }
@@ -477,8 +477,6 @@ class MainCharacter {
                         // }
                     }
 
-                    
-
                     if (checkEndGame) {
                         that.checkEndGame(that)
                     }
@@ -488,12 +486,11 @@ class MainCharacter {
                     }
                 } else
                 if (entity instanceof Bullet) {
-                    if (entity.team === TEAM.TEAM_MOB && that.BB.collide(entity.BB)) {
+                    if (!entity.dead && entity.team === TEAM.TEAM_MOB && that.BB.collide(entity.BB)) {
                         that.hp -= entity.farDamage;
                         entity.dead = true;
                         that.game.addEntity(new DamageText(that.game, that.BB.x + that.BB.width / 2 - 20, that.BB.y, -entity.farDamage, "Red"));
                         checkHpMain = true;
-                        
                     }
                 } else
                 if (entity instanceof RunningEnemies) {
@@ -546,7 +543,7 @@ class MainCharacter {
                     that.game.camera.x = 0
                 }
                 break;
-        
+
             case 2:
                 if (that.killedEnemiesCount >= 4) {
                     that.game.level++

@@ -20,6 +20,7 @@ class SceneManager {
   }
 
   loadGame() {
+    this.game.clearBullets()
     if (this.game.state === GAME_STATE.LOSE) {
       this.game.addEntity(new Lose(this.game, this.game.x, this.y));
     } else if (this.game.state === GAME_STATE.WIN) {
@@ -29,8 +30,8 @@ class SceneManager {
     }else {
       this.levels[this.game.level].loadLevel(2.5 * PARAMS.BLOCKWIDTH, 0 * PARAMS.BLOCKWIDTH)
     }
-
   }
+
   // audio
   updateAudio(){
     var mute = document.getElementById("mute").checked;

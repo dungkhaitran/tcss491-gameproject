@@ -53,7 +53,11 @@ class MeleeEnemies {
         if (this.dead){
             this.state = STATE.DEAD;
             this.deadCounter += this.game.clockTick;
-            if(this.deadCounter > 2.5) this.removeFromWorld = true;
+            if(this.deadCounter > 2) {
+                this.removeFromWorld = true;
+                this.game.main.killedEnemiesCount++
+                this.game.main.checkEndGame(this.game.main)
+            }
         }
 
         if (this.meleeAttackCooldown > 0) {
@@ -116,8 +120,8 @@ class BirdMan extends MeleeEnemies {
         this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
+        // this.dead = false;
+        // this.deadCounter = 0;
         this.flickerFlag = true;
 
         this.width = 48;
@@ -211,8 +215,8 @@ class Knight extends MeleeEnemies {
         this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
+        // this.dead = false;
+        // this.deadCounter = 0;
         this.flickerFlag = true;
 
         this.width = 48;
@@ -304,8 +308,8 @@ class assassinCultist extends MeleeEnemies {
         this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
+        // this.dead = false;
+        // this.deadCounter = 0;
         this.flickerFlag = true;
 
         this.width = 48;
@@ -420,8 +424,8 @@ class bigCultist extends MeleeEnemies {
         this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
+        // this.dead = false;
+        // this.deadCounter = 0;
         this.flickerFlag = true;
 
         this.width = 48;
@@ -518,8 +522,8 @@ class twistedCultist extends MeleeEnemies {
         this.facing = FACING_SIDE.LEFT;
 
         this.paused = true;
-        this.dead = false;
-        this.deadCounter = 0;
+        // this.dead = false;
+        // this.deadCounter = 0;
         this.flickerFlag = true;
 
         this.width = 48;

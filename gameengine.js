@@ -24,13 +24,15 @@ class GameEngine {
     };
 
     reset() {
+        this.entities = [];
+
         this.left = false;
         this.right = false;
         this.up = false;
         this.down = false;
 
         this.state = GAME_STATE.START
-        this.level = 1
+        this.level = 3
     }
 
     start() {
@@ -71,12 +73,12 @@ class GameEngine {
                     // if (that.main.canAttackMelee2) {
                     //     that.attacking2 = true;
                     // }
-                    if (that.main.canCastSkill2) {
+                    if (that.main.canCastSkill2 && that.main.canCastSkill3) {
                         that.castSkill2 = true;
                     }
                     break;
                 case "KeyE":
-                    if (that.main.canCastSkill3) {
+                    if (that.main.canCastSkill2 && that.main.canCastSkill3) {
                         that.castSkill3 = true;
                     }
                     break;
@@ -86,13 +88,17 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keyup", function (e) {
             if (that.state !== GAME_STATE.ONGOING) {
                 if (e.code === "Enter") {
+                    if (that.main) {
+                        that.main.reset()
+                    }
+                    that.reset()
+                    if (that.camera) {
+                        that.camera.x = 0
+                    }
+
                     if (that.state === GAME_STATE.START) {
                         that.state = GAME_STATE.ONGOING
                         that.camera.loadGame()
-                    } else {
-                        that.main.reset()
-                        that.reset()
-                        that.camera.x = 0
                     }
                 }
                 return
@@ -104,16 +110,21 @@ class GameEngine {
                 case "ArrowRight":
                     that.right = false;
                     break;
-                // case "ArrowUp":
-                // case "Space":
-                //     that.jumping = false;
-                //     break;
             }
         }, false);    
     };
 
     addEntity(entity) {
         this.entities.push(entity);
+    };
+
+    clearBullets() {
+        for (var i = this.entities.length - 1; i >= 0; --i) {
+            var entity = this.entities[i]
+            if (entity instanceof Bullet) {
+                this.entities.splice(i, 1);
+            }
+        }
     };
 
     draw() {
