@@ -32,7 +32,7 @@ class GameEngine {
         this.down = false;
 
         this.state = GAME_STATE.START
-        this.level = 3
+        this.level = 1
     }
 
     start() {
