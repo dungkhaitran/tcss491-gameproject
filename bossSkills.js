@@ -242,11 +242,18 @@ class BossThunder extends Bullet {
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/boss/boss-skills.png");
 
         this.facing = FACING_SIDE.RIGHT;
-        this.velocity = { x: 0, y: this.velocityY };
+        this.velocity = { x: 0, y: 0 };
 
-        this.velocityY = PARAMS.BITWIDTH / 2;
+        // this.velocityY = PARAMS.BITWIDTH / 2;
+        this.farDamage = 200 + Math.floor(Math.random() * 100)
 
-        this.damage = 250
+        this.width = 50
+        this.height = 300
+
+        this.deltaBBX = 30
+        this.deltaBBY = 0
+
+        this.duration = 1.5
 
         this.animations = [];
         this.loadAnimations();
@@ -257,6 +264,12 @@ class BossThunder extends Bullet {
     update() {
         super.update()
 
+        this.duration -= this.game.clockTick;
+
+        if (this.duration <= 0) {
+            this.removeFromWorld = true
+            return
+        }
     };
 
     drawMinimap(ctx, mmX, mmY) {
@@ -275,29 +288,6 @@ class BossThunder extends Bullet {
 
     updateBB() {
         super.updateBB()
-
-        this.BB.width += 45;
-        this.BB.height += 120;
-
-        var that = this;
-        this.game.entities.forEach(function (entity) {
-            if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
-                if (!that.dead && !entity.dead && that.BB.collide(entity.BB)) {
-                    entity.hp -= that.damage;
-                    that.dead = true;
-                    that.game.addEntity(new DamageText(that.game, entity.BB.x + entity.BB.width / 2 - 20, entity.BB.y, -that.damage, "White"));
-
-                    if (entity.hp <= 0) {
-                        that.own.dropItems(entity)
-                        entity.hp = 0;
-                        entity.dead = true;
-                        entity.velocity.x = 0
-                        that.own.killedEnemiesCount++
-                        that.own.checkEndGame(that.own)
-            }
-                }
-            }
-        })
     };
 
     draw(ctx) {
@@ -307,19 +297,22 @@ class BossThunder extends Bullet {
 };
 
 class TeslaBall extends Bullet {
-    constructor(game, x, y, team = TEAM.TEAM_MAIN) {
+    constructor(game, x, y, team = TEAM.TEAM_MOB) {
         super(game, x, y, team)
         Object.assign(this, { game, x, y, team });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/tesla-ball.png");
 
         this.facing = FACING_SIDE.RIGHT;
-        this.velocityX = 0;
+        // this.velocityX = 0;
+        this.velocity = { x: 0, y: 0 };
 
-        this.damage = 250
+        this.farDamage = 200 + Math.floor(Math.random() * 100)
 
-        this.width = 120
-        this.height = 168
+        this.width = 310
+        this.height = 320
+
+        this.duration = 1.5
 
         this.animation = new Animator(this.spritesheet, 18, 15, 85, 100, 11, 0.1, 43, false, false);
 
@@ -329,6 +322,11 @@ class TeslaBall extends Bullet {
     update() {
         super.update()
 
+        this.duration -= this.game.clockTick;
+
+        if (this.duration <= 0) {
+            this.removeFromWorld = true
+        }
     };
 
     drawMinimap(ctx, mmX, mmY) {

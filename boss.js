@@ -16,8 +16,8 @@ class Boss extends RangeEnemies {
         this.deadCounter = 0;
         this.flickerFlag = true;
 
-        this.width = 96;
-        this.height = 96;
+        this.width = 110;
+        this.height = 210;
 
         this.animations = [];        
         this.loadAnimations();
@@ -33,7 +33,7 @@ class Boss extends RangeEnemies {
         this.farAttackCooldown = 0;
 
         this.canAttackFar = true;
-        this.farAttackRangeWidth = 400;
+        this.farAttackRangeWidth = 550;
 
         this.beingDamaged = false;
 
@@ -74,45 +74,40 @@ class Boss extends RangeEnemies {
 
     }
 
+    randomX() {
+        if (this.facing === FACING_SIDE.RIGHT) {
+            return this.x + Math.floor(Math.random() * (PARAMS.CANVAS_WIDTH + this.game.camera.x - this.x))
+        } else {
+            return this.game.camera.x + Math.floor(Math.random() * (this.x - this.game.camera.x))
+        }
+    }
+
     update() {
         if (super.update()) {
             var bullet = null
             var bullet2 = null
             var bullet3 = null
             var bullet4 = null
-            var bullet5 = null
 
-
-                if (this.facing === FACING_SIDE.RIGHT) {
-                    bullet = new TeslaBall(this.game, this.BB.x + this.BB.width * 2, this.BB.y)
-                    bullet2 = new TeslaBall(this.game, this.BB.x + this.BB.width * 2, this.BB.y)
-                    bullet3 = new TeslaBall(this.game, this.BB.x + this.BB.width * 2, this.BB.y)
-
-
-                } else {
-                    bullet = new TeslaBall(this.game, this.BB.x - this.BB.width * Math.floor(Math.random() * 5),  this.BB.y - this.height + Math.floor(Math.random() * 10))
-                    bullet2 = new TeslaBall(this.game, this.BB.x - this.BB.width * Math.floor(Math.random() * 5),  this.BB.y - this.height + Math.floor(Math.random() * 10))
-                    bullet3 = new BossThunder(this.game, this.BB.x - this.BB.width * 2, this.BB.y - this.height * 1.5)
-                    bullet4 = new BossThunder(this.game, this.BB.x - this.BB.width * 2, this.BB.y - this.height * 1.5)
-                    bullet5 = new BossThunder(this.game, this.BB.x - this.BB.width * 2, this.BB.y - this.height * 1.5)
-
-
-                }
+            var y = this.BB.y - 100 - Math.floor(Math.random() * 10)
+            if (this.facing === FACING_SIDE.RIGHT) {
+                bullet = new TeslaBall(this.game, this.randomX(), y)
+                bullet2 = new TeslaBall(this.game, this.randomX(), y)
+                bullet3 = new BossThunder(this.game, this.randomX(), y)
+                bullet4 = new BossThunder(this.game, this.randomX(), y)
+            } else {
+                bullet = new TeslaBall(this.game, this.randomX(), y)
+                bullet2 = new TeslaBall(this.game, this.randomX(), y)
+                bullet3 = new BossThunder(this.game, this.randomX(), y)
+                bullet4 = new BossThunder(this.game, this.randomX(), y)
+            }
             
-            bullet.velocity.x = 0
-            bullet2.velocity.x = 0
-            bullet3.velocity.y += this.velocityY;
-
-
             bullet.facing = this.facing
-            bullet.farDamage = this.farDamage;
+            bullet2.facing = this.facing
             this.game.addEntity(bullet)
-            setTimeout(() => {this.game.addEntity(bullet2);}, 500);
-            setTimeout(() => {this.game.addEntity(bullet3);}, 0);
-            setTimeout(() => {this.game.addEntity(bullet4);}, 200);
-            setTimeout(() => {this.game.addEntity(bullet5);}, 500);
-
-
+            setTimeout(() => {this.game.addEntity(bullet2);}, 200);
+            setTimeout(() => {this.game.addEntity(bullet3);}, 100);
+            setTimeout(() => {this.game.addEntity(bullet4);}, 400);
         }
 
         this.x += this.velocity.x;
@@ -121,11 +116,11 @@ class Boss extends RangeEnemies {
 
     updateBB() {
         if(this.facing == FACING_SIDE.RIGHT){
-            this.BB = new BoundingBox(this.x, this.y + this.height + 10, this.width * 2, this.height * 1.5); // body
-            this.BBFarAttackRange = new BoundingBox(this.BB.x + this.width*2, this.BB.y, 
+            this.BB = new BoundingBox(this.x, this.y + 100, this.width, this.height); // body
+            this.BBFarAttackRange = new BoundingBox(this.BB.x + this.width, this.BB.y, 
                 this.farAttackRangeWidth, this.BB.height); // range attack
         } else {
-            this.BB = new BoundingBox(this.x + 100, this.y + this.height + 10, this.width * 2, this.height * 1.5);
+            this.BB = new BoundingBox(this.x + 150, this.y + 100, this.width, this.height);
             this.BBFarAttackRange = new BoundingBox(this.BB.x - this.farAttackRangeWidth, this.BB.y,
                 this.farAttackRangeWidth, this.BB.height);
         }

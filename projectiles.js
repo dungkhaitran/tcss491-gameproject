@@ -8,7 +8,12 @@ class Bullet {
         this.width = 48;
         this.height = 48;
 
+        this.deltaBBX = 0
+        this.deltaBBY = 0
+
         this.farDamage = 0
+
+        this.duration = 0
 
         this.type = BULLET_TYPE.BULLET_NORMAL
 
@@ -26,7 +31,9 @@ class Bullet {
                     this.removeFromWorld = true
                 }
             } else {
-                this.removeFromWorld = true;
+                if (this.duration <= 0) {
+                    this.removeFromWorld = true;
+                }
             }
             return
         }
@@ -46,7 +53,7 @@ class Bullet {
     }
 
     updateBB() {
-        this.BB = new BoundingBox(this.x, this.y, this.width, this.height);
+        this.BB = new BoundingBox(this.x + this.deltaBBX, this.y + this.deltaBBY, this.width, this.height);
     };
 
     draw(ctx) {
@@ -198,8 +205,6 @@ class FireSkull extends Bullet {
     update(){
         super.update()
 
-        // this.BB.width += 30;
-
         var that = this;
         this.game.entities.forEach(function (entity) {
             if ((entity instanceof MeleeEnemies) || (entity instanceof RangeEnemies)) {
@@ -220,7 +225,7 @@ class FireSkull extends Bullet {
                             entity.hp = 0;
                             entity.dead = true;
                             entity.velocity.x = 0
-                            that.own.killedEnemiesCount++
+                            // that.own.killedEnemiesCount++
                             that.own.checkEndGame(that.own)
                         }
                     }
