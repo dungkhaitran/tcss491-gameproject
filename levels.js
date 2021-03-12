@@ -12,7 +12,7 @@ class firstLevel {
         ASSET_MANAGER.playAsset("./music/first-stage-music.mp3");
 
         // first background
-        for (var i = 0; i <= 10; i++) {
+        for (var i = 0; i <= 6; i++) {
           let background = new forest(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
@@ -21,32 +21,30 @@ class firstLevel {
         // Dark mage squad
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new DarkMage(this.game, 500 * i, 375)
+            new DarkMage(this.game, 2000 * i, 375)
           );
         }
-        
     
         // Birdman squad
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new BirdMan(this.game, 200 * i, 525)
+            new BirdMan(this.game, 1000 * i, 525)
           );
         }
     
         // Flying Demon squad
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new FlyingDemon(this.game, 1000 * i, 50)
+            new FlyingDemon(this.game, 3000 * i, 50)
           );
         }
     
         // Nightmare Horse squad
-        for(var i = 1; i <= 1; i++){
+        for(var i = 1; i <= 10; i++){
           this.game.addEntity(
-            new NightmareHorse(this.game, 1000 * i, 450, FACING_SIDE.LEFT)
+            new NightmareHorse(this.game, 2000 + 2000 * i, 450, FACING_SIDE.LEFT)
           );
         }
-
 
         this.game.main = new MainCharacter(
           this.game,
@@ -64,7 +62,6 @@ class firstLevel {
 class secondLevel {
     constructor(game, main, x, y){
         Object.assign(this, {game, main, x, y});
-
     }
 
     loadLevel(x, y) {
@@ -75,7 +72,7 @@ class secondLevel {
         ASSET_MANAGER.playAsset("./music/second-stage-music.mp3");
     
         // first background
-        for (var i = 0; i <= 5; i++) {
+        for (var i = 0; i <= 6; i++) {
           let background = new cave(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
@@ -84,25 +81,25 @@ class secondLevel {
         // assassin cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new assassinCultist(this.game, 800 * i, 475)
+            new assassinCultist(this.game, 1000 * i, 475)
           );
         }
         // big cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new bigCultist(this.game, 900 * i, 300)
+            new bigCultist(this.game, 2500 * i, 300)
           );
         }
         // mage cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new mageCultist(this.game, 1000 * i, 450)
+            new mageCultist(this.game, 2000 * i, 450)
           );
         }
         // twisted cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new twistedCultist(this.game, 800 * i, 450)
+            new twistedCultist(this.game, 1500 * i, 450)
           );
         }
 

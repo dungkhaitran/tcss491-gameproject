@@ -402,7 +402,7 @@ class MainCharacter {
                                 entity.dead = true;
                                 entity.velocity.x = 0
                                 // that.killedEnemiesCount++
-                                checkEndGame = true
+                                // checkEndGame = true
                             }
                         }
                         // if (entity.BBMeleeAttackRange) {
@@ -443,7 +443,7 @@ class MainCharacter {
                                 entity.dead = true;
                                 entity.velocity.x = 0
                                 // that.killedEnemiesCount++
-                                checkEndGame = true
+                                // checkEndGame = true
                             }
                         }
                         // if (entity.BBFarAttackRange) {
@@ -523,10 +523,10 @@ class MainCharacter {
             this.updateBB();
 
             var cameraCharacter = this.x - this.game.camera.x;
-            if (this.velocity.x < 0 && cameraCharacter < 350) {
+            if (this.velocity.x < 0 && cameraCharacter < 450) {
                 this.game.camera.x += this.velocity.x;
                 this.game.camera.x = Math.max(0, this.game.camera.x);
-            } else if (this.velocity.x > 0 && cameraCharacter > 650) {
+            } else if (this.velocity.x > 0 && cameraCharacter > 550) {
                 this.game.camera.x += this.velocity.x;
                 this.game.camera.x = Math.min(this.game.camera.x , MAX_WIDTH - PARAMS.CANVAS_WIDTH);
             }
@@ -536,7 +536,7 @@ class MainCharacter {
     checkEndGame(that) {
         switch (that.game.level) {
             case 1:
-                if (that.killedEnemiesCount >= 20) {
+                if (that.killedEnemiesCount >= 3) {
                     that.game.level++
                     that.killedEnemiesCount = 0
                     that.game.camera.loadGame()
@@ -545,7 +545,7 @@ class MainCharacter {
                 break;
 
             case 2:
-                if (that.killedEnemiesCount >= 25) {
+                if (that.killedEnemiesCount >= 4) {
                     that.game.level++
                     that.killedEnemiesCount = 0
                     that.game.camera.loadGame()

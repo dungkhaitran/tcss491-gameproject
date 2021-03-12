@@ -56,7 +56,7 @@ class BossIce extends Bullet {
                         entity.velocity.x = 0
                         that.own.killedEnemiesCount++
                         that.own.checkEndGame(that.own)
-            }
+                    }
                 }
             }
         })
