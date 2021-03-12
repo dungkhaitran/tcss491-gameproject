@@ -332,7 +332,7 @@ class MainCharacter {
             
                     var y = this.BB.y - 20
                     if (this.facing === FACING_SIDE.RIGHT) {
-                        bullet = new Comet(this.game, this.BB.x + this.BB.width, y)
+                        bullet = new FireSkull(this.game, this.BB.x + this.BB.width, y)
                         bullet.velocity.x = bullet.velocityX
                     } else {
                         bullet = new FireSkull(this.game, this.BB.x - this.BB.width, y)
