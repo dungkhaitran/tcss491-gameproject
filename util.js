@@ -59,7 +59,7 @@ const MAX_FALL = 270;
 
 
 
-const MAX_WIDTH = 5000;
+const MAX_WIDTH = 15000;
 const HP_MAIN = 5000;
 
 const STATE = {

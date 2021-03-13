@@ -234,7 +234,7 @@ class BossFireImpact extends Bullet {
     };
 };
 
-class BossThunder extends Bullet {
+class Thunder extends Bullet {
     constructor(game, x, y, team = TEAM.TEAM_MOB) {
         super(game, x, y, team)
         Object.assign(this, { game, x, y, team });
@@ -337,4 +337,136 @@ class TeslaBall extends Bullet {
         
         super.draw(ctx);
     };
+};
+
+class Comet extends Bullet {
+    constructor(game, x, y, team = TEAM.TEAM_MAIN){
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/projectiles/comet.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+
+        this.width = 78
+        this.height = 78
+
+        this.damage = 233
+
+        this.animations = [];
+        this.impactAnimations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+
+        this.damagedEntities = []
+    }
+
+    loadAnimations(){
+        for(var i = 0; i < FACING_SIDE.COUNT; i++){
+            this.animations.push([]);
+            // for(var j = 0; j < FACING_SIDE.COUNT; j++){
+            //     this.animations[i].push([]);
+            // }
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 179, 58, 68, 24, 3, 0.15, 60, true, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 1288, 58, 68, 24, 3, 0.15, 60, false, true); // moving
+
+        for(var j = 0; j < FACING_SIDE.COUNT; j++){
+            this.impactAnimations.push([]);
+        }
+
+        //facing left
+        this.impactAnimations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 8, 135, 112, 121, 7, 0.15, 15, true, true); // moving
+        //facing right
+        this.impactAnimations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 890, 135, 112, 121, 7, 0.15, 18, false, true); // moving
+        
+    }
+
+    update(){
+        super.update()
+
+        
+    }
+
+    draw(ctx){
+
+        if(this.dead && this.impactAnimations){
+            this.impactAnimations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 90, this.y - 100, 2.5);
+        } else {
+            this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 90, this.y, 3.5);
+
+        }
+
+        super.draw(ctx);
+    }
+};
+
+class Explosion extends Bullet {
+    constructor(game, x, y, team = TEAM.TEAM_MAIN){
+        super(game, x, y, team)
+        Object.assign(this, { game, x, y, team });
+
+        this.spritesheet = ASSET_MANAGER.getAsset("./sprites/boss/boss-skills.png");
+
+        this.facing = FACING_SIDE.RIGHT;
+
+        this.width = 78
+        this.height = 78
+
+        this.damage = 233
+
+        this.animations = [];
+        this.impactAnimations = [];
+        this.loadAnimations();
+
+        this.updateBB();
+
+        this.damagedEntities = []
+    }
+
+    loadAnimations(){
+        for(var i = 0; i < FACING_SIDE.COUNT; i++){
+            this.animations.push([]);
+            // for(var j = 0; j < FACING_SIDE.COUNT; j++){
+            //     this.animations[i].push([]);
+            // }
+        }
+
+        //facing left
+        this.animations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1903, 625, 64, 25, 3, 0.15, 190, true, true); // moving
+        //facing right
+        this.animations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 2643, 625, 64, 25, 3, 0.15, 190, false, true); // moving
+
+        for(var j = 0; j < FACING_SIDE.COUNT; j++){
+            this.impactAnimations.push([]);
+        }
+
+        //facing left
+        this.impactAnimations[FACING_SIDE.LEFT] = new Animator(this.spritesheet, 61, 557, 134, 168, 7, 0.15, 100, true, true); // moving
+        //facing right
+        this.impactAnimations[FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 3358, 557, 134, 168, 7, 0.15, 100, false, true); // moving
+        
+    }
+
+    update(){
+        super.update()
+
+        
+    }
+
+    draw(ctx){
+
+        if(this.dead && this.impactAnimations){
+            this.impactAnimations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 90, this.y - 100, 1.5);
+        } else {
+            this.animations[this.facing].drawFrame(this.game.clockTick, ctx, this.x - this.game.camera.x - 90, this.y, 2.5);
+
+        }
+
+        super.draw(ctx);
+    }
 };

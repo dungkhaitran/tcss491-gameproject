@@ -335,7 +335,7 @@ class mageCultist extends RangeEnemies {
         super(game, x, y);
         Object.assign(this, { game, x, y });
 
-        this.velocityX = PARAMS.BITWIDTH / 15;
+        this.velocityX = PARAMS.BITWIDTH / 10;
         this.velocity = { x: -this.velocityX, y: 0 }; // pixels per second
         this.spritesheet = ASSET_MANAGER.getAsset("./sprites/mobs/cultist/mage-cultist.png");
         // this.state = STATE.MOVING;

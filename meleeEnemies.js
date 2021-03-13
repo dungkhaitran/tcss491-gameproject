@@ -349,7 +349,7 @@ class assassinCultist extends MeleeEnemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1185, 155, 79, 72, 11, 0.09, 27, false, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 330, 392, 75, 78, 3, 0.1, 30, false, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 356, 537, 73, 76, 3, 0.15, 32, false, true); // jump
-        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1185, 234, 73, 70, 11, 0.13, 33, false, false);  // dead
+        this.animations[STATE.DEAD][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1185, 232, 73, 70, 11, 0.13, 33, false, false);  // dead
 
         this.animations[STATE.VANISH][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 1190, 690, 73, 76, 8, 0.15, 30, false, false) // vanish
         this.animations[STATE.ARISE][FACING_SIDE.LEFT] = new Animator(this.spritesheet, 865, 80, 73, 90, 8, 0.15, 12, false, false) // arise
@@ -362,7 +362,7 @@ class assassinCultist extends MeleeEnemies {
         this.animations[STATE.ATTACKING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 155, 79, 72, 11, 0.09, 27, true, true);  // attack
         this.animations[STATE.HIT][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 392, 75, 78, 3, 0.1, 30, true, true);  // hit
         this.animations[STATE.JUMPING][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 537, 73, 76, 3, 0.15, 32, false, true); // jump
-        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 234, 73, 70, 11, 0.13, 33, true, false);  // dead
+        this.animations[STATE.DEAD][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 232, 73, 70, 11, 0.13, 33, true, false);  // dead
 
         this.animations[STATE.VANISH][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 690, 73, 76, 8, 0.15, 30, true, false) // vanish
         this.animations[STATE.ARISE][FACING_SIDE.RIGHT] = new Animator(this.spritesheet, 5, 80, 73, 90, 8, 0.15, 12, true, false) // arise

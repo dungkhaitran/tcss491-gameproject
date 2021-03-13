@@ -56,6 +56,7 @@ class firstLevel {
         this.game.main.x = x;
         this.game.addEntity(this.game.main);
 
+
       }
 }
 
@@ -72,12 +73,13 @@ class secondLevel {
         ASSET_MANAGER.playAsset("./music/second-stage-music.mp3");
     
         // first background
-        for (var i = 0; i <= 6; i++) {
+        for (var i = 0; i <= 10; i++) {
           let background = new cave(this.game, i * PARAMS.CANVAS_WIDTH, 0);
           this.game.addEntity(background);
         }
     
         // Add mobs 
+        // ---- 1st wave ----
         // assassin cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
@@ -87,7 +89,7 @@ class secondLevel {
         // big cultists
         for(var i = 1; i <= 1; i++){
           this.game.addEntity(
-            new bigCultist(this.game, 2500 * i, 300)
+            new bigCultist(this.game, 2500 * i, 280)
           );
         }
         // mage cultists
@@ -102,6 +104,62 @@ class secondLevel {
             new twistedCultist(this.game, 1500 * i, 450)
           );
         }
+
+
+
+        // ----- 2nd wave -----
+        // assassin cultists
+        for(var i = 1; i <= 3; i++){
+          this.game.addEntity(
+            new assassinCultist(this.game, 6000 + i * 200, 475)
+          );
+        }
+        // big cultists
+        for(var i = 1; i <= 2; i++){
+          this.game.addEntity(
+            new bigCultist(this.game, 10000 + i * 500, 280)
+          );
+        }
+        // mage cultists
+        for(var i = 1; i <= 2; i++){
+          this.game.addEntity(
+            new mageCultist(this.game, 7000 + i * 1000, 450)
+          );
+        }
+        // twisted cultists
+        for(var i = 1; i <= 3; i++){
+          this.game.addEntity(
+            new twistedCultist(this.game, 8000 + i + 500, 450)
+          );
+        }
+
+
+
+        // ---- 3rd wave ----
+        for(var i = 1; i <= 5; i++){
+          this.game.addEntity(
+            new assassinCultist(this.game, 13000 + i * 300, 475)
+          );
+        }
+        // big cultists
+        for(var i = 1; i <= 3; i++){
+          this.game.addEntity(
+            new bigCultist(this.game, 10000 + i * 400, 280)
+          );
+        }
+        // mage cultists
+        for(var i = 1; i <= 3; i++){
+          this.game.addEntity(
+            new mageCultist(this.game, 14000 + i * 1000, 450)
+          );
+        }
+        // twisted cultists
+        for(var i = 1; i <= 5; i++){
+          this.game.addEntity(
+            new twistedCultist(this.game, 15000 + i + 500, 450)
+          );
+        }
+
 
         this.game.main = new MainCharacter(
           this.game,

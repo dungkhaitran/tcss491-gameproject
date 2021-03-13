@@ -24,7 +24,7 @@ class Boss extends RangeEnemies {
 
         this.hp = 10000;
         this.maxHp = this.hp;
-        this.farDamage = 100;
+        this.farDamage = 200;
 
         this.FAR_ATTACK_DURATION = 1;
         this.FAR_ATTACK_COOLDOWN = 1.5;
@@ -88,26 +88,49 @@ class Boss extends RangeEnemies {
             var bullet2 = null
             var bullet3 = null
             var bullet4 = null
+            var bullet5 = null
+            var bullet6 = null
 
             var y = this.BB.y - 100 - Math.floor(Math.random() * 10)
             if (this.facing === FACING_SIDE.RIGHT) {
                 bullet = new TeslaBall(this.game, this.randomX(), y)
                 bullet2 = new TeslaBall(this.game, this.randomX(), y)
-                bullet3 = new BossThunder(this.game, this.randomX(), y)
-                bullet4 = new BossThunder(this.game, this.randomX(), y)
+                bullet3 = new Thunder(this.game, this.randomX(), y)
+                bullet4 = new Thunder(this.game, this.randomX(), y)
+                bullet5 = new Comet(this.game, this.BB.x + this.width, this.BB.y + 70)
+                bullet5.velocity.x = bullet5.velocityX
+                bullet6 = new Explosion(this.game, this.BB.x + this.width, this.BB.y + 70)
+                bullet6.velocity.x = bullet6.velocityX
+
             } else {
                 bullet = new TeslaBall(this.game, this.randomX(), y)
                 bullet2 = new TeslaBall(this.game, this.randomX(), y)
-                bullet3 = new BossThunder(this.game, this.randomX(), y)
-                bullet4 = new BossThunder(this.game, this.randomX(), y)
+                bullet3 = new Thunder(this.game, this.randomX(), y)
+                bullet4 = new Thunder(this.game, this.randomX(), y)
+                bullet5 = new Comet(this.game, this.BB.x, this.BB.y + 70) 
+                bullet5.velocity.x = -bullet5.velocityX
+                bullet6 = new Explosion(this.game, this.BB.x, this.BB.y + 70)
+                bullet6.velocity.x = -bullet6.velocityX
             }
             
             bullet.facing = this.facing
             bullet2.facing = this.facing
+
+            bullet5.facing = this.facing
+            bullet5.farDamage = this.farDamage
+
+            bullet6.facing = this.facing
+            bullet6.farDamage = this.farDamage
+
             this.game.addEntity(bullet)
             setTimeout(() => {this.game.addEntity(bullet2);}, 200);
             setTimeout(() => {this.game.addEntity(bullet3);}, 100);
             setTimeout(() => {this.game.addEntity(bullet4);}, 400);
+
+            setTimeout(() => {this.game.addEntity(bullet5);}, 200);
+            setTimeout(() => {this.game.addEntity(bullet6);}, 400);
+
+
         }
 
         this.x += this.velocity.x;
