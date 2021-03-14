@@ -107,58 +107,6 @@ class secondLevel {
 
 
 
-        // ----- 2nd wave -----
-        // assassin cultists
-        for(var i = 1; i <= 3; i++){
-          this.game.addEntity(
-            new assassinCultist(this.game, 6000 + i * 200, 475)
-          );
-        }
-        // big cultists
-        for(var i = 1; i <= 2; i++){
-          this.game.addEntity(
-            new bigCultist(this.game, 10000 + i * 500, 280)
-          );
-        }
-        // mage cultists
-        for(var i = 1; i <= 2; i++){
-          this.game.addEntity(
-            new mageCultist(this.game, 7000 + i * 1000, 450)
-          );
-        }
-        // twisted cultists
-        for(var i = 1; i <= 3; i++){
-          this.game.addEntity(
-            new twistedCultist(this.game, 8000 + i + 500, 450)
-          );
-        }
-
-
-
-        // ---- 3rd wave ----
-        for(var i = 1; i <= 5; i++){
-          this.game.addEntity(
-            new assassinCultist(this.game, 13000 + i * 300, 475)
-          );
-        }
-        // big cultists
-        for(var i = 1; i <= 3; i++){
-          this.game.addEntity(
-            new bigCultist(this.game, 10000 + i * 400, 280)
-          );
-        }
-        // mage cultists
-        for(var i = 1; i <= 3; i++){
-          this.game.addEntity(
-            new mageCultist(this.game, 14000 + i * 1000, 450)
-          );
-        }
-        // twisted cultists
-        for(var i = 1; i <= 5; i++){
-          this.game.addEntity(
-            new twistedCultist(this.game, 15000 + i + 500, 450)
-          );
-        }
 
 
         this.game.main = new MainCharacter(

@@ -545,7 +545,7 @@ class MainCharacter {
                 break;
 
             case 2:
-                if (that.killedEnemiesCount >= 30) {
+                if (that.killedEnemiesCount >= 4) {
                     that.game.level++
                     that.killedEnemiesCount = 0
                     that.game.camera.loadGame()
